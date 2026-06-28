@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>基金持仓调仓建议报告 - 2026.06.29</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --primary: #2563eb;
+      --primary-light: #dbeafe;
+      --success: #dc2626;
+      --danger: #16a34a;
+      --warning: #f59e0b;
+      --border: #e2e8f0;
+      --muted: #f1f5f9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    header h1 {
+      font-size: 30px;
+      margin: 0 0 8px 0;
+      font-weight: 700;
+    }
+    header .subtitle {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .card h2 {
+      font-size: 20px;
+      margin: 0 0 16px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card h3 {
+      font-size: 17px;
+      margin: 20px 0 12px 0;
+      color: var(--text);
+    }
+    .tldr {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .tldr h2 {
+      margin: 0 0 12px 0;
+      font-size: 20px;
+      border: none;
+      padding: 0;
+    }
+    .tldr ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .tldr li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .metric-sub {
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .up { color: var(--success); }
+    .down { color: var(--danger); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--muted);
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+    tr:last-child td { border-bottom: none; }
+    .text-right { text-align: right; }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .tag-core { background: #fee2e2; color: #991b1b; }
+    .tag-satellite { background: #dbeafe; color: #1e40af; }
+    .tag-defensive { background: #d1fae5; color: #065f46; }
+    .tag-reduce { background: #fef3c7; color: #92400e; }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 16px 0;
+    }
+    .chart-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .chart-box h3 {
+      margin: 0 0 12px 0;
+      font-size: 15px;
+    }
+    .chart {
+      width: 100%;
+      height: 300px;
+    }
+    .alert {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .alert-title { font-weight: 600; color: #b91c1c; margin-bottom: 6px; }
+    .plan-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+    .plan-step .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .plan-step .content { flex: 1; }
+    .plan-step .content h4 { margin: 0 0 4px 0; font-size: 15px; }
+    .plan-step .content p { margin: 0; color: var(--text-secondary); font-size: 14px; }
+    .footer {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-top: 40px;
+    }
+    .market-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .market-item {
+      background: var(--muted);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .market-item .name { font-weight: 600; font-size: 14px; }
+    .market-item .value { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    @media (max-width: 640px) {
+      .chart-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>基金持仓调仓建议报告</h1>
+      <div class="subtitle">基于养基宝持仓数据 · 2026年6月29日盘前 · 炒饭先森</div>
+    </header>
+
+    <div class="tldr">
+      <h2>核心结论</h2>
+      <ul>
+        <li>你的持仓<strong>高度集中于科技成长板块</strong>（富国全球科技互联网占比约89.5%），整体波动与纳斯达克、AI产业链高度绑定。</li>
+        <li>当前总收益+14.0%，但周五A股与美股科技股同步回调，<strong>短期风险上升</strong>，建议趁盈利窗口降低集中度。</li>
+        <li>建议将核心科技仓位从约89%降至50%左右，释放资金增配A股宽基指数与防御性资产，优化组合风险收益比。</li>
+        <li>下周关键观察：A股4000点支撑、科创板情绪、美股周日晚间走势（影响QDII周二净值）。</li>
+      </ul>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">总资产</div>
+        <div class="metric-value">25,708.62</div>
+        <div class="metric-sub">元</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">总盈亏</div>
+        <div class="metric-value up">+3,158.31</div>
+        <div class="metric-sub up">+14.0%</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">今日收益</div>
+        <div class="metric-value up">+944.24</div>
+        <div class="metric-sub up">+3.81%</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">持仓基金数</div>
+        <div class="metric-value">5</div>
+        <div class="metric-sub">有效持仓4只</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>一、当前持仓画像</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>基金名称</th>
+            <th>代码</th>
+            <th class="text-right">市值</th>
+            <th class="text-right">占比</th>
+            <th class="text-right">盈亏</th>
+            <th>定位</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>富国全球科技互联网股票(QDII)A</td>
+            <td>100055</td>
+            <td class="text-right">23,006.34</td>
+            <td class="text-right">89.5%</td>
+            <td class="text-right up">+15.0%</td>
+            <td><span class="tag tag-core">核心进攻</span></td>
+          </tr>
+          <tr>
+            <td>华夏中证电网设备主题ETF联接A</td>
+            <td>025856</td>
+            <td class="text-right">1,290.10</td>
+            <td class="text-right">5.0%</td>
+            <td class="text-right down">-0.8%</td>
+            <td><span class="tag tag-satellite">卫星配置</span></td>
+          </tr>
+          <tr>
+            <td>天弘全球高端制造混合(QDII)C</td>
+            <td>016665</td>
+            <td class="text-right">793.80</td>
+            <td class="text-right">3.1%</td>
+            <td class="text-right up">+13.4%</td>
+            <td><span class="tag tag-satellite">卫星配置</span></td>
+          </tr>
+          <tr>
+            <td>建信新兴市场优选混合(QDII)C</td>
+            <td>018147</td>
+            <td class="text-right">618.38</td>
+            <td class="text-right">2.4%</td>
+            <td class="text-right up">+12.4%</td>
+            <td><span class="tag tag-satellite">卫星配置</span></td>
+          </tr>
+          <tr>
+            <td>国泰中证全指通信设备ETF联接C</td>
+            <td>007818</td>
+            <td class="text-right">0.00</td>
+            <td class="text-right">0.0%</td>
+            <td class="text-right">0.0%</td>
+            <td><span class="tag tag-reduce">已清仓/观察</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="alert">
+        <div class="alert-title">结构性问题：科技板块过度集中</div>
+        <p>你的组合实质上是「一只全球科技基金 + 三只小型科技卫星基金 + 一只电网主题基金」。核心仓位（富国全球科技互联网）重仓英伟达、台积电、谷歌、AMD、海力士、三星等AI/半导体龙头；三只卫星基金也大量配置英伟达、台积电、博通、海力士。科技板块相关性极高，相当于把90%以上的资金押注在单一产业主题上。</p>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-box">
+          <h3>持仓市值分布</h3>
+          <div id="chart-allocation" class="chart"></div>
+        </div>
+        <div class="chart-box">
+          <h3>科技板块相关性</h3>
+          <div id="chart-correlation" class="chart"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>二、市场环境与下周一展望</h2>
+
+      <h3>A股：高位震荡，科技股分化加剧</h3>
+      <div class="market-summary">
+        <div class="market-item">
+          <div class="name">上证指数</div>
+          <div class="value">4,027.26 <span class="down">-2.26%</span>（周五）</div>
+          <div class="value">本周 <span class="down">-1.97%</span></div>
+        </div>
+        <div class="market-item">
+          <div class="name">深证成指</div>
+          <div class="value">15,782.22 <span class="down">-3.44%</span></div>
+          <div class="value">本周 <span class="down">-0.62%</span></div>
+        </div>
+        <div class="market-item">
+          <div class="name">创业板指</div>
+          <div class="value">4,194.21 <span class="down">-4.07%</span></div>
+          <div class="value">本周 <span class="up">+0.65%</span></div>
+        </div>
+        <div class="market-item">
+          <div class="name">科创50</div>
+          <div class="value">2,032.28 <span class="down">-1.65%</span></div>
+          <div class="value">本周 <span class="up">+10.40%</span></div>
+        </div>
+      </div>
+      <p style="margin-top:16px;font-size:14px;color:var(--text-secondary);">数据来源：NeoData Financial Search，截至2026-06-26收盘</p>
+
+      <p>本周A股剧烈震荡：周初创指、科创50创历史新高，周五全线暴跌。上证指数跌破4100点，创业板指跌超4%，科创50高位回落。市场呈现典型的「权重护盘、个股跌多涨少」的K型结构， Thursday上涨家数仅1231只、下跌4228只。</p>
+
+      <p><strong>下周一关注点：</strong></p>
+      <ul>
+        <li>上证指数4000点整数关口是短期关键防线，若有效跌破，可能引发更大级别调整。</li>
+        <li>科创50本周大涨10.4%后周五回落，KDJ进入高位超买区，短期有继续震荡消化需求。</li>
+        <li>7月即将进入中报预告窗口，上半年涨幅巨大的硬科技标的要求业绩兑现，不达预期标的回调压力大。</li>
+      </ul>
+
+      <h3>美股：科技股回调，流动性收紧预期升温</h3>
+      <div class="market-summary">
+        <div class="market-item">
+          <div class="name">纳斯达克</div>
+          <div class="value">25,297.62 <span class="down">-0.24%</span></div>
+          <div class="value">本周 <span class="down">-2.78%</span></div>
+        </div>
+        <div class="market-item">
+          <div class="name">标普500</div>
+          <div class="value">7,354.02 <span class="down">-0.05%</span></div>
+          <div class="value">本周 <span class="down">-0.89%</span></div>
+        </div>
+        <div class="market-item">
+          <div class="name">道琼斯</div>
+          <div class="value">51,876.11 <span class="down">-0.09%</span></div>
+          <div class="value">本周 <span class="up">+0.74%</span></div>
+        </div>
+      </div>
+      <p style="margin-top:16px;font-size:14px;color:var(--text-secondary);">数据来源：NeoData Financial Search，截至2026-06-26收盘</p>
+
+      <p>本周美股道指独涨，纳指领跌。市场对AI资本开支可持续性、美联储鹰派立场、PCE通胀数据的担忧加剧。纳指100市值本周蒸发超1万亿美元，「兴登堡预兆」技术指标近一个月触发7次，提示系统性调整风险上升。</p>
+
+      <p><strong>对QDII基金的影响：</strong> 你的三只QDII基金（富国全球科技互联网、天弘全球高端制造、建信新兴市场）重仓美股科技龙头。如果下周一（美东时间周日夜间）美股继续下跌，这些基金的周二净值将进一步承压。但短线下跌不改中长期AI产业趋势，更多是估值与预期修正。</p>
+    </div>
+
+    <div class="card">
+      <h2>三、调仓建议</h2>
+
+      <div class="alert">
+        <div class="alert-title">核心思路：止盈降集中、增配宽基、保留进攻火种</div>
+        <p>不看好科技 → 错；不看好的只是「把90%资金押在单一主题上」的脆弱结构。当前市场处于高位震荡期，降低相关性暴露、锁定部分利润、增配A股贝塔与防御资产，是更稳健的选择。</p>
+      </div>
+
+      <h3>目标配置 vs 当前配置</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>基金/方向</th>
+            <th>当前市值</th>
+            <th>当前占比</th>
+            <th>目标市值</th>
+            <th>目标占比</th>
+            <th>操作建议</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>富国全球科技互联网(QDII)</td>
+            <td class="text-right">23,006.34</td>
+            <td class="text-right">89.5%</td>
+            <td class="text-right">12,000</td>
+            <td class="text-right">47%</td>
+            <td><strong>减仓约11,000</strong>，回收部分利润</td>
+          </tr>
+          <tr>
+            <td>天弘全球高端制造(QDII)</td>
+            <td class="text-right">793.80</td>
+            <td class="text-right">3.1%</td>
+            <td class="text-right">800</td>
+            <td class="text-right">3%</td>
+            <td>继续持有，作为科技卫星</td>
+          </tr>
+          <tr>
+            <td>建信新兴市场(QDII)</td>
+            <td class="text-right">618.38</td>
+            <td class="text-right">2.4%</td>
+            <td class="text-right">600</td>
+            <td class="text-right">2%</td>
+            <td>继续持有，作为科技卫星</td>
+          </tr>
+          <tr>
+            <td>华夏中证电网设备ETF</td>
+            <td class="text-right">1,290.10</td>
+            <td class="text-right">5.0%</td>
+            <td class="text-right">1,300</td>
+            <td class="text-right">5%</td>
+            <td>继续持有，A股独立主题</td>
+          </tr>
+          <tr>
+            <td>A股宽基指数（新增）</td>
+            <td class="text-right">0</td>
+            <td class="text-right">0%</td>
+            <td class="text-right">5,000</td>
+            <td class="text-right">19%</td>
+            <td>新增：沪深300或中证500ETF联接</td>
+          </tr>
+          <tr>
+            <td>债券/短债基金（新增）</td>
+            <td class="text-right">0</td>
+            <td class="text-right">0%</td>
+            <td class="text-right">3,000</td>
+            <td class="text-right">12%</td>
+            <td>新增：增强组合稳定性</td>
+          </tr>
+          <tr>
+            <td>现金/货币基金</td>
+            <td class="text-right">0</td>
+            <td class="text-right">0%</td>
+            <td class="text-right">3,000</td>
+            <td class="text-right">12%</td>
+            <td>保留弹药，等待更好买点</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>分步执行计划</h3>
+      <div class="plan-step">
+        <div class="num">1</div>
+        <div class="content">
+          <h4>第一步：减持核心科技基金</h4>
+          <p>将富国全球科技互联网从23,000元减持至12,000元左右，卖出约11,000元。该基金目前盈利15%，减仓部分已实现利润，降低单一主题暴露。</p>
+        </div>
+      </div>
+      <div class="plan-step">
+        <div class="num">2</div>
+        <div class="content">
+          <h4>第二步：配置A股宽基指数</h4>
+          <p>用约5,000元买入沪深300ETF联接或中证500ETF联接。宽基与科技主题相关性较低，能在市场风格轮动时提供缓冲。</p>
+        </div>
+      </div>
+      <div class="plan-step">
+        <div class="num">3</div>
+        <div class="content">
+          <h4>第三步：增配防御性资产</h4>
+          <p>用约3,000元买入短债基金或纯债基金。债券与股票呈弱相关性，在市场大幅波动时降低组合回撤。</p>
+        </div>
+      </div>
+      <div class="plan-step">
+        <div class="num">4</div>
+        <div class="content">
+          <h4>第四步：保留现金</h4>
+          <p>剩余约3,000元保留为现金或货币基金。若A股跌破4000点或美股科技股出现深度回调，再分批加仓优质资产。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>四、风险与观察清单</h2>
+      <ul>
+        <li><strong>主要风险：</strong>若AI产业链（英伟达、台积电等）出现业绩不及预期或估值大幅回调，三只QDII基金将同步下跌，组合回撤可能超过15%。</li>
+        <li><strong>A股系统性风险：</strong>上证指数若失守4000点，可能引发全市场调整，届时宽基指数也会回撤，但波动小于单一科技主题。</li>
+        <li><strong>QDII额度与汇率：</strong>部分QDII基金可能暂停大额申购，且人民币汇率波动会影响实际收益。</li>
+      </ul>
+      <h3>下周观察指标</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>观察指标</th>
+            <th>关键位置/信号</th>
+            <th>触发动作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>上证指数</td>
+            <td>4000点支撑</td>
+            <td>跌破则暂停加仓，等待企稳</td>
+          </tr>
+          <tr>
+            <td>科创50</td>
+            <td>2000点及5日均线</td>
+            <td>若放量跌破，减仓科技卫星</td>
+          </tr>
+          <tr>
+            <td>美股纳斯达克</td>
+            <td>25,000点支撑</td>
+            <td>若跌破，暂缓加仓QDII</td>
+          </tr>
+          <tr>
+            <td>成交额</td>
+            <td>A股成交是否持续萎缩</td>
+            <td>缩量反弹则谨慎</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>五、总结</h2>
+      <p>你的组合在过去一段时间受益于AI/科技牛市，取得了+14%的不错收益。但当前结构过于依赖单一主题，短期市场又处于高位震荡、科技股分化加剧的阶段。建议通过「减持核心科技基金+增配宽基指数+增加债券/现金」的方式，将组合从「激进科技单主题」调整为「科技核心+宽基防御」的均衡结构。</p>
+      <p>调仓后，科技 exposure 从约95%降至约52%，A股宽基与防御资产占比提升至约31%，现金保留约12%。这样既能保留科技上涨时的进攻性，又能在市场回调时显著降低回撤。</p>
+      <p><strong>风险提示：</strong>以上建议基于当前市场数据和基金持仓分析，不构成投资建议。基金投资有风险，调仓前请结合自身风险承受能力、投资期限和资金规划综合判断。</p>
+    </div>
+
+    <div class="footer">
+      报告生成时间：2026-06-28 20:55 · 数据来源：养基宝、NeoData Financial Search
+    </div>
+  </div>
+
+  <script>
+    echarts.init(document.getElementById('chart-allocation')).setOption({
+      tooltip: { trigger: 'item', formatter: '{b}: {c}元 ({d}%)' },
+      legend: { orient: 'vertical', left: 'left', top: 'center' },
+      series: [{
+        type: 'pie',
+        radius: ['45%', '75%'],
+        center: ['65%', '50%'],
+        avoidLabelOverlap: true,
+        label: { show: false },
+        data: [
+          { name: '富国全球科技互联网', value: 23006.34, itemStyle: { color: '#2563eb' } },
+          { name: '华夏电网设备', value: 1290.10, itemStyle: { color: '#f59e0b' } },
+          { name: '天弘全球高端制造', value: 793.80, itemStyle: { color: '#10b981' } },
+          { name: '建信新兴市场', value: 618.38, itemStyle: { color: '#8b5cf6' } },
+          { name: '国泰通信设备', value: 0.00, itemStyle: { color: '#cbd5e1' } }
+        ]
+      }]
+    });
+
+    echarts.init(document.getElementById('chart-correlation')).setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      xAxis: { type: 'category', data: ['英伟达', '台积电', '博通', '海力士', '三星', '谷歌', 'AMD', '电网设备'] },
+      yAxis: { type: 'value', name: '重合度' },
+      series: [{
+        type: 'bar',
+        data: [
+          { value: 4, itemStyle: { color: '#ef4444' } },
+          { value: 4, itemStyle: { color: '#ef4444' } },
+          { value: 3, itemStyle: { color: '#f97316' } },
+          { value: 3, itemStyle: { color: '#f97316' } },
+          { value: 3, itemStyle: { color: '#f97316' } },
+          { value: 1, itemStyle: { color: '#3b82f6' } },
+          { value: 1, itemStyle: { color: '#3b82f6' } },
+          { value: 0, itemStyle: { color: '#10b981' } }
+        ]
+      }]
+    });
+  </script>
+</body>
+</html>
