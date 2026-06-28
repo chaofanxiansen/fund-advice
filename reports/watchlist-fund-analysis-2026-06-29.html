@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自选基金下周走势分析与增持建议</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --red: #ef4444;
+            --green: #22c55e;
+            --accent: #38bdf8;
+            --accent2: #a855f7;
+            --warning: #f59e0b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+        }
+        header {
+            text-align: center;
+            padding: 32px 0 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+        }
+        header h1 {
+            margin: 0 0 10px;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
+        .card h2 {
+            margin: 0 0 18px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(56,189,248,0.15);
+            color: var(--accent);
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+            margin-bottom: 8px;
+        }
+        .summary-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        .summary-item .label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+        .summary-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .up { color: var(--red); }
+        .down { color: var(--green); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .right { text-align: right; }
+        .center { text-align: center; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .badge-hold { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .badge-etf { background: rgba(56,189,248,0.15); color: var(--accent); }
+        .badge-qfii { background: rgba(168,85,247,0.15); color: var(--accent2); }
+        .recommend {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.03);
+        }
+        .recommend .icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .recommend .title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .recommend .desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 16px 0 8px;
+        }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 720px) {
+            .two-col { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .risk-box {
+            background: rgba(239,68,68,0.08);
+            border-left: 3px solid var(--red);
+            padding: 14px 16px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>自选基金下周走势分析与增持建议</h1>
+        <p>数据截至 2026-06-26（QDII 净值滞后 1-2 个交易日） · 报告生成时间：2026-06-28</p>
+    </header>
+
+    <div class="card">
+        <h2>核心结论</h2>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="label">自选基金数量</div>
+                <div class="value">8 只</div>
+            </div>
+            <div class="summary-item">
+                <div class="label">周五上涨</div>
+                <div class="value up">2 只</div>
+            </div>
+            <div class="summary-item">
+                <div class="label">周五下跌</div>
+                <div class="value down">6 只</div>
+            </div>
+            <div class="summary-item">
+                <div class="label">科技成长集中度</div>
+                <div class="value">100%</div>
+            </div>
+        </div>
+        <p style="margin-top:16px; color:var(--text-secondary);">
+            你的自选组合全部集中在科技成长方向（机器人、AI、半导体材料设备、信创、PCB/CPO、通信、港股科技），进攻性极强但同质化严重。<strong>周五 A 股放量大跌，科技板块分歧加剧；半导体材料设备逆势走强，机器人与通信设备领跌。</strong>短期不宜盲目增持，建议优先观察周一市场能否守住关键支撑位。
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>一、自选基金全景</h2>
+        <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>基金名称</th>
+                        <th>代码</th>
+                        <th>类型</th>
+                        <th class="right">最新净值</th>
+                        <th class="right">6/26 涨幅</th>
+                        <th class="right">今年以来</th>
+                        <th class="right">近三年</th>
+                        <th>关联板块</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>易方达国证机器人产业ETF</td>
+                        <td>159530</td>
+                        <td><span class="badge badge-etf">ETF</span></td>
+                        <td class="right">1.4903</td>
+                        <td class="right down">-4.65%</td>
+                        <td class="right down">-5.95%</td>
+                        <td class="right up">+49.03%</td>
+                        <td>国证机器人</td>
+                    </tr>
+                    <tr>
+                        <td>易方达中证人工智能主题ETF</td>
+                        <td>159819</td>
+                        <td><span class="badge badge-etf">ETF</span></td>
+                        <td class="right">2.0771</td>
+                        <td class="right down">-4.61%</td>
+                        <td class="right up">+35.66%</td>
+                        <td class="right up">+123.54%</td>
+                        <td>中证人工智能</td>
+                    </tr>
+                    <tr>
+                        <td>华夏半导体材料设备ETF联接C</td>
+                        <td>020357</td>
+                        <td><span class="badge badge-etf">ETF联接</span></td>
+                        <td class="right">4.1301</td>
+                        <td class="right up">+3.42%</td>
+                        <td class="right up">+117.25%</td>
+                        <td class="right up">+313.01%</td>
+                        <td>半导体材料设备</td>
+                    </tr>
+                    <tr>
+                        <td>富国国证信息技术创新主题ETF</td>
+                        <td>159538</td>
+                        <td><span class="badge badge-etf">ETF</span></td>
+                        <td class="right">2.3601</td>
+                        <td class="right down">-1.71%</td>
+                        <td class="right up">+56.33%</td>
+                        <td class="right up">+135.77%</td>
+                        <td>国证信息技术</td>
+                    </tr>
+                    <tr>
+                        <td>财通集成电路产业股票C</td>
+                        <td>006503</td>
+                        <td><span class="badge badge-etf">股票型</span></td>
+                        <td class="right">9.4935</td>
+                        <td class="right down">-2.80%</td>
+                        <td class="right up">+153.97%</td>
+                        <td class="right up">+465.53%</td>
+                        <td>PCB / 集成电路</td>
+                    </tr>
+                    <tr>
+                        <td>信澳业绩驱动混合C</td>
+                        <td>016371</td>
+                        <td><span class="badge badge-hold">持有</span></td>
+                        <td class="right">3.5148</td>
+                        <td class="right down">-6.39%</td>
+                        <td class="right up">+103.12%</td>
+                        <td class="right up">+384.93%</td>
+                        <td>CPO</td>
+                    </tr>
+                    <tr>
+                        <td>国泰中证全指通信设备ETF联接C</td>
+                        <td>007818</td>
+                        <td><span class="badge badge-hold">持有</span></td>
+                        <td class="right">4.7655</td>
+                        <td class="right down">-6.28%</td>
+                        <td class="right up">+66.72%</td>
+                        <td class="right up">+292.09%</td>
+                        <td>通信设备</td>
+                    </tr>
+                    <tr>
+                        <td>华夏大中华企业精选灵活配置混合(QDII)</td>
+                        <td>002230</td>
+                        <td><span class="badge badge-qfii">QDII</span></td>
+                        <td class="right">1.7580</td>
+                        <td class="right up">+5.08%</td>
+                        <td class="right up">+80.12%</td>
+                        <td class="right up">+70.85%</td>
+                        <td>港股/中概科技</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>二、主要市场指数走势</h2>
+        <div class="two-col">
+            <div>
+                <h3 style="margin-top:0;color:var(--accent);">A 股主要指数</h3>
+                <table>
+                    <thead>
+                        <tr><th>指数</th><th class="right">最新</th><th class="right">6/26 涨跌</th><th class="right">本周涨跌</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>上证指数</td><td class="right">4,027.26</td><td class="right down">-2.26%</td><td class="right down">-1.97%</td></tr>
+                        <tr><td>深证成指</td><td class="right">15,782.22</td><td class="right down">-3.44%</td><td class="right down">-0.62%</td></tr>
+                        <tr><td>创业板指</td><td class="right">4,194.21</td><td class="right down">-4.07%</td><td class="right up">+0.65%</td></tr>
+                        <tr><td>科创50</td><td class="right">2,032.28</td><td class="right down">-1.65%</td><td class="right up">+10.40%</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:14px; font-size:0.9rem; color:var(--text-secondary);">
+                    周五全市场大跌，沪指跌逾 2% 失守 4100 点；创业板指跌幅最大。科创 50 相对抗跌，本周累计涨 10.4%，仍是当前市场最强风格。上证指数估值历史百分位 95.67%，处于高位区间。
+                </p>
+            </div>
+            <div>
+                <h3 style="margin-top:0;color:var(--accent2);">美股主要指数</h3>
+                <table>
+                    <thead>
+                        <tr><th>指数</th><th class="right">最新</th><th class="right">本周涨跌</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>纳斯达克</td><td class="right">25,297.62</td><td class="right down">-4.60%</td></tr>
+                        <tr><td>标普500</td><td class="right">7,354.02</td><td class="right down">-1.95%</td></tr>
+                        <tr><td>道琼斯</td><td class="right">51,876.11</td><td class="right up">+0.60%</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:14px; font-size:0.9rem; color:var(--text-secondary);">
+                    美股科技股本周显著回调，纳斯达克跌 4.6%，标普 500 跌近 2%。市场对 AI 高估值、美联储鹰派预期产生分歧。纳斯达克 100 本周市值蒸发超 1 万亿美元，短期需警惕海外映射对 A 股科技板块的拖累。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>三、关联板块本周表现</h2>
+        <div class="chart-container">
+            <canvas id="sectorChart"></canvas>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-secondary);">
+            半导体材料设备板块本周大涨 17.83%，是科技成长中唯一逆势走强的方向，主要受国产替代与行业景气预期推动；机器人板块本周大跌 6.51%，表现最弱；PCB、CPO、通信设备高位震荡，周五均出现明显回调。
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>四、下周一走势预判</h2>
+        <div class="recommend">
+            <div class="icon">📉</div>
+            <div>
+                <div class="title">A 股：短调概率偏大，关注 4000 点支撑</div>
+                <div class="desc">
+                    上证指数周五跌破 5 日均线，KDJ 高位死叉，MACD 红柱收窄；短期支撑位 4000 点（整数关口+布林中轨），若跌破可能下探 3950。科创 50 虽强但 KDJ 进入超买区，需防范高位获利回吐。下周一若早盘继续下探，午后或出现技术性反抽，但趋势性机会需要等待成交量企稳。
+                </div>
+            </div>
+        </div>
+        <div class="recommend">
+            <div class="icon">🌍</div>
+            <div>
+                <div class="title">美股：科技股尚未企稳，影响 QDII 净值</div>
+                <div class="desc">
+                    纳斯达克关键支撑位 25000 点与 6 月低点 247XX 区域。若周末无重大利好，下周一美股可能延续震荡。由于 QDII 基金净值滞后 1-2 个交易日，华夏大中华 6/25 的反弹收益或部分回吐，持有的 QDII 卫星基金（富国全球科技互联网等）短期也可能承压。
+                </div>
+            </div>
+        </div>
+        <div class="recommend">
+            <div class="icon">⚡</div>
+            <div>
+                <div class="title">板块：科技内部分化，去弱留强</div>
+                <div class="desc">
+                    半导体材料设备>人工智能>信创>PCB/CPO>通信设备>机器人。机器人板块跌破前期平台，短期最弱；半导体材料设备逆势放量，有望成为下一阶段主线；PCB/CPO/通信设备周五跌幅居前，需观察周一能否快速修复，否则建议减仓。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>五、基金诊断与增持建议</h2>
+
+        <div class="recommend">
+            <div class="icon" style="color:var(--red);">🔥</div>
+            <div>
+                <div class="title">华夏半导体材料设备ETF联接C（020357）— 保留/逢低加仓</div>
+                <div class="desc">
+                    周五唯一逆势大涨 3.42% 的 A 股基金，今年以来涨幅 117%，板块趋势最强。国产替代+设备景气度上升逻辑未被破坏，若周一市场回踩，可视为加仓机会。建议仓位占比不超过组合的 20%。
+                </div>
+            </div>
+        </div>
+
+        <div class="recommend">
+            <div class="icon" style="color:var(--warning);">⏸️</div>
+            <div>
+                <div class="title">易方达中证人工智能主题ETF（159819）、富国国证信息技术创新主题ETF（159538）— 观望</div>
+                <div class="desc">
+                    AI 与信创仍是中长期主线，但短期涨幅过大、估值偏高，周五跌幅小于通信/CPO，显示资金并未完全撤离。建议暂不增持，等待回调至 20 日均线附近再考虑布局。
+                </div>
+            </div>
+        </div>
+
+        <div class="recommend">
+            <div class="icon" style="color:var(--green);">⬇️</div>
+            <div>
+                <div class="title">信澳业绩驱动混合C（016371）、国泰中证全指通信设备ETF联接C（007818）— 暂缓增持/逢高减仓</div>
+                <div class="desc">
+                    两只持有基金周五分别大跌 6.39% 和 6.28%，CPO 与通信设备板块高位放量下跌，短期情绪恶化。若周一不能快速收复 5 日线，建议降低仓位，规避中报业绩验证前的估值回调风险。
+                </div>
+            </div>
+        </div>
+
+        <div class="recommend">
+            <div class="icon" style="color:var(--green);">❌</div>
+            <div>
+                <div class="title">易方达国证机器人产业ETF（159530）— 不建议增持</div>
+                <div class="desc">
+                    今年以来跌幅 5.95%，本周跌 6.51%，是自选中最弱的基金。机器人板块短期缺乏业绩兑现，概念炒作退潮，趋势明显弱于 AI 和半导体。建议观望，不急于抄底。
+                </div>
+            </div>
+        </div>
+
+        <div class="recommend">
+            <div class="icon" style="color:var(--accent);">🌐</div>
+            <div>
+                <div class="title">华夏大中华企业精选灵活配置混合(QDII)（002230）— 可作为分散配置观察</div>
+                <div class="desc">
+                    6/25 净值大涨 5.08%，反映港股/中概科技反弹。当前美股科技股回调、港股估值相对合理，可作为 A 股科技组合的平衡项。但 QDII 净值滞后，且受海外波动影响大，建议小仓位配置（5%-10%），不宜重仓。
+                </div>
+            </div>
+        </div>
+
+        <div class="recommend">
+            <div class="icon" style="color:var(--warning);">⚠️</div>
+            <div>
+                <div class="title">财通集成电路产业股票C（006503）— 谨慎持有</div>
+                <div class="desc">
+                    基金经理选股能力较强，近三年涨幅 465%，但 PCB 板块周五跌 2.69%，短期跟随科技板块调整。若你已经持有可继续观察，未持有则等回调后再考虑。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>六、综合调仓思路</h2>
+        <p style="margin-top:0;">
+            你的自选组合<strong>全部</strong>是科技成长风格，即使内部有分化，整体仍高度依赖市场风险偏好。当前 A 股处于高位震荡、美股科技股回调、中报业绩验证窗口临近，<strong>不建议在这个阶段大幅增持科技基金</strong>。
+        </p>
+        <div style="background:rgba(255,255,255,0.03); border-radius:12px; padding:16px; margin:16px 0;">
+            <strong>建议操作优先级：</strong>
+            <ol style="margin:10px 0 0 18px; padding:0; color:var(--text-secondary);">
+                <li><strong>优先加</strong>：华夏半导体材料设备ETF联接C（若周一回踩 5 日线/10 日线附近，可小仓位分批加）</li>
+                <li><strong>不动</strong>：人工智能ETF、信息技术创新ETF、华夏大中华 QDII</li>
+                <li><strong>减仓/观望</strong>：信澳业绩驱动混合C、国泰通信设备ETF联接C（若周一不能修复）</li>
+                <li><strong>不碰</strong>：机器人产业ETF（趋势最弱，等待右侧信号）</li>
+                <li><strong>配置建议</strong>：如果后续继续加仓科技，建议同步配置部分债券基金或沪深300宽基，降低组合波动</li>
+            </ol>
+        </div>
+        <div class="risk-box">
+            <strong>风险提示：</strong>以上为基于公开数据的技术面与趋势分析，不构成投资建议。科技基金波动剧烈，短期内可能出现 10% 以上回撤。请根据自身风险承受能力决策，避免在情绪低点恐慌卖出、情绪高点追涨买入。
+        </div>
+    </div>
+
+    <div class="footer">
+        数据来源：养基宝、NeoData 金融数据 · 仅供参考，不构成投资建议
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('sectorChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['半导体材料设备', '中证人工智能', '国证信息技术', 'PCB概念', 'CPO概念', '通信设备', '国证机器人'],
+            datasets: [{
+                label: '本周涨跌幅 (%)',
+                data: [17.83, 3.29, -0.96, -0.62, -0.33, -0.33, -6.51],
+                backgroundColor: (ctx) => {
+                    const v = ctx.raw;
+                    return v >= 0 ? 'rgba(239,68,68,0.75)' : 'rgba(34,197,94,0.75)';
+                },
+                borderColor: (ctx) => {
+                    const v = ctx.raw;
+                    return v >= 0 ? 'rgba(239,68,68,1)' : 'rgba(34,197,94,1)';
+                },
+                borderWidth: 1,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (item) => item.raw.toFixed(2) + '%'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.08)' },
+                    ticks: { color: '#94a3b8', callback: (v) => v + '%' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8' }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
