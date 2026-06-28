@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第二次部署测试 - 2026-06-28</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --up: #f87171;
+      --down: #4ade80;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 48px 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 36px;
+      margin-bottom: 24px;
+    }
+    h1 { margin-top: 0; font-size: 30px; color: var(--accent); }
+    h2 { font-size: 20px; margin-top: 32px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .metric-change {
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .up { color: var(--up); }
+    .down { color: var(--down); }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="meta">生成时间：2026-06-28 14:27</div>
+      <h1>第二次 GitHub Pages 部署测试</h1>
+      <p>这是第二次测试，验证 HTML 文件能否持续、稳定地通过 GitHub Pages 自动部署。</p>
+      <span class="badge">第二次测试通过</span>
+
+      <h2>核心指标</h2>
+      <div class="grid">
+        <div class="metric">
+          <div class="metric-label">沪深300</div>
+          <div class="metric-value">3,890.12</div>
+          <div class="metric-change up">+0.86%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">中证500</div>
+          <div class="metric-value">5,432.78</div>
+          <div class="metric-change down">-0.32%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">科创50</div>
+          <div class="metric-value">1,045.66</div>
+          <div class="metric-change up">+1.45%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">成交额</div>
+          <div class="metric-value">9,856 亿</div>
+          <div class="metric-change up">+12.3%</div>
+        </div>
+      </div>
+
+      <h2>部署信息</h2>
+      <p>仓库：<code>chaofanxiansen/fund-advice</code></p>
+      <p>路径：<code>reports/test-report-v2-2026-06-28.html</code></p>
+      <p>如果你能看到此页面，说明第二次自动部署成功。</p>
+    </div>
+    <footer>由 WorkBuddy 自动生成 · 2026-06-28</footer>
+  </div>
+</body>
+</html>
