@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SK 海力士上游供应链产业调研报告</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #b91c1c;
+      --accent-light: #fee2e2;
+      --border: #e2e8f0;
+      --up: #dc2626;
+      --down: #16a34a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .hero {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .hero h1 { margin: 0 0 16px; font-size: 34px; font-weight: 700; }
+    .hero p { margin: 0; color: #cbd5e1; font-size: 16px; }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      padding: 32px;
+      margin-bottom: 28px;
+    }
+    h2 {
+      font-size: 22px;
+      margin-top: 0;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent-light);
+      color: var(--accent);
+    }
+    h3 { font-size: 17px; margin-top: 28px; margin-bottom: 12px; color: #334155; }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .summary-item {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 20px;
+      border-left: 4px solid var(--accent);
+    }
+    .summary-item .label { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    .summary-item .value { font-size: 22px; font-weight: 700; color: var(--text); }
+    .summary-item .note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: #475569;
+    }
+    tr:hover { background: #f8fafc; }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .tag.equip { background: #f3e8ff; color: #7e22ce; }
+    .tag.material { background: #dcfce7; color: #15803d; }
+    .tag.china { background: #fee2e2; color: #b91c1c; }
+    .highlight-box {
+      background: #fff7ed;
+      border-left: 4px solid #f97316;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    .risk-box {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 8px; }
+    .section-intro { color: var(--muted); margin-bottom: 20px; }
+    .source {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 40px 24px;
+    }
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 26px; }
+      .card { padding: 24px; }
+      table { font-size: 13px; }
+      th, td { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>SK 海力士上游供应链产业调研报告</h1>
+    <p>AI 算力驱动下的 HBM 龙头及其产业链机遇 · 2026 年 6 月</p>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h2>核心结论</h2>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="label">HBM 出货量市占率</div>
+          <div class="value">~62%</div>
+          <div class="note">2025Q2 全球第一</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">2026年 HBM 市场规模</div>
+          <div class="value">546 亿美元</div>
+          <div class="note">同比增长 58%</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">2026Q1 营业利润</div>
+          <div class="value">3.76 万亿韩元</div>
+          <div class="note">同比 +405.5%</div>
+        </div>
+        <div class="summary-item">
+          <div class="label">五年 AI 投资计划</div>
+          <div class="value">600 万亿韩元</div>
+          <div class="note">产能翻倍目标</div>
+        </div>
+      </div>
+      <p>SK 海力士凭借在 HBM（高带宽内存）领域的先发优势，已成为 AI 算力基础设施的核心受益者。其上游供应链涵盖高端设备、特种材料、电子气体、先进封装等多个环节，中国企业在封测、前驱体、电子气体、封装材料等细分领域已实现突破，部分厂商进入其核心供应链。</p>
+    </div>
+
+    <div class="card">
+      <h2>一、SK 海力士概览与市场地位</h2>
+      <p class="section-intro">SK 海力士总部位于韩国，是全球第二大存储芯片制造商，主营 DRAM、NAND Flash 及 CIS 产品。AI 时代，其 HBM 业务成为增长核心引擎。</p>
+      <ul>
+        <li><strong>核心产品：</strong>DRAM（含 HBM）、NAND Flash、CMOS 图像传感器（CIS）</li>
+        <li><strong>生产基地：</strong>韩国利川、清州；中国无锡（DRAM/HBM 封装测试）、大连（NAND）、重庆</li>
+        <li><strong>市场地位：</strong>2025Q2 HBM 出货量市占率约 62%，营收市占率约 57%，领先三星与美光</li>
+        <li><strong>财务表现：</strong>2026Q1 营业利润 3.76 万亿韩元，同比大幅增长 405.5%</li>
+        <li><strong>供应状态：</strong>包括 HBM 在内的主要内存产品需求已超供应能力，2026 年 HBM 产能已全部售罄</li>
+      </ul>
+      <div class="highlight-box">
+        <strong>关键趋势：</strong>三大原厂（SK 海力士、三星、美光）已将约 70% 新增/可调配产能倾斜至 HBM，但 2026 年 HBM 产能缺口仍达 50%-60%，供需失衡推动价格维持高位。
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>二、上游供应链结构</h2>
+      <p class="section-intro">半导体上游可分为材料、设备、零部件及服务四大板块。SK 海力士作为 IDM（垂直整合制造）厂商，直接采购设备、材料、零部件，并外包部分先进封装环节。</p>
+      <table>
+        <thead>
+          <tr><th>环节</th><th>主要内容</th><th>代表性供应商</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>晶圆制造</td><td>硅晶圆、光刻胶、电子特气、湿电子化学品、CMP 材料</td><td>信越化学、SUMCO、JSR、东京应化、Air Liquide</td></tr>
+          <tr><td>前道设备</td><td>光刻机、刻蚀机、薄膜沉积、离子注入、量测检测设备</td><td>ASML、应用材料、泛林集团、东京电子、KLA</td></tr>
+          <tr><td>后道封装</td><td>先进封装（2.5D/3D、TSV）、基板、塑封料、导热材料</td><td>海太半导体（太极实业）、长电科技、通富微电</td></tr>
+          <tr><td>零部件及耗材</td><td>石英/SiC 零部件、阀门、密封件、静电卡盘</td><td>臻宝科技等</td></tr>
+          <tr><td>分销与服务</td><td>企业级存储分销、气体管理、物流</td><td>香农芯创、金宏气体</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>三、关键原材料与供应商</h2>
+      <p class="section-intro">HBM 对材料纯度和性能要求极高，介电层前驱体、环氧塑封料、电子特气等成为核心增量材料。</p>
+      <table>
+        <thead>
+          <tr><th>材料类别</th><th>应用场景</th><th>核心供应商</th><th>标签</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>硅晶圆</td><td>DRAM/NAND 芯片衬底</td><td>信越化学、SUMCO、Siltronic、SK Siltron</td><td><span class="tag material">材料</span></td></tr>
+          <tr><td>光刻胶</td><td>图形转移</td><td>JSR、东京应化、信越化学、杜邦</td><td><span class="tag material">材料</span></td></tr>
+          <tr><td>介电层前驱体</td><td>HBM 介电层沉积</td><td>雅克科技（子公司 UP Chemical，独家供应）</td><td><span class="tag china">中国</span></td></tr>
+          <tr><td>环氧塑封料（GMC）</td><td>HBM 3D 封装</td><td>华海诚科、日本厂商</td><td><span class="tag china">中国</span></td></tr>
+          <tr><td>球硅/球铝</td><td>HBM 封装填充材料</td><td>联瑞新材</td><td><span class="tag china">中国</span></td></tr>
+          <tr><td>电子特气</td><td>刻蚀、沉积、清洗</td><td>Air Liquide、Linde、金宏气体</td><td><span class="tag china">中国</span></td></tr>
+          <tr><td>GBF 增层膜</td><td>封装基板绝缘层</td><td>味之素（ABF）、宏昌电子（国产替代）</td><td><span class="tag material">材料</span></td></tr>
+        </tbody>
+      </table>
+      <div class="risk-box">
+        <strong>供应链风险：</strong>高端光刻胶、硅晶圆、电子特气等领域仍由日欧韩厂商主导，地缘政治和出口管制风险值得关注；HBM 封装材料国产替代处于早期放量阶段，认证周期较长。
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>四、半导体设备供应商</h2>
+      <p class="section-intro">SK 海力士近期因 HBM 热潮上调设备采购规模，并向部分一级设备供应商接受 3%-4% 的涨价要求，反映上游设备环节议价能力增强。</p>
+      <table>
+        <thead>
+          <tr><th>设备类别</th><th>功能</th><th>主要供应商</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>光刻机</td><td>电路图形曝光</td><td>ASML（EUV/ArF/DUV）</td></tr>
+          <tr><td>刻蚀设备</td><td>刻蚀图形</td><td>泛林集团、应用材料、东京电子</td></tr>
+          <tr><td>薄膜沉积</td><td>介质/金属薄膜生长</td><td>应用材料、泛林集团、东京电子</td></tr>
+          <tr><td>量测检测</td><td>缺陷检测、膜厚量测</td><td>KLA、Applied Materials、日立高新</td></tr>
+          <tr><td>清洗设备</td><td>晶圆清洗</td><td>SCREEN、东京电子、盛美股份</td></tr>
+          <tr><td>封装设备</td><td>先进封装键合、塑封</td><td>Besi、ASM Pacific、K&S</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>五、中国供应商与产业机遇</h2>
+      <p class="section-intro">SK 海力士在中国设有三大生产基地，培养了一批深度绑定的本土供应商，涉及封测、材料、分销、零部件等领域。</p>
+      <table>
+        <thead>
+          <tr><th>公司</th><th>供应领域</th><th>合作情况</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>太极实业</td><td>封测</td><td>控股子公司海太半导体（持股 55%）为 SK 海力士无锡工厂专属后工序服务商，2026 年合同金额约 6.05 亿美元，续签至 2030 年</td></tr>
+          <tr><td>雅克科技</td><td>前驱体/光刻胶</td><td>子公司 UP Chemical 为 SK 海力士 HBM 介电层前驱体独家供应商，材料已通过 HBM4 认证</td></tr>
+          <tr><td>金宏气体</td><td>电子特气</td><td>为 SK 海力士中国工厂供应高纯电子气体及全面气体管理服务</td></tr>
+          <tr><td>华海诚科</td><td>封装材料</td><td>国内唯一量产 HBM 封装用颗粒状环氧塑封料（GMC）企业，产品已通过认证</td></tr>
+          <tr><td>联瑞新材</td><td>封装填料</td><td>供应 HBM 封装用球硅和球铝，通过供应链验证</td></tr>
+          <tr><td>香农芯创</td><td>分销</td><td>SK 海力士 HBM 系列产品中国大陆核心代理商，占据 HBM3E 大陆超 50% 配额</td></tr>
+          <tr><td>长电科技</td><td>先进封装</td><td>具备 2.5D/3D 封装能力，全球封测龙头之一</td></tr>
+          <tr><td>臻宝科技</td><td>设备零部件</td><td>SK 海力士合格供应商，提供刻蚀工艺用石英及 SiC 零部件，已批量用于 20nm 及以下 DRAM</td></tr>
+          <tr><td>澜起科技</td><td>接口芯片</td><td>提供内存接口芯片</td></tr>
+          <tr><td>聚辰股份</td><td>SPD 芯片</td><td>提供 SPD 芯片</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>六、产业趋势与投资启示</h2>
+      <h3>6.1 核心驱动因素</h3>
+      <ul>
+        <li><strong>AI 算力扩张：</strong>英伟达、AMD、云端厂商持续加大 AI 服务器采购，HBM 作为 GPU 标配内存需求爆发</li>
+        <li><strong>产能紧缺：</strong>2026 年 HBM 产能缺口 50%-60%，三大原厂产能售罄，订单排至 2027-2028 年</li>
+        <li><strong>技术迭代：</strong>HBM3E 已大规模出货，HBM4 研发推进中，堆叠层数、带宽、功耗持续升级</li>
+        <li><strong>国产化替代：</strong>在前驱体、电子气体、封装材料、零部件等细分领域，中国供应商加速进入国际大厂供应链</li>
+      </ul>
+
+      <h3>6.2 风险因素</h3>
+      <ul>
+        <li><strong>地缘政治：</strong>中美科技博弈、出口管制可能影响设备与材料供应</li>
+        <li><strong>周期波动：</strong>存储芯片行业具有强周期性，AI 需求若放缓将冲击价格与资本开支</li>
+        <li><strong>客户集中：</strong>部分中国供应商对 SK 海力士依赖度较高，单一客户风险显著</li>
+        <li><strong>技术替代：</strong>CXL、存算一体等新技术可能长期改变内存架构</li>
+      </ul>
+
+      <h3>6.3 投资关注点</h3>
+      <ul>
+        <li>直接受益于 SK 海力士扩产与涨价的设备、材料、封测供应商</li>
+        <li>在 HBM 核心材料（前驱体、GMC、球硅/球铝、电子特气）领域具备认证壁垒的国产厂商</li>
+        <li>与 SK 海力士签订长期协议、订单可见度高的合作伙伴</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>七、总结</h2>
+      <p>SK 海力士作为 HBM 市场龙头，正处于 AI 算力浪潮的核心位置。其上游供应链覆盖全球顶尖设备与材料厂商，同时也为中国企业提供了切入国际半导体供应链的重要窗口。封测、前驱体、电子气体、封装材料及零部件等环节的中国供应商已深度绑定 SK 海力士，未来有望伴随其产能扩张与 HBM 技术迭代持续受益。投资者应关注供需周期、地缘政治及技术替代等风险，重点筛选具备认证壁垒和长期订单的标的。</p>
+      <div class="source">
+        <strong>数据来源：</strong>SK 海力士官网、公司财报、韩国 ETNews、中商产业研究院、爱企查、东方财富、公开市场研报及新闻报道。本报告仅供参考，不构成投资建议。
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    由 WorkBuddy 自动生成 · 报告生成时间：2026-06-28
+  </footer>
+</body>
+</html>
