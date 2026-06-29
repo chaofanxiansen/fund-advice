@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A股尾盘分析与基金调仓建议报告 - 2026-06-29</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1a1a2e;
+            --text-secondary: #5a5a6e;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --up-color: #ef4444;
+            --down-color: #10b981;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            color: white;
+            padding: 32px 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        header h1 { margin: 0 0 8px 0; font-size: 26px; }
+        header .subtitle { opacity: 0.9; font-size: 15px; }
+        header .meta { margin-top: 16px; font-size: 13px; opacity: 0.85; }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+        .card h2 {
+            margin: 0 0 16px 0;
+            font-size: 20px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent);
+            padding-left: 12px;
+        }
+        .card h3 {
+            margin: 20px 0 12px 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .metric {
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+        .metric .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .metric .value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .up { color: var(--up-color); }
+        .down { color: var(--down-color); }
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        .tag-buy { background: #fee2e2; color: #991b1b; }
+        .tag-reduce { background: #dbeafe; color: #1e40af; }
+        .tag-hold { background: #fef3c7; color: #92400e; }
+        .tag-risk { background: #fce7f3; color: #9d174d; }
+        .verdict {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .verdict h3 { margin-top: 0; color: #7c2d12; }
+        .verdict .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #9a3412;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 12px 0;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-color);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        tr:last-child td { border-bottom: none; }
+        .chart-container {
+            position: relative;
+            height: 320px;
+            margin: 20px 0;
+        }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--accent);
+            padding: 14px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .risk-box {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 14px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .news-item {
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        .news-item:last-child { border-bottom: none; }
+        .news-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .news-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 32px;
+            padding-bottom: 24px;
+        }
+        .allocation-bar {
+            display: flex;
+            height: 28px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 10px 0;
+            background: #e2e8f0;
+        }
+        .allocation-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: white;
+            font-weight: 600;
+        }
+        @media (max-width: 640px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            header h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>A股尾盘分析与基金调仓建议报告</h1>
+            <div class="subtitle">基于2026年6月29日收盘数据与用户持仓</div>
+            <div class="meta">报告时间：2026-06-29 14:35 | 数据来源：养基宝、westock-data、公开市场信息</div>
+        </header>
+
+        <div class="card">
+            <h2>核心结论</h2>
+            <div class="verdict">
+                <div class="title">今日不宜加仓科技，持仓过重的建议逢高减仓、逐步再平衡</div>
+                <p>今日A股呈现<strong>沪强深弱、科创独强</strong>的极致分化格局。上证指数收涨0.82%，但个股跌多涨少（上涨家数占比42%），赚钱效应集中在医药生物与半导体芯片两大方向。您的持仓高度集中于科技方向（约95%），今日整体下跌<strong>1.75%</strong>，明显跑输上证指数。</p>
+                <p><strong>操作建议：</strong>① 暂停追涨科技；② 富国全球科技互联网占比过高，建议分批减仓至50%-60%；③ 减仓资金可配置医药/消费/红利等防御方向或A股宽基，但医药今日大涨后不宜追高，建议等回调分批；④ 小仓位通信、电网设备可继续持有观察。</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>一、A股尾盘概览</h2>
+            <div class="grid-2">
+                <div class="metric">
+                    <div class="label">上证指数</div>
+                    <div class="value up">4060.46</div>
+                    <div style="font-size:13px; color:#5a5a6e;">+0.82% · 成交额1.52万亿</div>
+                </div>
+                <div class="metric">
+                    <div class="label">深证成指</div>
+                    <div class="value down">15764.45</div>
+                    <div style="font-size:13px; color:#5a5a6e;">-0.11% · 成交额1.69万亿</div>
+                </div>
+                <div class="metric">
+                    <div class="label">创业板指</div>
+                    <div class="value up">4203.07</div>
+                    <div style="font-size:13px; color:#5a5a6e;">+0.21% · 成交额0.83万亿</div>
+                </div>
+                <div class="metric">
+                    <div class="label">科创50</div>
+                    <div class="value up">2103.57</div>
+                    <div style="font-size:13px; color:#5a5a6e;">+3.51% · 芯片午后走强</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+
+            <h3>市场情绪与成交额</h3>
+            <table>
+                <tr><th>指标</th><th>数值</th><th>解读</th></tr>
+                <tr><td>两市成交额</td><td>约3.07万亿元</td><td>较上日+160亿，量能温和放大</td></tr>
+                <tr><td>上涨家数</td><td>2329家</td><td>占比42%，涨少跌多</td></tr>
+                <tr><td>下跌家数</td><td>3067家</td><td>个股亏钱效应明显</td></tr>
+                <tr><td>涨停/跌停</td><td>114 / 74</td><td>情绪分化，跌停数偏高</td></tr>
+                <tr><td>北向资金</td><td>6月累计净流入超150亿</td><td>外资整体偏积极</td></tr>
+            </table>
+
+            <div class="risk-box">
+                <strong>盘面关键信号：</strong>今日指数表现尚可，但市场宽度很差（上涨板块<20%，个股跌多涨少），属于典型的"指数行情"。科创50大涨3.5%主要由芯片股推动，而您的QDII科技基金并未直接受益于此，反而因海外科技股波动和汇率因素承压。
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>二、板块轮动与资金流向</h2>
+            <h3>领涨行业</h3>
+            <table>
+                <tr><th>行业</th><th>涨幅</th><th>5日涨幅</th><th>龙头</th></tr>
+                <tr><td>化学制药</td><td class="up">+7.17%</td><td class="up">+5.54%</td><td>舒泰神(+20%)</td></tr>
+                <tr><td>生物制品</td><td class="up">+7.15%</td><td class="up">+2.89%</td><td>三生国健(+20%)</td></tr>
+                <tr><td>医疗服务</td><td class="up">+6.51%</td><td class="up">+12.13%</td><td>万邦医药(+20%)</td></tr>
+                <tr><td>养殖业</td><td class="up">+4.59%</td><td class="up">+1.92%</td><td>巨星农牧(+9.98%)</td></tr>
+                <tr><td>中药Ⅱ</td><td class="up">+4.27%</td><td class="down">-0.30%</td><td>太极集团(+10.03%)</td></tr>
+            </table>
+
+            <h3>资金净流入前五行业</h3>
+            <table>
+                <tr><th>行业</th><th>涨幅</th><th>主力净流入（万元）</th></tr>
+                <tr><td>化学制药</td><td class="up">+7.16%</td><td>288,305</td></tr>
+                <tr><td>医疗服务</td><td class="up">+6.52%</td><td>192,904</td></tr>
+                <tr><td>自动化设备</td><td class="down">-0.11%</td><td>105,685</td></tr>
+                <tr><td>养殖业</td><td class="up">+4.31%</td><td>--</td></tr>
+                <tr><td>半导体/芯片</td><td class="up">+3.51%（科创50）</td><td>午后明显流入</td></tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>板块解读：</strong>今日资金从前期高位题材流向<strong>医药生物</strong>（防御+创新药政策预期）和<strong>半导体芯片</strong>（AI算力+国产替代）。医药板块短期涨幅已大，存在获利回吐压力；芯片板块午后走强，但多为情绪驱动，持续性需观察。
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>三、今日利好利空消息汇总</h2>
+            <h3>利好</h3>
+            <div class="news-item">
+                <div class="news-title">1. 消费品以旧换新第三批625亿元超长期特别国债资金下达</div>
+                <div class="news-meta">截至6月20日惠及1.36亿人次，带动销售额超1万亿元，补贴撬动比提升至1:10.3。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">2. 1-5月规模以上工业企业利润数据：电子行业支撑作用明显</div>
+                <div class="news-meta">装备制造业利润同比+14.1%，AI算力芯片和存储芯片需求爆发推动电子行业利润高速增长。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">3. 《人工智能 智能体互联》系列7项国家标准正式发布</div>
+                <div class="news-meta">覆盖智能体身份、发现、交互、工具调用等核心环节，利好AI产业链。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">4. 商业航天与空间信息技术大会发布多款新品</div>
+                <div class="news-meta">国内商业航天企业超600家，2025年融资约186亿元，万亿级新兴产业加速崛起。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">5. 高纯四氯化硅进入涨价周期</div>
+                <div class="news-meta">受益于全球光纤高景气，供给受限、需求高增，相关生产企业有望受益。</div>
+            </div>
+
+            <h3>利空</h3>
+            <div class="news-item">
+                <div class="news-title">1. 中东局势升级：美伊冲突再度激化</div>
+                <div class="news-meta">美军对伊朗境内多个目标实施新一轮打击；伊朗称将让美军基地体验"地狱"；WTI原油开盘涨2%。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">2. 苹果公司上调全球笔记本电脑和平板电脑售价16%-25%</div>
+                <div class="news-meta">国内市场多款热门机型涨价，消费电子需求端承压。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">3. 多只个股被实施ST或面临减持</div>
+                <div class="news-meta">荣科科技、荃银高科被ST；派能科技、环旭电子、飞龙股份等披露减持计划。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">4. 原定于本周的美伊技术性谈判陷入停滞</div>
+                <div class="news-meta">地缘政治不确定性增加，或影响全球风险偏好。</div>
+            </div>
+            <div class="news-item">
+                <div class="news-title">5. 市场宽度指标显示板块全面下跌</div>
+                <div class="news-meta">申万板块上涨占比不足20%，个股跌多涨少，赚钱效应差。</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>四、您的持仓分析</h2>
+            <div class="grid-2">
+                <div class="metric">
+                    <div class="label">总市值</div>
+                    <div class="value">¥26,068.50</div>
+                </div>
+                <div class="metric">
+                    <div class="label">今日收益</div>
+                    <div class="value down">-¥455.30 (-1.75%)</div>
+                </div>
+                <div class="metric">
+                    <div class="label">累计盈亏</div>
+                    <div class="value up">+¥3,158.22 (+13.8%)</div>
+                </div>
+                <div class="metric">
+                    <div class="label">科技集中度</div>
+                    <div class="value">约95%</div>
+                    <div style="font-size:13px; color:#5a5a6e;">风险偏高</div>
+                </div>
+            </div>
+
+            <h3>持仓明细</h3>
+            <table>
+                <tr><th>基金名称</th><th>代码</th><th>市值</th><th>占比</th><th>盈亏</th><th>今日表现</th></tr>
+                <tr><td>富国全球科技互联网股票(QDII)A</td><td>100055</td><td>¥23,006.34</td><td>88.3%</td><td class="up">+15.0%</td><td>承压</td></tr>
+                <tr><td>华夏中证电网设备主题ETF联接A</td><td>025856</td><td>¥1,389.98</td><td>5.3%</td><td class="down">-0.7%</td><td>震荡</td></tr>
+                <tr><td>天弘全球高端制造混合(QDII)C</td><td>016665</td><td>¥893.79</td><td>3.4%</td><td class="up">+11.7%</td><td>承压</td></tr>
+                <tr><td>建信新兴市场优选混合(QDII)C</td><td>018147</td><td>¥648.39</td><td>2.5%</td><td class="up">+11.8%</td><td>承压</td></tr>
+                <tr><td>国泰中证全指通信设备ETF联接C</td><td>007818</td><td>¥130.00</td><td>0.5%</td><td>0.0%</td><td>震荡</td></tr>
+            </table>
+
+            <h3>持仓结构分布</h3>
+            <div class="allocation-bar">
+                <div class="allocation-segment" style="width:88.3%; background:#2563eb;">科技互联网 88.3%</div>
+                <div class="allocation-segment" style="width:5.3%; background:#7c3aed;">电网设备 5.3%</div>
+                <div class="allocation-segment" style="width:3.4%; background:#0891b2;">高端制造 3.4%</div>
+                <div class="allocation-segment" style="width:2.8%; background:#059669;">其他 2.8%</div>
+            </div>
+
+            <div class="risk-box">
+                <strong>持仓风险诊断：</strong>
+                <ul>
+                    <li><strong>行业过度集中：</strong>约88%资金压在单一科技互联网QDII上，缺乏行业分散</li>
+                    <li><strong>相关性高：</strong>所有持仓均与科技/成长风格强相关，无法对冲风格切换</li>
+                    <li><strong>QDII占比过高：</strong>海外科技波动、汇率、地缘政治均会影响净值</li>
+                    <li><strong>今日跑输原因：</strong>市场轮动至医药/芯片，您的持仓集中在互联网/通信/电网，未受益医药反弹</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>五、调仓建议</h2>
+            <div class="verdict">
+                <div class="title">总体原则：降科技集中度，增防御配置</div>
+                <p>当前市场处于高位震荡、行业快速轮动阶段。您持仓科技占比过高，短期易受风格切换冲击。建议利用本轮科技反弹窗口，逐步降低单一基金仓位，并向医药、消费、红利、A股宽基等方向再平衡。</p>
+            </div>
+
+            <h3>具体操作建议</h3>
+            <table>
+                <tr><th>基金</th><th>建议</th><th>操作</th><th>理由</th></tr>
+                <tr>
+                    <td>富国全球科技互联网 100055</td>
+                    <td><span class="tag tag-reduce">减仓</span></td>
+                    <td>建议从88%降至50%-60%</td>
+                    <td>仓位过重、单一风险高；虽有15%浮盈，但QDII波动大，宜锁定部分利润</td>
+                </tr>
+                <tr>
+                    <td>华夏中证电网设备 025856</td>
+                    <td><span class="tag tag-hold">持有</span></td>
+                    <td>小仓位继续观察</td>
+                    <td>占比仅5.3%，电网设备有政策支撑，可保留作为成长补充</td>
+                </tr>
+                <tr>
+                    <td>天弘全球高端制造 016665</td>
+                    <td><span class="tag tag-hold">持有/可微调</span></td>
+                    <td>可减仓1/3或持有</td>
+                    <td>与主仓位科技属性重叠，但规模小、浮盈尚可</td>
+                </tr>
+                <tr>
+                    <td>建信新兴市场 018147</td>
+                    <td><span class="tag tag-hold">持有</span></td>
+                    <td>暂不减仓</td>
+                    <td>规模小、浮盈11.8%，作为新兴市场卫星仓位保留</td>
+                </tr>
+                <tr>
+                    <td>国泰通信设备 007818</td>
+                    <td><span class="tag tag-hold">持有</span></td>
+                    <td>仅130元，无需操作</td>
+                    <td>可忽略或未来合并处理</td>
+                </tr>
+                <tr>
+                    <td>医药/医疗主题基金</td>
+                    <td><span class="tag tag-buy">逢低关注</span></td>
+                    <td>减仓科技后的资金分批买入</td>
+                    <td>医药今日大涨，不建议追高，等回调2-3%后介入</td>
+                </tr>
+                <tr>
+                    <td>消费/红利/A股宽基</td>
+                    <td><span class="tag tag-buy">逢低配置</span></td>
+                    <td>分批买入</td>
+                    <td>平衡成长风格，降低组合波动</td>
+                </tr>
+            </table>
+
+            <h3>推荐再平衡方案（示例）</h3>
+            <table>
+                <tr><th>方向</th><th>目标占比</th><th>配置逻辑</th></tr>
+                <tr><td>科技互联网（含QDII）</td><td>50%-60%</td><td>保留核心仓位，但降低集中度</td></tr>
+                <tr><td>医药/医疗</td><td>15%-20%</td><td>防御+创新药政策催化</td></tr>
+                <tr><td>消费/红利</td><td>10%-15%</td><td>顺周期+高股息防御</td></tr>
+                <tr><td>A股宽基（沪深300/中证500）</td><td>10%-15%</td><td>降低单一行业风险</td></tr>
+                <tr><td>卫星仓位（电网、通信、新兴）</td><td>5%-10%</td><td>保留成长弹性</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>六、执行策略与节奏</h2>
+            <h3>方案A：保守型（推荐）</h3>
+            <ul>
+                <li><strong>本周内</strong>：将富国全球科技互联网减仓10%-15%，回笼资金约2,300-3,500元</li>
+                <li><strong>下周</strong>：若医药板块回调2%-3%，用回笼资金的50%买入医药/医疗基金</li>
+                <li><strong>后续</strong>：剩余资金等消费/红利板块企稳后分批配置</li>
+            </ul>
+
+            <h3>方案B：激进型</h3>
+            <ul>
+                <li>今日尾盘或明日早盘，若科创50冲高回落，可小幅减仓科技基金</li>
+                <li>等待医药回调后加仓，不追涨今日大涨的医药板块</li>
+                <li>保留30%现金，等待7月中报业绩窗口明朗后再决策</li>
+            </ul>
+
+            <h3>关键观察指标</h3>
+            <ul>
+                <li>科创50能否站稳2100点</li>
+                <li>两市成交额能否持续维持在3万亿以上</li>
+                <li>医药板块大涨后是否出现分化回调</li>
+                <li>中东局势对原油、美股、QDII基金的连锁影响</li>
+                <li>7月上旬A股中报业绩预告披露情况</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>七、风险提示</h2>
+            <div class="risk-box">
+                <ul>
+                    <li><strong>科技回调风险：</strong>您的持仓高度集中于科技，若AI主题降温或美股科技股调整，可能拖累整体净值</li>
+                    <li><strong>追涨风险：</strong>今日医药板块大涨，此时追高医药可能面临短期回调</li>
+                    <li><strong>地缘政治风险：</strong>中东局势、中美关系可能影响QDII基金和全球风险偏好</li>
+                    <li><strong>汇率风险：</strong>QDII基金受人民币兑美元汇率波动影响</li>
+                    <li><strong>流动性风险：</strong>6月底跨季资金面可能波动，注意市场短期震荡</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>八、今日一句话总结</h2>
+            <div class="highlight-box" style="font-size:16px;">
+                <strong>今天不是加仓日，而是检查和再平衡的窗口。</strong>科创50独涨、医药大涨，您的科技QDII反而下跌，说明持仓结构过于单一。建议趁科技仍有浮盈，逐步减仓富国全球科技互联网，向医药、消费、红利、宽基分散，但医药今日已涨，需等回调后再买入。
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>本报告基于公开数据与用户持仓生成，仅供参考，不构成投资建议。基金投资有风险，入市需谨慎。</p>
+            <p>© 2026 AI量化研究 | A股尾盘分析与基金调仓建议报告</p>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('priceChart');
+        if (ctx) {
+            new Chart(ctx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['上证指数', '深证成指', '创业板指', '科创50'],
+                    datasets: [{
+                        label: '涨跌幅(%)',
+                        data: [0.82, -0.11, 0.21, 3.51],
+                        backgroundColor: ['#ef4444', '#10b981', '#ef4444', '#ef4444'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            ticks: { callback: v => v + '%' },
+                            grid: { color: '#e2e8f0' }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
