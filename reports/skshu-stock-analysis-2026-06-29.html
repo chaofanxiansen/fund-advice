@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三棵树（603737）深度分析报告 - 2026-06-29</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <style>
+        :root {
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1a1a2e;
+            --text-secondary: #5a5a6e;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --up-color: #ef4444;
+            --down-color: #10b981;
+            --warning: #f59e0b;
+            --danger: #dc2626;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            color: white;
+            padding: 32px 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        header h1 { margin: 0 0 8px 0; font-size: 28px; }
+        header .subtitle { opacity: 0.9; font-size: 15px; }
+        header .meta { margin-top: 16px; font-size: 13px; opacity: 0.85; }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+        .card h2 {
+            margin: 0 0 16px 0;
+            font-size: 20px;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent);
+            padding-left: 12px;
+        }
+        .card h3 {
+            margin: 20px 0 12px 0;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .metric {
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+        .metric .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .metric .value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .up { color: var(--up-color); }
+        .down { color: var(--down-color); }
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .tag-buy { background: #fee2e2; color: #991b1b; }
+        .tag-hold { background: #fef3c7; color: #92400e; }
+        .tag-wait { background: #dbeafe; color: #1e40af; }
+        .tag-risk { background: #fce7f3; color: #9d174d; }
+        .verdict {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .verdict h3 { margin-top: 0; color: #7c2d12; }
+        .verdict .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #9a3412;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 12px 0;
+        }
+        th, td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg-color);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        tr:last-child td { border-bottom: none; }
+        .chart-container {
+            position: relative;
+            height: 360px;
+            margin: 20px 0;
+        }
+        .small-chart {
+            position: relative;
+            height: 240px;
+            margin: 16px 0;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .highlight-box {
+            background: #eff6ff;
+            border-left: 4px solid var(--accent);
+            padding: 14px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .risk-box {
+            background: #fef2f2;
+            border-left: 4px solid var(--danger);
+            padding: 14px 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 32px;
+            padding-bottom: 24px;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .section-note {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        @media (max-width: 640px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            header h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>三棵树（603737）深度分析报告</h1>
+            <div class="subtitle">建筑材料 | 涂料防水 | 上海主板</div>
+            <div class="meta">报告日期：2026-06-29 | 数据截至：2026-06-29 收盘 | 分析师：AI量化研究</div>
+        </header>
+
+        <div class="card">
+            <h2>核心结论</h2>
+            <div class="verdict">
+                <div class="title">结论：暂不宜激进抄底，建议等待右侧信号</div>
+                <p>三棵树当前股价<strong>24.35元</strong>，已逼近52周低点23.13元，较年内高点回撤约<strong>50%</strong>，技术面严重超卖。公司基本面出现边际改善：2025年扣非业绩大幅增长、2026Q1扣非转正、零售C端转型初见成效。但房地产下行周期尚未结束，行业β承压，公司应收账款与有息负债仍处于高位，估值（PB 7.3倍）尚未进入绝对低估区间。</p>
+                <p><strong>建议策略：</strong>若已持有，可继续观望；若准备新建仓位，建议分批、小仓位试探，而非一次性"抄底"。更稳妥的买点需要看到：①股价放量站稳25.5-26.5元阻力区；②MACD在零轴附近形成金叉；③房地产销售或竣工数据出现阶段性企稳。</p>
+            </div>
+            <div class="grid-2">
+                <div class="metric">
+                    <div class="label">当前股价</div>
+                    <div class="value">24.35</div>
+                    <div style="font-size:13px; color:#5a5a6e;">较前收 +0.54%</div>
+                </div>
+                <div class="metric">
+                    <div class="label">52周区间</div>
+                    <div class="value" style="font-size:16px;">23.13 - 48.59</div>
+                    <div style="font-size:13px; color:#5a5a6e;">当前距低点 +5.3%</div>
+                </div>
+                <div class="metric">
+                    <div class="label">年初至今</div>
+                    <div class="value down">-36.76%</div>
+                    <div style="font-size:13px; color:#5a5a6e;">大幅跑输市场</div>
+                </div>
+                <div class="metric">
+                    <div class="label">60日涨跌幅</div>
+                    <div class="value down">-44.38%</div>
+                    <div style="font-size:13px; color:#5a5a6e;">中期趋势极弱</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>一、公司基本面</h2>
+            <p>三棵树涂料股份有限公司成立于2003年，2016年6月上市，总部位于福建莆田。公司主营建筑涂料（墙面涂料）、木器涂料、防水材料、地坪材料、保温材料、一体化板及基辅材的研发、生产和销售。董事长洪杰为实际控制人，持股67.02%，股权高度集中。</p>
+            <div class="grid-2">
+                <div>
+                    <h3>主营业务结构</h3>
+                    <ul>
+                        <li><strong>墙面涂料</strong>：核心收入来源，工程漆（B端）与家装漆（C端）并重</li>
+                        <li><strong>防水材料</strong>：近年重点拓展品类，与东方雨虹等竞争</li>
+                        <li><strong>木器涂料、基辅材、保温材料</strong>：配套产品，完善大家居建材布局</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>经营亮点</h3>
+                    <ul>
+                        <li>2025年盈利能力提升，毛利率改善</li>
+                        <li>2026Q1收入双位数增长，扣非净利润转正</li>
+                        <li>零售业务持续发力，C端占比逐步提升</li>
+                        <li>渠道转型+新业态（艺术漆、小森板）拉动增长</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>二、财务数据解析</h2>
+            <h3>2026年一季度核心数据</h3>
+            <table>
+                <tr><th>指标</th><th>数值</th><th>同比/备注</th></tr>
+                <tr><td>营业收入</td><td>24.36亿元</td><td>双位数增长</td></tr>
+                <tr><td>归母净利润</td><td>1.07亿元</td><td>季度业绩恢复</td></tr>
+                <tr><td>扣非净利润</td><td>0.25亿元</td><td>Q1扣非转正</td></tr>
+                <tr><td>毛利率（TTM）</td><td>约33.7%</td><td>定价权增强，毛利率提升</td></tr>
+                <tr><td>研发费用</td><td>0.58亿元</td><td>持续投入</td></tr>
+                <tr><td>销售费用</td><td>4.26亿元</td><td>渠道拓展期费用较高</td></tr>
+            </table>
+
+            <h3>资产负债关注点</h3>
+            <div class="risk-box">
+                <strong>需要警惕的财务风险：</strong>
+                <ul>
+                    <li><strong>营运资本为负</strong>：2026Q1营运资本约-27.5亿元，反映短期偿债压力</li>
+                    <li><strong>有息负债较高</strong>：短期借款18.6亿元 + 一年内到期非流动负债6.2亿元 + 长期借款9.0亿元</li>
+                    <li><strong>应收账款规模较大</strong>：应收票据及应收账款约27亿元，与B端工程业务相关</li>
+                    <li><strong>现金流承压</strong>：2026Q1经营性净现金流仅0.91亿元，自由现金流为负</li>
+                </ul>
+            </div>
+
+            <h3>盈利一致预期</h3>
+            <table>
+                <tr><th>年度</th><th>EPS（元）</th><th>营收（亿元）</th><th>净利润（亿元）</th><th>PE</th><th>净利润增速</th></tr>
+                <tr><td>2026E</td><td>1.32</td><td>142.47</td><td>11.69</td><td>18.35</td><td>+50.87%</td></tr>
+                <tr><td>2027E</td><td>1.64</td><td>157.10</td><td>14.51</td><td>14.78</td><td>+24.09%</td></tr>
+                <tr><td>2028E</td><td>1.97</td><td>176.98</td><td>17.43</td><td>12.30</td><td>+20.14%</td></tr>
+            </table>
+            <p class="section-note">数据来源：机构一致预期。若2026年能够实现1.32元EPS，对应18.35倍PE，较当前27.8倍PE仍有压缩空间，需业绩兑现支撑。</p>
+        </div>
+
+        <div class="card">
+            <h2>三、估值分析</h2>
+            <div class="grid-2">
+                <div class="metric">
+                    <div class="label">PE（TTM）</div>
+                    <div class="value">27.77</div>
+                </div>
+                <div class="metric">
+                    <div class="label">PE（LYR）</div>
+                    <div class="value">27.82</div>
+                </div>
+                <div class="metric">
+                    <div class="label">PB</div>
+                    <div class="value">7.31</div>
+                </div>
+                <div class="metric">
+                    <div class="label">股息率（TTM）</div>
+                    <div class="value">1.94%</div>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <strong>估值判断：</strong>当前PE（TTM）约28倍，PB约7.3倍，对于一家建材周期股而言并不便宜。机构一致预期目标价48.56元，较现价有约100%的理论上行空间，但该目标价基于2026年业绩大幅改善的预期，需要持续验证。从历史估值区间看，公司处于偏低分位，但尚未达到极端低估。
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>四、技术面分析</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+            <p class="section-note">上图展示了2026年1月至6月三棵树收盘价走势。股价从年初约43元一路下跌，6月以来加速下探。</p>
+
+            <h3>关键技术指标（2026-06-29）</h3>
+            <table>
+                <tr><th>指标</th><th>数值</th><th>信号</th></tr>
+                <tr><td>MA5 / MA10 / MA20</td><td>24.75 / 25.76 / 27.19</td><td>空头排列</td></tr>
+                <tr><td>MA60 / MA120 / MA250</td><td>33.95 / 37.86 / 36.82</td><td>长期均线压制</td></tr>
+                <tr><td>MACD</td><td>DIF -2.24, DEA -2.26, MACD 0.047</td><td>低位粘合，尚未金叉</td></tr>
+                <tr><td>KDJ</td><td>K=15.37, D=15.30, J=15.51</td><td>严重超卖区域</td></tr>
+                <tr><td>RSI（6日）</td><td>22.55</td><td>进入超卖区间</td></tr>
+                <tr><td>布林带</td><td>上轨31.27 / 中轨27.19 / 下轨23.10</td><td>股价贴下轨运行</td></tr>
+                <tr><td>WR（6日）</td><td>67.37</td><td>接近超卖边界</td></tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>技术结论：</strong>三棵树处于明显的下跌趋势中，短期跌幅过大导致多项指标超卖。当前股价靠近布林带下轨和52周低点，存在技术性反弹的概率。但趋势反转需要放量突破MA5、MA10并站稳26元上方，否则仍可能延续弱势震荡。
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>五、资金面与筹码</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>股东结构（2026-03-31）</h3>
+                    <table>
+                        <tr><th>股东</th><th>持股比例</th><th>变动</th></tr>
+                        <tr><td>洪杰</td><td>67.02%</td><td>不变</td></tr>
+                        <tr><td>香港中央结算</td><td>3.39%</td><td>减持115.5万股</td></tr>
+                        <tr><td>员工持股计划</td><td>1.97%</td><td>减持728.9万股</td></tr>
+                        <tr><td>景顺长城资管</td><td>1.86%</td><td>减持124.0万股</td></tr>
+                        <tr><td>社保基金四一三组合</td><td>0.56%</td><td>不变</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <h3>股东户数变化</h3>
+                    <table>
+                        <tr><th>日期</th><th>户数</th><th>户均持股</th></tr>
+                        <tr><td>2026-03-31</td><td>11,875</td><td>62,132</td></tr>
+                        <tr><td>2025-12-31</td><td>12,470</td><td>59,167</td></tr>
+                        <tr><td>2025-09-30</td><td>14,230</td><td>51,849</td></tr>
+                        <tr><td>2025-06-30</td><td>14,159</td><td>52,109</td></tr>
+                    </table>
+                </div>
+            </div>
+            <p>股东户数持续减少，筹码趋于集中，户均持股上升，说明机构或大户在下跌过程中可能在吸筹。但北向资金和部分资管产品出现减持，显示外资短期态度偏谨慎。</p>
+        </div>
+
+        <div class="card">
+            <h2>六、行业与竞争格局</h2>
+            <p>三棵树所属申万一级行业<strong>建筑材料</strong>，细分领域为建筑涂料。行业景气度与房地产新开工、竣工、二手房翻新及基建投资高度相关。</p>
+            <h3>行业现状</h3>
+            <ul>
+                <li><strong>地产链承压</strong>：新开工与竣工数据仍在低位，B端工程涂料需求疲软</li>
+                <li><strong>存量房翻新需求</strong>：二手房交易与旧房改造成为C端涂料增长的重要支撑</li>
+                <li><strong>集中度提升</strong>：行业洗牌加速，龙头份额提升，中小企业出清</li>
+                <li><strong>原材料成本</strong>：钛白粉、乳液等价格波动影响毛利率</li>
+            </ul>
+            <h3>竞争格局</h3>
+            <ul>
+                <li><strong>国际品牌</strong>：立邦、多乐士等占据高端市场</li>
+                <li><strong>国内龙头</strong>：三棵树、东方雨虹（防水）、亚士创能等</li>
+                <li><strong>三棵树优势</strong>：品牌认知度高、渠道下沉深入、C端转型积极</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>七、机构观点</h2>
+            <p>近期多家券商发布研报，整体态度偏积极：</p>
+            <table>
+                <tr><th>券商</th><th>日期</th><th>标题/观点</th><th>评级</th></tr>
+                <tr><td>浙商证券</td><td>2026-05-26</td><td>Q1扣非业绩转正，零售持续发力</td><td>买入</td></tr>
+                <tr><td>申万宏源</td><td>2026-05-19</td><td>渠道转型+新业态发力，力争中国旗舰地位</td><td>增持</td></tr>
+                <tr><td>国盛证券</td><td>2026-05-04</td><td>零售持续发力，业绩高速增长</td><td>买入</td></tr>
+                <tr><td>中金公司</td><td>2026-04-23</td><td>转型零售初现成效，C端占比逐步提升</td><td>买入</td></tr>
+                <tr><td>华泰证券</td><td>2026-04-23</td><td>原材料价格上行或驱动产品复价</td><td>--</td></tr>
+            </table>
+            <p>机构一致看好公司零售转型和业绩改善，但目标价与当前股价差距较大，反映市场尚未认可该估值，需要更多业绩兑现。</p>
+        </div>
+
+        <div class="card">
+            <h2>八、风险因素</h2>
+            <div class="risk-box">
+                <ul>
+                    <li><strong>房地产周期风险</strong>：若地产销售、竣工持续低迷，B端业务将继续承压</li>
+                    <li><strong>应收账款坏账风险</strong>：工程客户回款周期长，存在坏账计提风险</li>
+                    <li><strong>原材料涨价风险</strong>：钛白粉、乳液等涨价可能挤压毛利率</li>
+                    <li><strong>竞争加剧风险</strong>：国际品牌和国内同行价格战</li>
+                    <li><strong>流动性风险</strong>：有息负债较高，短期偿债压力较大</li>
+                    <li><strong>大股东质押风险</strong>：实际控制人高持股比例，需关注质押情况</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>九、是否适合抄底？</h2>
+            <p>"抄底"通常指在股价大幅下跌后判断底部并重仓买入。对于三棵树，需要从以下维度判断：</p>
+            <table>
+                <tr><th>维度</th><th>是否支持抄底</th><th>说明</th></tr>
+                <tr><td>估值</td><td>中性</td><td>PE约28倍、PB 7.3倍，对周期股不便宜，但处于历史偏低分位</td></tr>
+                <tr><td>业绩</td><td>偏正面</td><td>2025年盈利改善，2026Q1扣非转正，零售增长</td></tr>
+                <tr><td>技术</td><td>偏负面</td><td>趋势仍向下，未出现明确反转信号</td></tr>
+                <tr><td>资金面</td><td>中性</td><td>筹码集中但外资减持，主力态度谨慎</td></tr>
+                <tr><td>行业</td><td>偏负面</td><td>地产链仍处下行周期，β端未见拐点</td></tr>
+                <tr><td>风险</td><td>偏负面</td><td>高负债、高应收、现金流承压</td></tr>
+            </table>
+            <div class="verdict">
+                <div class="title">综合判断：不适合一次性重仓抄底</div>
+                <p>当前位置属于"左侧交易区间"，而非明确底部。虽然股价超跌、基本面边际改善，但行业趋势和资金链风险尚未解除。激进抄底可能面临进一步下跌或长期横盘的风险。</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>十、操作建议</h2>
+            <h3>方案A：谨慎观望（推荐）</h3>
+            <p>保持观望，不主动加仓。等待以下信号出现后再考虑：</p>
+            <ul>
+                <li>股价放量突破并站稳<strong>26.5元</strong>（MA20附近）</li>
+                <li>MACD在零轴附近形成金叉</li>
+                <li>房地产销售或竣工数据出现连续改善</li>
+            </ul>
+
+            <h3>方案B：分批试探（适合风险承受能力较强者）</h3>
+            <p>若对三棵树长期转型有信心，可采取小仓位、分批策略：</p>
+            <ul>
+                <li>第一笔：股价跌破23.5元或回踩52周低点附近，买入计划的30%</li>
+                <li>第二笔：放量突破25.5元，追加30%</li>
+                <li>第三笔：确认突破27元（MA20），追加40%</li>
+                <li>止损位：有效跌破22.5元（收盘价连续3日），减仓或离场</li>
+            </ul>
+
+            <h3>方案C：已持有者的处理</h3>
+            <ul>
+                <li>若持仓成本在35元以上，不建议补仓摊薄，应等待反弹至27-28元区域减仓</li>
+                <li>若持仓成本在25-28元，可继续持有，但需设置止损位22.5元</li>
+                <li>关注8月下旬中报业绩，若业绩不及预期需及时调整</li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>核心提醒：</strong>三棵树目前更适合作为"困境反转"的观察标的，而非立刻重仓的抄底标的。地产链的回暖不会一蹴而就，建议控制仓位、严守纪律，避免情绪化交易。
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>本报告基于公开数据与技术指标生成，仅供参考，不构成投资建议。股市有风险，投资需谨慎。</p>
+            <p>© 2026 AI量化研究 | 三棵树（603737）分析报告</p>
+        </div>
+    </div>
+
+    <script>
+        const klineData = [
+            {date:'2026-01-26',close:43.60},{date:'2026-01-27',close:43.43},{date:'2026-01-28',close:44.78},{date:'2026-01-29',close:48.18},{date:'2026-01-30',close:47.33},
+            {date:'2026-02-02',close:43.65},{date:'2026-02-03',close:45.29},{date:'2026-02-04',close:46.69},{date:'2026-02-05',close:47.28},{date:'2026-02-06',close:46.35},
+            {date:'2026-02-09',close:46.42},{date:'2026-02-10',close:46.33},{date:'2026-02-11',close:47.04},{date:'2026-02-12',close:47.32},{date:'2026-02-13',close:45.36},
+            {date:'2026-02-24',close:44.28},{date:'2026-02-25',close:45.19},{date:'2026-02-26',close:43.81},{date:'2026-02-27',close:43.54},{date:'2026-03-02',close:44.89},
+            {date:'2026-03-03',close:42.45},{date:'2026-03-04',close:41.63},{date:'2026-03-05',close:41.08},{date:'2026-03-06',close:41.03},{date:'2026-03-09',close:39.40},
+            {date:'2026-03-10',close:39.64},{date:'2026-03-11',close:40.25},{date:'2026-03-12',close:40.67},{date:'2026-03-13',close:41.54},{date:'2026-03-16',close:42.47},
+            {date:'2026-03-17',close:41.87},{date:'2026-03-18',close:41.51},{date:'2026-03-19',close:40.03},{date:'2026-03-20',close:40.47},{date:'2026-03-23',close:38.91},
+            {date:'2026-03-24',close:39.74},{date:'2026-03-25',close:40.95},{date:'2026-03-26',close:40.75},{date:'2026-03-27',close:40.87},{date:'2026-03-30',close:43.78},
+            {date:'2026-03-31',close:42.19},{date:'2026-04-01',close:42.95},{date:'2026-04-02',close:42.54},{date:'2026-04-03',close:41.51},{date:'2026-04-07',close:41.63},
+            {date:'2026-04-08',close:42.24},{date:'2026-04-09',close:42.95},{date:'2026-04-10',close:41.78},{date:'2026-04-13',close:40.16},{date:'2026-04-14',close:40.72},
+            {date:'2026-04-15',close:41.62},{date:'2026-04-16',close:41.38},{date:'2026-04-17',close:41.19},{date:'2026-04-20',close:40.92},{date:'2026-04-21',close:39.90},
+            {date:'2026-04-22',close:39.53},{date:'2026-04-23',close:36.33},{date:'2026-04-24',close:36.28},{date:'2026-04-27',close:36.09},{date:'2026-04-28',close:36.59},
+            {date:'2026-04-29',close:35.82},{date:'2026-04-30',close:35.50},{date:'2026-05-06',close:37.32},{date:'2026-05-07',close:37.84},{date:'2026-05-08',close:37.61},
+            {date:'2026-05-11',close:38.14},{date:'2026-05-12',close:38.08},{date:'2026-05-13',close:36.94},{date:'2026-05-14',close:35.86},{date:'2026-05-15',close:34.24},
+            {date:'2026-05-18',close:33.29},{date:'2026-05-19',close:33.39},{date:'2026-05-20',close:33.44},{date:'2026-05-21',close:32.14},{date:'2026-05-22',close:31.60},
+            {date:'2026-05-25',close:31.27},{date:'2026-05-26',close:31.63},{date:'2026-05-27',close:30.46},{date:'2026-05-28',close:29.94},{date:'2026-05-29',close:30.19},
+            {date:'2026-06-01',close:31.48},{date:'2026-06-02',close:30.59},{date:'2026-06-03',close:29.70},{date:'2026-06-04',close:29.96},{date:'2026-06-05',close:29.33},
+            {date:'2026-06-08',close:27.90},{date:'2026-06-09',close:26.82},{date:'2026-06-10',close:27.18},{date:'2026-06-11',close:26.19},{date:'2026-06-12',close:27.00},
+            {date:'2026-06-15',close:27.70},{date:'2026-06-16',close:27.20},{date:'2026-06-17',close:26.53},{date:'2026-06-18',close:26.02},{date:'2026-06-22',close:26.35},
+            {date:'2026-06-23',close:25.44},{date:'2026-06-24',close:24.85},{date:'2026-06-25',close:24.90},{date:'2026-06-26',close:24.22},{date:'2026-06-29',close:24.35}
+        ];
+
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: klineData.map(d => d.date),
+                datasets: [{
+                    label: '收盘价（元）',
+                    data: klineData.map(d => d.close),
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 0,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '收盘价: ' + context.parsed.y.toFixed(2) + ' 元';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { maxTicksLimit: 8, color: '#5a5a6e' },
+                        grid: { display: false }
+                    },
+                    y: {
+                        ticks: { color: '#5a5a6e' },
+                        grid: { color: '#e2e8f0' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
