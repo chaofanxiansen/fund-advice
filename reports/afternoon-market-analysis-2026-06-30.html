@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股尾盘分析报告 | 2026年6月30日</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; line-height: 1.7; }
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 30px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+.header h1 { font-size: 26px; margin-bottom: 8px; }
+.header .date { font-size: 14px; opacity: 0.8; }
+.header .tag { display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-top: 8px; }
+.card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.card h2 { font-size: 18px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e8e8e8; color: #1a1a2e; }
+.card h3 { font-size: 15px; margin: 14px 0 8px; color: #444; }
+.summary-box { background: linear-gradient(135deg, #fff3cd 0%, #ffe8cc 100%); border-left: 4px solid #fd7e14; padding: 16px 20px; border-radius: 8px; margin-bottom: 16px; }
+.summary-box h3 { color: #d63384; margin-bottom: 8px; font-size: 16px; }
+.summary-box p { font-size: 14px; color: #664d03; }
+.index-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 12px; }
+.index-card { padding: 16px; border-radius: 8px; text-align: center; }
+.index-card.up { background: linear-gradient(135deg, #fff1f0 0%, #ffe7e6 100%); border: 1px solid #ffccc7; }
+.index-card .name { font-size: 14px; color: #666; margin-bottom: 4px; }
+.index-card .price { font-size: 24px; font-weight: 700; color: #cf1322; }
+.index-card .change { font-size: 14px; color: #cf1322; margin-top: 4px; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+table th { background: #f5f5f5; padding: 10px 12px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #e0e0e0; }
+table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+table tr:hover { background: #fafafa; }
+.up-text { color: #cf1322; font-weight: 600; }
+.down-text { color: #2f9e44; font-weight: 600; }
+.tag-up { background: #fff1f0; color: #cf1322; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+.tag-down { background: #f6ffed; color: #2f9e44; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+.tag-warn { background: #fffbe6; color: #d48806; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+.news-item { padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+.news-item:last-child { border-bottom: none; }
+.news-item .badge { display: inline-block; width: 50px; text-align: center; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 8px; }
+.badge-bull { background: #fff1f0; color: #cf1322; }
+.badge-bear { background: #f6ffed; color: #2f9e44; }
+.news-item p { font-size: 13px; color: #555; margin-top: 4px; }
+.holding-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; margin: 12px 0; }
+.holding-segment { display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; font-weight: 600; }
+.advice-item { display: flex; align-items: flex-start; padding: 12px; margin-bottom: 8px; border-radius: 8px; }
+.advice-reduce { background: #f6ffed; border-left: 3px solid #2f9e44; }
+.advice-hold { background: #f0f5ff; border-left: 3px solid #2f54eb; }
+.advice-add { background: #fffbe6; border-left: 3px solid #d48806; }
+.advice-item .icon { font-size: 20px; margin-right: 12px; flex-shrink: 0; }
+.advice-item .content { flex: 1; }
+.advice-item .title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.advice-item .detail { font-size: 13px; color: #666; }
+.risk-box { background: #fffbe6; border: 1px solid #ffe58f; border-radius: 8px; padding: 16px; margin-top: 12px; }
+.risk-box h3 { color: #d48806; }
+.risk-box ul { list-style: none; padding-left: 0; }
+.risk-box li { padding: 6px 0; font-size: 13px; color: #664d03; }
+.risk-box li::before { content: "⚠ "; }
+.footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
+.chart-container { margin: 16px 0; }
+.bar-chart { display: flex; align-items: flex-end; gap: 12px; height: 160px; padding: 0 10px; border-bottom: 2px solid #e0e0e0; }
+.bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; }
+.bar .bar-fill { width: 80%; border-radius: 4px 4px 0 0; transition: height 0.5s; }
+.bar .bar-label { font-size: 11px; color: #666; margin-top: 4px; white-space: nowrap; }
+.bar .bar-value { font-size: 12px; font-weight: 600; position: absolute; top: -20px; }
+.heatmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+.heat-cell { padding: 10px; border-radius: 6px; text-align: center; font-size: 12px; }
+.heat-cell .h-name { font-weight: 600; margin-bottom: 4px; }
+.heat-cell .h-pct { font-size: 16px; font-weight: 700; }
+@media (max-width: 600px) { .index-grid { grid-template-columns: 1fr; } .heatmap { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>A股尾盘分析报告</h1>
+  <div class="date">2026年6月30日（周一）14:34 实时数据 · 上半年收官日</div>
+  <div class="tag">基金半年排名决战日 | PMI数据发布日 | 季末流动性窗口</div>
+</div>
+
+<div class="summary-box">
+  <h3>核心结论</h3>
+  <p>今日A股上半年收官，科技成长强势收官。科创50+3.52%领涨，创业板+2.98%，深成指+2.41%，沪指+0.31%相对滞涨。半导体设备材料+创新药双主线持续强化，光学光电子+7.07%领涨行业。您的QDII持仓受益于隔夜美股暴涨（纳指+2.07%、费城半导体+3.83%），今日+830元（+3.34%），跑赢大盘。但富国科技占比仍达87.6%，建议趁今日暴涨<strong>减仓5%-8%</strong>，降低单一品种集中度。尾盘关注获利回吐风险，不建议追高。</p>
+</div>
+
+<div class="card">
+  <h2>一、A股尾盘行情概览</h2>
+  <div class="index-grid">
+    <div class="index-card up">
+      <div class="name">上证指数</div>
+      <div class="price">4,086.49</div>
+      <div class="change">+12.59 (+0.31%)</div>
+    </div>
+    <div class="index-card up">
+      <div class="name">深证成指</div>
+      <div class="price">16,194.17</div>
+      <div class="change">+381.30 (+2.41%)</div>
+    </div>
+    <div class="index-card up">
+      <div class="name">创业板指</div>
+      <div class="price">4,342.42</div>
+      <div class="change">+125.72 (+2.98%)</div>
+    </div>
+    <div class="index-card up">
+      <div class="name">科创50</div>
+      <div class="price">2,200.85</div>
+      <div class="change">+74.84 (+3.52%)</div>
+    </div>
+  </div>
+  
+  <div class="chart-container">
+    <div class="bar-chart">
+      <div class="bar"><span class="bar-value up-text">+0.31%</span><div class="bar-fill" style="height:8%;background:#cf1322;"></div><div class="bar-label">上证</div></div>
+      <div class="bar"><span class="bar-value up-text">+2.41%</span><div class="bar-fill" style="height:62%;background:#cf1322;"></div><div class="bar-label">深成指</div></div>
+      <div class="bar"><span class="bar-value up-text">+2.98%</span><div class="bar-fill" style="height:77%;background:#cf1322;"></div><div class="bar-label">创业板</div></div>
+      <div class="bar"><span class="bar-value up-text">+3.52%</span><div class="bar-fill" style="height:90%;background:#cf1322;"></div><div class="bar-label">科创50</div></div>
+    </div>
+  </div>
+
+  <h3>市场特征</h3>
+  <ul style="padding-left: 20px; font-size: 13px; color: #555;">
+    <li><strong>科技成长强、大盘弱：</strong>科创50涨3.52%远超上证0.31%，典型的"成长主导"格局，大小盘分化明显</li>
+    <li><strong>成交额：</strong>市场连续多日成交破3万亿，今日量能温和，半年收官日资金面偏紧</li>
+    <li><strong>板块宽度：</strong>市场评分26.47（偏弱），板块宽度仅1分（全面下跌<20%板块上涨），说明赚钱效应集中在少数主线</li>
+    <li><strong>情绪指标：</strong>5分（狂热），涨停>50只，但多为半导体和医药抱团，非普涨</li>
+    <li><strong>估值水平：</strong>5分（高估强势），PE分位数≥90%，需警惕高位回调风险</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>二、板块轮动与资金流向</h2>
+  <h3>行业板块涨幅 TOP6</h3>
+  <div class="heatmap">
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">光学光电子</div><div class="h-pct">+7.07%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">消费电子</div><div class="h-pct">+5.20%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">通信设备</div><div class="h-pct">+5.17%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">家电零部件</div><div class="h-pct">+5.09%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">自动化设备</div><div class="h-pct">+4.97%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">军工电子</div><div class="h-pct">+4.85%</div></div>
+  </div>
+
+  <h3>概念板块涨幅 TOP6</h3>
+  <div class="heatmap">
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">博通概念</div><div class="h-pct">+8.61%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">华为机器人</div><div class="h-pct">+7.69%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">模拟芯片</div><div class="h-pct">+7.69%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">MicroLED</div><div class="h-pct">+6.64%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">机器人执行器</div><div class="h-pct">+6.58%</div></div>
+    <div class="heat-cell" style="background:#fff1f0;color:#cf1322;"><div class="h-name">裸眼3D</div><div class="h-pct">+6.51%</div></div>
+  </div>
+
+  <h3>主力资金净流入 TOP3</h3>
+  <table>
+    <thead><tr><th>板块</th><th>今日涨幅</th><th>主力净流入（万）</th><th>5日净流入（万）</th></tr></thead>
+    <tbody>
+      <tr><td>通信设备</td><td class="up-text">+5.17%</td><td class="up-text">+96.2</td><td class="down-text">-513.5</td></tr>
+      <tr><td>光学光电子</td><td class="up-text">+7.07%</td><td class="up-text">+81.7</td><td class="up-text">+27.6</td></tr>
+      <tr><td>元件</td><td class="up-text">+3.83%</td><td class="up-text">+63.9</td><td class="down-text">-24.2</td></tr>
+    </tbody>
+  </table>
+
+  <h3>板块轮动要点</h3>
+  <ul style="padding-left: 20px; font-size: 13px; color: #555;">
+    <li><strong>半导体设备/材料/存储：</strong>三重催化叠加——韩国4.4万亿半导体超级项目+7月1日全球涨价+Roundhill DRAM ETF纳入兆易创新，昨日主力净流入128.6亿</li>
+    <li><strong>创新药/CXO：</strong>医保目录初审557个药品通过（92%通过率），资金从高位AI切出后持续流入</li>
+    <li><strong>高位CPO/光模块/PCB：</strong>机构月末止盈，超声电子、中京电子跌停，中际旭创、新易盛大额净卖出，规避期至少再看2-3日</li>
+    <li><strong>机器人/自动化：</strong>华为机器人概念+7.69%，但5日趋势机器人执行器已转负（-0.90%），短线追高风险大</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>三、今日利好利空消息汇总</h2>
+
+  <h3>利好消息</h3>
+  <div class="news-item">
+    <span class="badge badge-bull">外围</span>
+    <strong>隔夜美股暴涨</strong>
+    <p>道指破52000创历史新高（+0.59%），纳指+2.07%，费城半导体+3.83%，特斯拉+8%，应用材料+11%。对A股科技/半导体板块形成情绪催化。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bull">行业</span>
+    <strong>韩国"三大超级项目"落地</strong>
+    <p>李在明政府推出半导体+AI+物理AI超级项目，总投资4755万亿韩元（约4.4万亿人民币），三星和SK海力士各建两座工厂，目标DRAM产能五年翻倍。直接利好A股半导体设备、材料、存储产业链。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bull">行业</span>
+    <strong>7月1日全球半导体涨价窗口</strong>
+    <p>全球晶圆设备2026-2027预计同比+26%/+35%，村田AI/车规MLCC 7月起涨10%-40%，近20家模拟功率厂商同步调价。硅片、特种气体、英飞凌、TI全链条调价。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bull">政策</span>
+    <strong>央行精准呵护跨季流动性</strong>
+    <p>央行6月29日做3000亿隔夜逆回购+1575亿7天逆回购，7月流动性将迎来宽松周期，资金环境有望进一步改善。连续55天成交破2万亿是硬底。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bull">数据</span>
+    <strong>6月PMI预期微升至50.1</strong>
+    <p>路透调查23名经济学家预测中国6月官方制造业PMI报50.1，较5月50.0微升，重回扩张区间。若实际数据超预期，将提振市场信心。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bull">资金</span>
+    <strong>北向资金转净流入</strong>
+    <p>北向资金今日净买入36.75亿元，深股通净买入36.84亿元。此前一周净流出128亿元，今日转为流入，标志外资情绪边际改善。深股通大额买入与创业板领涨高度吻合。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bull">行业</span>
+    <strong>医保目录初审通过率92%</strong>
+    <p>557个药品通过初审，商保创新药目录同步开启，政策温和。创新药板块昨日60+涨停，资金从高位AI切出逻辑未走完。</p>
+  </div>
+
+  <h3>利空消息</h3>
+  <div class="news-item">
+    <span class="badge badge-bear">资金</span>
+    <strong>半年末资金抽血峰值</strong>
+    <p>6月30日是银行MPA考核、企业半年所得税集中缴款、基金半年净值结算三重叠加最后一天。大量资金从二级市场抽离，流动性收紧压制多头。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bear">地缘</span>
+    <strong>美伊局势反复</strong>
+    <p>周末交火后双方同意暂停，但伊朗外交部29日改口"未来几天不会同美国举行任何级别谈判"。布伦特原油仍报73美元，黄金跌1.78%破4016，市场选择忽略风险但不等于风险消失。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bear">个股</span>
+    <strong>42家个股集中暴雷</strong>
+    <p>含业绩预亏、股东大额减持、立案调查个股，全天80余家封死跌停。即便指数翻红，雷股毫无修复动作，半年收官日抛压进一步放大。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bear">机构</span>
+    <strong>高位赛道机构持续止盈</strong>
+    <p>CPO/光模块/高速PCB被机构月末止盈，超声电子、中京电子跌停，中际旭创、新易盛、深南电路大额净卖出。两融较3万亿回落206亿，融资客主动降杠杆。</p>
+  </div>
+  <div class="news-item">
+    <span class="badge badge-bear">预警</span>
+    <strong>兆易创新发异动公告</strong>
+    <p>公司提示"利基存储价格上涨不可持续、产能边际增加后将回落"，给半导体存储板块热情浇冷水。</p>
+  </div>
+</div>
+
+<div class="card">
+  <h2>四、用户持仓分析</h2>
+  <h3>账户总览</h3>
+  <table>
+    <thead><tr><th>项目</th><th>金额</th><th>变动</th></tr></thead>
+    <tbody>
+      <tr><td>总持仓市值</td><td>¥24,847.21</td><td>-</td></tr>
+      <tr><td>今日盈亏</td><td>-</td><td class="up-text">+¥830.34 (+3.34%)</td></tr>
+      <tr><td>累计盈亏</td><td>-</td><td class="up-text">+¥1,806.91 (+7.8%)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>持仓明细</h3>
+  <table>
+    <thead><tr><th>基金名称</th><th>市值</th><th>占比</th><th>今日</th><th>累计盈亏</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>富国全球科技互联网(QDII)A<br><span style="font-size:11px;color:#999;">100055</span></td>
+        <td>¥21,754.51</td>
+        <td><span class="tag-warn">87.6%</span></td>
+        <td class="up-text">+8.8%</td>
+        <td class="up-text">+8.8%</td>
+      </tr>
+      <tr>
+        <td>华夏中证电网设备ETF联接A<br><span style="font-size:11px;color:#999;">025856</span></td>
+        <td>¥1,375.31</td>
+        <td>5.5%</td>
+        <td class="down-text">-1.8%</td>
+        <td class="down-text">-1.8%</td>
+      </tr>
+      <tr>
+        <td>天弘全球高端制造(QDII)C<br><span style="font-size:11px;color:#999;">016665</span></td>
+        <td>¥946.92</td>
+        <td>3.8%</td>
+        <td class="up-text">+5.2%</td>
+        <td class="up-text">+5.2%</td>
+      </tr>
+      <tr>
+        <td>建信新兴市场优选(QDII)C<br><span style="font-size:11px;color:#999;">018147</span></td>
+        <td>¥643.39</td>
+        <td>2.6%</td>
+        <td class="up-text">+5.5%</td>
+        <td class="up-text">+5.5%</td>
+      </tr>
+      <tr>
+        <td>国泰中证全指通信设备ETF联接C<br><span style="font-size:11px;color:#999;">007818</span></td>
+        <td>¥127.08</td>
+        <td>0.5%</td>
+        <td class="down-text">-2.2%</td>
+        <td class="down-text">-2.2%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>持仓结构</h3>
+  <div class="holding-bar">
+    <div class="holding-segment" style="width:87.6%;background:#cf1322;">富国科技 87.6%</div>
+    <div class="holding-segment" style="width:5.5%;background:#fa8c16;">电网 5.5%</div>
+    <div class="holding-segment" style="width:3.8%;background:#13c2c2;">高端制造 3.8%</div>
+    <div class="holding-segment" style="width:2.6%;background:#722ed1;">新兴市场 2.6%</div>
+    <div class="holding-segment" style="width:0.5%;background:#52c41a;">通信 0.5%</div>
+  </div>
+
+  <h3>持仓诊断</h3>
+  <ul style="padding-left: 20px; font-size: 13px; color: #555;">
+    <li><strong>集中度极高：</strong>富国全球科技互联网占比87.6%，QDII科技类合计94%，单一品种风险极大</li>
+    <li><strong>今日表现亮眼：</strong>受益于隔夜美股暴涨（纳指+2.07%、费城半导体+3.83%），富国科技+8.8%，整体+3.34%跑赢上证（+0.31%）</li>
+    <li><strong>逆势品种：</strong>华夏电网设备-1.8%、国泰通信设备-2.2%，今日市场资金从电力/通信切出转向半导体和医药</li>
+    <li><strong>累计盈利尚浅：</strong>总累计+7.8%，若市场出现5%-8%回调，盈利可能归零甚至亏损</li>
+    <li><strong>汇率风险：</strong>3只QDII基金合计占比94%，人民币升值将侵蚀QDII收益</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>五、尾盘调仓建议</h2>
+  
+  <div class="advice-item advice-reduce">
+    <div class="icon">📉</div>
+    <div class="content">
+      <div class="title">富国全球科技互联网（100055）— 减仓5%-8%</div>
+      <div class="detail">今日+8.8%大幅反弹是绝佳减仓窗口。趁美股暴涨带来的情绪溢价，将仓位从87.6%降至79%-83%。建议卖出约¥1,200-¥1,800。理由：①QDII单一品种占比过高，汇率+海外市场双风险；②科创50年内已涨63.73%，乖离偏大，获利回吐概率高；③半年收官日后7月初流动性改善，可逐步配置多元化品种。</div>
+    </div>
+  </div>
+
+  <div class="advice-item advice-hold">
+    <div class="icon">⏸️</div>
+    <div class="content">
+      <div class="title">华夏电网设备ETF（025856）— 持有观察</div>
+      <div class="detail">今日-1.8%逆势下跌，属资金高低切换中的"被切出"品种。电网设备长期逻辑（特高压、新型电力系统）未变，5.5%仓位偏低，不追加也不急于卖出。观察7月初资金是否回流电力板块。</div>
+    </div>
+  </div>
+
+  <div class="advice-item advice-hold">
+    <div class="icon">⏸️</div>
+    <div class="content">
+      <div class="title">天弘全球高端制造（016665）— 持有</div>
+      <div class="detail">今日+5.2%受益于美股制造业反弹。仓位3.8%偏低，高端制造覆盖面广（机器人、航空航天、新能源装备），可继续持有。若7月减仓富国科技后有闲余资金，可小幅加仓至5%。</div>
+    </div>
+  </div>
+
+  <div class="advice-item advice-hold">
+    <div class="icon">⏸️</div>
+    <div class="content">
+      <div class="title">建信新兴市场（018147）— 持有</div>
+      <div class="detail">今日+5.5%，新兴市场QDII受益于美元走弱预期。仓位2.6%偏低，作为多元化配置的补充品种继续持有。</div>
+    </div>
+  </div>
+
+  <div class="advice-item advice-hold">
+    <div class="icon">⏸️</div>
+    <div class="content">
+      <div class="title">国泰通信设备ETF（007818）— 持有观察</div>
+      <div class="detail">今日-2.2%逆势下跌，通信设备板块今日虽涨5.17%但该ETF可能与持仓结构有关。仓位仅0.5%，影响极小，持有观察即可。若持续跑输板块，可考虑清仓换入半导体ETF。</div>
+    </div>
+  </div>
+
+  <h3>减仓资金去向建议</h3>
+  <table>
+    <thead><tr><th>方向</th><th>目标占比</th><th>推荐品种</th><th>逻辑</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>医药/医疗</td>
+        <td>10%-15%</td>
+        <td>创新药ETF / CXO主题基金</td>
+        <td>医保目录92%通过率，资金从高位AI切出，中报业绩预增是第二层催化</td>
+      </tr>
+      <tr>
+        <td>消费/红利</td>
+        <td>10%-15%</td>
+        <td>红利低波ETF / 消费主题基金</td>
+        <td>防御属性强，半年末机构做净值工具，茅台昨日+3%验证资金流入</td>
+      </tr>
+      <tr>
+        <td>A股宽基</td>
+        <td>5%-10%</td>
+        <td>沪深300ETF / 中证500ETF</td>
+        <td>分散单一行业风险，7月流动性改善后宽基有望补涨</td>
+      </tr>
+      <tr>
+        <td>机动现金</td>
+        <td>5%</td>
+        <td>货币基金</td>
+        <td>留子弹等7月1日跨季后流动性改善窗口，回调时低吸半导体设备龙头</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>六、尾盘30分钟操作要点</h2>
+  <ul style="padding-left: 20px; font-size: 14px; color: #555; line-height: 2;">
+    <li><strong>14:30-14:45：</strong>观察科创50是否能站稳2200点。若尾盘跳水跌破2180，说明获利盘集中出逃，减仓力度加大至8%-10%</li>
+    <li><strong>14:45-15:00：</strong>半年收官日尾盘可能出现"做账脉冲"——机构为美化净值排名集中买入权重标的。若尾盘急拉，不要追涨，这是减仓窗口而非加仓时机</li>
+    <li><strong>15:00收盘后：</strong>关注今日PMI实际数据。若高于50.1，7月开门红概率增加；若低于50，下周一可能回调</li>
+    <li><strong>今晚：</strong>关注美股能否延续涨势。若纳指回落，明日QDII净值将承压，减仓更需果断</li>
+    <li><strong>7月1日：</strong>跨季后流动性改善，是布局新方向的最佳时间窗口。半导体设备/材料/存储仍为主线</li>
+  </ul>
+
+  <div class="risk-box">
+    <h3>风险提示</h3>
+    <ul>
+      <li>本报告基于实时市场数据与公开新闻，投资建议仅供参考，不构成投资决策依据</li>
+      <li>基金过往业绩不代表未来表现，QDII基金存在汇率风险和海外市场波动风险</li>
+      <li>半年收官日盘面可能出现异常波动，尾盘脉冲行情不代表趋势反转</li>
+      <li>科创50年内涨幅已达63.73%，短期回调风险不可忽视</li>
+      <li>美伊地缘冲突虽暂停但未结束，油价和黄金波动可能引发市场避险情绪</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  <p>A股尾盘分析报告 | 生成时间：2026-06-30 14:34 | 数据来源：westock-data、养基宝、WebSearch</p>
+  <p>仅供个人参考，不构成投资建议</p>
+</div>
+
+</div>
+</body>
+</html>
