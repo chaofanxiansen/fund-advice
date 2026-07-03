@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股今日分析 · 2026年7月3日</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #0f1117; color: #e4e4e7; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 100%); border-bottom: 1px solid #2d2f3e; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 22px; font-weight: 700; color: #fff; }
+  .header .time { font-size: 13px; color: #888; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px; }
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 16px; font-weight: 700; color: #a78bfa; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #2d2f3e; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ''; display: inline-block; width: 4px; height: 16px; border-radius: 2px; background: #a78bfa; }
+
+  .index-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .index-card { background: #1a1f2e; border: 1px solid #2d2f3e; border-radius: 10px; padding: 16px; }
+  .index-card .name { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .index-card .price { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .index-card .change { font-size: 13px; font-weight: 600; }
+  .red { color: #f87171; }
+  .green { color: #4ade80; }
+  .gold { color: #fbbf24; }
+
+  .flow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .flow-box { background: #1a1f2e; border: 1px solid #2d2f3e; border-radius: 10px; padding: 16px; }
+  .flow-box h4 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .flow-out h4 { color: #f87171; }
+  .flow-in h4 { color: #4ade80; }
+  .flow-item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #252836; font-size: 13px; }
+  .flow-item:last-child { border-bottom: none; }
+  .flow-item .sector { color: #e4e4e7; }
+  .flow-item .amount { font-weight: 600; }
+
+  .board-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .board-table th { text-align: left; padding: 8px 12px; color: #888; font-weight: 500; border-bottom: 1px solid #2d2f3e; }
+  .board-table td { padding: 8px 12px; border-bottom: 1px solid #1e2130; }
+  .board-table tr:hover td { background: #1a1f2e; }
+  .rank-badge { display: inline-block; width: 20px; height: 20px; border-radius: 4px; text-align: center; line-height: 20px; font-size: 11px; font-weight: 700; }
+  .rank-1 { background: #f59e0b; color: #000; }
+  .rank-2 { background: #9ca3af; color: #000; }
+  .rank-3 { background: #b45309; color: #fff; }
+  .rank-n { background: #2d2f3e; color: #888; }
+
+  .holdings-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .holdings-table th { text-align: left; padding: 10px 12px; color: #888; font-weight: 500; border-bottom: 1px solid #2d2f3e; white-space: nowrap; }
+  .holdings-table td { padding: 10px 12px; border-bottom: 1px solid #1e2130; }
+  .holdings-table tr:hover td { background: #1a1f2e; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .summary-card { background: #1a1f2e; border: 1px solid #2d2f3e; border-radius: 10px; padding: 16px; text-align: center; }
+  .summary-card .label { font-size: 12px; color: #888; margin-bottom: 6px; }
+  .summary-card .value { font-size: 22px; font-weight: 700; }
+
+  .alert-box { background: #1a1f2e; border: 1px solid #2d2f3e; border-left: 3px solid #f59e0b; border-radius: 8px; padding: 14px 16px; margin-bottom: 12px; }
+  .alert-box.positive { border-left-color: #4ade80; }
+  .alert-box.negative { border-left-color: #f87171; }
+  .alert-box .alert-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .alert-box .alert-desc { font-size: 12px; color: #aaa; }
+
+  .advice-step { background: #1a1f2e; border: 1px solid #2d2f3e; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .advice-step h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #a78bfa; }
+  .advice-step ul { list-style: none; }
+  .advice-step li { font-size: 13px; padding: 4px 0; padding-left: 16px; position: relative; }
+  .advice-step li::before { content: '•'; position: absolute; left: 0; color: #a78bfa; }
+
+  .risk-list { list-style: none; }
+  .risk-list li { font-size: 13px; padding: 6px 0; padding-left: 20px; position: relative; color: #ccc; }
+  .risk-list li::before { content: '⚠'; position: absolute; left: 0; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-high { background: rgba(248,113,113,0.15); color: #f87171; }
+  .tag-mid { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .tag-low { background: rgba(74,222,128,0.15); color: #4ade80; }
+
+  .footer { text-align: center; padding: 20px; font-size: 12px; color: #555; border-top: 1px solid #2d2f3e; margin-top: 20px; }
+
+  .trend-chart { background: #1a1f2e; border: 1px solid #2d2f3e; border-radius: 10px; padding: 16px; margin-top: 12px; }
+  .trend-bar { display: flex; align-items: flex-end; gap: 3px; height: 80px; margin-top: 10px; }
+  .trend-bar-item { flex: 1; border-radius: 3px 3px 0 0; min-width: 20px; position: relative; transition: height 0.3s; }
+  .trend-bar-item .bar-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #666; white-space: nowrap; }
+  .trend-bar-item .bar-val { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 600; white-space: nowrap; }
+
+  @media (max-width: 768px) {
+    .index-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .flow-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>A股收盘分析 · 2026年7月3日（周五）</h1>
+  <span class="time">数据截止：2026-07-03 15:20</span>
+</div>
+
+<div class="container">
+
+  <!-- 一、指数收盘 -->
+  <div class="section">
+    <div class="section-title">一、指数收盘：缩量修复，早盘冲高午后回落</div>
+    <div class="index-grid">
+      <div class="index-card">
+        <div class="name">上证指数</div>
+        <div class="price">4043.64</div>
+        <div class="change red">+0.37% (+14.74)</div>
+      </div>
+      <div class="index-card">
+        <div class="name">深证成指</div>
+        <div class="price">15597.51</div>
+        <div class="change red">+0.64% (+98.70)</div>
+      </div>
+      <div class="index-card">
+        <div class="name">创业板指</div>
+        <div class="price">4019.93</div>
+        <div class="change red">+0.07% (+2.66)</div>
+      </div>
+      <div class="index-card">
+        <div class="name">科创50</div>
+        <div class="price">1975.60</div>
+        <div class="change green">-0.59% (-11.69)</div>
+      </div>
+    </div>
+    <div class="index-grid" style="margin-top:12px;">
+      <div class="index-card">
+        <div class="name">沪深300</div>
+        <div class="price">4842.17</div>
+        <div class="change red">+0.62%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">上证50</div>
+        <div class="price">2931.28</div>
+        <div class="change red">+0.65%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">中证500</div>
+        <div class="price">8745.26</div>
+        <div class="change red">+0.59%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">北证50</div>
+        <div class="price">1287.82</div>
+        <div class="change red">+1.71%</div>
+      </div>
+    </div>
+
+    <div class="trend-chart">
+      <div style="font-size:13px; font-weight:700; margin-bottom:8px;">本周四日走势对比（上证指数）</div>
+      <div class="trend-bar">
+        <div class="trend-bar-item" style="height:55%; background:linear-gradient(180deg, #f87171, #b91c1c);">
+          <span class="bar-val red">+1.39%</span>
+          <span class="bar-label">7/1</span>
+        </div>
+        <div class="trend-bar-item" style="height:85%; background:linear-gradient(180deg, #4ade80, #166534);">
+          <span class="bar-val green">-1.36%</span>
+          <span class="bar-label">7/2</span>
+        </div>
+        <div class="trend-bar-item" style="height:20%; background:linear-gradient(180deg, #f87171, #b91c1c);">
+          <span class="bar-val red">+0.37%</span>
+          <span class="bar-label">7/3</span>
+        </div>
+      </div>
+      <div style="margin-top:28px; font-size:12px; color:#888;">
+        本周A股经历"先涨→暴跌→弱修复"格局。周二（7/1）上证+1.39%创新高后，周四（7/2）受隔夜美股Meta卖算力事件冲击暴跌-1.36%，今日（7/3）尝试修复但力度有限，午后明显回落。
+      </div>
+    </div>
+  </div>
+
+  <!-- 二、市场概况 -->
+  <div class="section">
+    <div class="section-title">二、市场概况：涨多跌少，但缩量暴露信心不足</div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="label">上涨家数</div>
+        <div class="value red">3574</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">下跌家数</div>
+        <div class="value green">1601</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">涨停</div>
+        <div class="value gold">113</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">跌停</div>
+        <div class="value" style="color:#6b7280;">9</div>
+      </div>
+    </div>
+    <div class="alert-box">
+      <div class="alert-title">📊 成交量缩量明显</div>
+      <div class="alert-desc">半日成交2.07万亿，较昨日同期缩量1833亿。全天大概率不足4万亿，属存量博弈下的缩量修复。反弹途中资金追高意愿不强，午后券商未能如期发力，导致涨幅收窄。</div>
+    </div>
+    <div class="alert-box positive">
+      <div class="alert-title">📈 修复行情特征</div>
+      <div class="alert-desc">早盘承接昨日大跌走出强势修复，创业板一度涨+1.58%，但午后冲高回落，最终仅收+0.07%。科创50全天水下，收-0.59%，半导体板块仍未企稳。</div>
+    </div>
+  </div>
+
+  <!-- 三、核心板块 -->
+  <div class="section">
+    <div class="section-title">三、核心板块：机器人独占鳌头，黄金趋势延续</div>
+
+    <table class="board-table">
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>板块</th>
+          <th>涨停数</th>
+          <th>核心逻辑</th>
+          <th>代表标的</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rank-badge rank-1">1</span></td>
+          <td style="font-weight:700; color:#fbbf24;">机器人概念</td>
+          <td class="gold">20+</td>
+          <td>日内绝对最强主线，减速器/零部件/设备端集体轮动</td>
+          <td>日盈电子(2板)、埃斯顿(4天3板)、日发精机</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-2">2</span></td>
+          <td style="font-weight:700; color:#fbbf24;">黄金贵金属</td>
+          <td class="gold">8+</td>
+          <td>避险+降息预期，趋势行情延续</td>
+          <td>招金黄金(2板)、赤峰黄金(2板)、四川黄金</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-3">3</span></td>
+          <td style="font-weight:700; color:#fbbf24;">ST摘帽</td>
+          <td>6+</td>
+          <td>低位修复+确定性套利</td>
+          <td>中通国脉(3板)、金科股份(2板)、宝塔实业(2板)</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-n">4</span></td>
+          <td>中报预增</td>
+          <td>5+</td>
+          <td>7月进入业绩披露窗口，业绩确定性避险</td>
+          <td>雷赛智能(2板)、星网锐捷(4天3板)</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-n">5</span></td>
+          <td>PCB/通信设备</td>
+          <td>4+</td>
+          <td>昨日超跌后权重修复反弹</td>
+          <td>深南电路、中国巨石、诺德股份</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-n">6</span></td>
+          <td>智能电网</td>
+          <td>4+</td>
+          <td>低位轮动补涨</td>
+          <td>中超控股、华明装备、金智科技</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-n">7</span></td>
+          <td>并购重组</td>
+          <td>1</td>
+          <td>全场最高连板高度</td>
+          <td>恒尚节能(4板空间龙头)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert-box negative" style="margin-top:12px;">
+      <div class="alert-title">📉 半导体持续承压</div>
+      <div class="alert-desc">半导体板块（申万二级）今日收12745.45，较昨日12921.7再跌-1.36%。本周三天累计跌幅-9.31%，Meta卖算力事件影响仍在发酵。科创50指数全天水下运行，资金对高位科技股中报业绩存疑，短期反弹力度有限。</div>
+    </div>
+  </div>
+
+  <!-- 四、全球市场 -->
+  <div class="section">
+    <div class="section-title">四、全球市场：亚太普涨，纳指仍弱</div>
+    <div class="index-grid">
+      <div class="index-card">
+        <div class="name">日经225</div>
+        <div class="price">69744</div>
+        <div class="change red">+1.47%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">恒生指数</div>
+        <div class="price">23347</div>
+        <div class="change red">+1.27%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">恒生科技</div>
+        <div class="price">4499</div>
+        <div class="change red">+1.01%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">道琼斯（昨收）</div>
+        <div class="price">52900</div>
+        <div class="change red">+1.14%</div>
+      </div>
+    </div>
+    <div class="index-grid" style="margin-top:12px;">
+      <div class="index-card">
+        <div class="name">纳斯达克（昨收）</div>
+        <div class="price">25832</div>
+        <div class="change green">-0.80%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">标普500（昨收）</div>
+        <div class="price">7483</div>
+        <div class="change" style="color:#6b7280;">0.00%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">上证指数</div>
+        <div class="price">4043</div>
+        <div class="change red">+0.37%</div>
+      </div>
+      <div class="index-card">
+        <div class="name">深证成指</div>
+        <div class="price">15597</div>
+        <div class="change red">+0.64%</div>
+      </div>
+    </div>
+    <div class="alert-box">
+      <div class="alert-title">🌐 关键观察</div>
+      <div class="alert-desc">亚太市场普涨（日经+1.47%、恒生+1.27%），但纳斯达克隔夜再跌-0.80%，Meta卖算力事件余波未平。道指涨而纳指跌，资金从科技向价值/防御切换的全球趋势仍在延续。对用户QDII基金影响偏负面。</div>
+    </div>
+  </div>
+
+  <!-- 五、利好利空 -->
+  <div class="section">
+    <div class="section-title">五、利好利空梳理</div>
+    <div class="flow-grid">
+      <div class="flow-box flow-in">
+        <h4>✅ 利好因素</h4>
+        <div class="flow-item"><span class="sector">超跌修复需求</span><span class="amount red">昨日暴跌后技术性反弹</span></div>
+        <div class="flow-item"><span class="sector">亚太普涨带动</span><span class="amount red">日经+1.47% 恒生+1.27%</span></div>
+        <div class="flow-item"><span class="sector">机器人产业催化</span><span class="amount red">政策预期+产业趋势共振</span></div>
+        <div class="flow-item"><span class="sector">黄金避险升温</span><span class="amount red">降息预期+地缘不确定性</span></div>
+        <div class="flow-item"><span class="sector">中报预增标的活跃</span><span class="amount red">业绩线提供防御支撑</span></div>
+        <div class="flow-item"><span class="sector">7月6日交易新规</span><span class="amount red">盘后固定价格交易扩展</span></div>
+      </div>
+      <div class="flow-box flow-out">
+        <h4>❌ 利空因素</h4>
+        <div class="flow-item"><span class="sector">纳指持续走弱</span><span class="amount green">-0.80%，科技股抛压未止</span></div>
+        <div class="flow-item"><span class="sector">缩量反弹</span><span class="amount green">成交缩量，增量资金缺位</span></div>
+        <div class="flow-item"><span class="sector">周五避险效应</span><span class="amount green">资金提前兑现规避周末风险</span></div>
+        <div class="flow-item"><span class="sector">半导体持续杀跌</span><span class="amount green">本周累计-9.31%</span></div>
+        <div class="flow-item"><span class="sector">高位科技中报压力</span><span class="amount green">资金对估值与业绩匹配存疑</span></div>
+        <div class="flow-item"><span class="sector">午后冲高回落</span><span class="amount green">券商未发力，反弹力度存疑</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 六、用户持仓 -->
+  <div class="section">
+    <div class="section-title">六、用户持仓分析：QDII重仓继续承压</div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="label">总资产</div>
+        <div class="value" style="color:#a78bfa;">¥24,980.58</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">今日盈亏</div>
+        <div class="value green">-¥607.57</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">今日收益率</div>
+        <div class="value green">-2.43%</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">累计盈亏</div>
+        <div class="value red">+¥1,172.79</div>
+      </div>
+    </div>
+
+    <table class="holdings-table">
+      <thead>
+        <tr>
+          <th>基金名称</th>
+          <th>市值</th>
+          <th>占比</th>
+          <th>今日估值</th>
+          <th>持仓盈亏</th>
+          <th>风险标签</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>富国全球科技互联网(QDII)A<br><span style="color:#666;font-size:11px;">100055</span></td>
+          <td>¥21,770.29</td>
+          <td class="red" style="font-weight:700;">87.1%</td>
+          <td class="green">-2.46%</td>
+          <td class="red">+¥1,770.10</td>
+          <td><span class="tag tag-high">极高</span></td>
+        </tr>
+        <tr>
+          <td>华夏中证电网设备ETF联接A<br><span style="color:#666;font-size:11px;">025856</span></td>
+          <td>¥1,299.64</td>
+          <td>5.2%</td>
+          <td class="red">+0.60%</td>
+          <td class="green">-¥100.44</td>
+          <td><span class="tag tag-low">低</span></td>
+        </tr>
+        <tr>
+          <td>天弘全球高端制造(QDII)C<br><span style="color:#666;font-size:11px;">016665</span></td>
+          <td>¥1,059.54</td>
+          <td>4.2%</td>
+          <td class="green">-5.12%</td>
+          <td class="red">+¥59.52</td>
+          <td><span class="tag tag-mid">中</span></td>
+        </tr>
+        <tr>
+          <td>建信新兴市场优选(QDII)C<br><span style="color:#666;font-size:11px;">018147</span></td>
+          <td>¥733.49</td>
+          <td>2.9%</td>
+          <td class="green">-3.48%</td>
+          <td class="red">+¥63.48</td>
+          <td><span class="tag tag-mid">中</span></td>
+        </tr>
+        <tr>
+          <td>国泰通信设备ETF联接C<br><span style="color:#666;font-size:11px;">007818</span></td>
+          <td>¥117.62</td>
+          <td>0.5%</td>
+          <td class="green">-0.03%</td>
+          <td class="green">-¥12.38</td>
+          <td><span class="tag tag-low">低</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert-box negative" style="margin-top:12px;">
+      <div class="alert-title">⚠️ 持仓风险提示</div>
+      <div class="alert-desc">
+        ① 单一基金集中度87.1%（富国全球科技互联网），仍处极高水平；<br>
+        ② 海外QDII占比94.2%，连续两天受纳指下跌冲击，今日估值-2.46%；<br>
+        ③ 天弘全球高端制造估值暴跌-5.12%（QDII净值滞后，反映7/2海外行情）；<br>
+        ④ 组合无A股宽基/红利/债券等防御性资产，与今日A股反弹完全错配。
+      </div>
+    </div>
+  </div>
+
+  <!-- 七、操作建议 -->
+  <div class="section">
+    <div class="section-title">七、操作建议：反弹窗口仍需减仓再平衡</div>
+
+    <div class="alert-box">
+      <div class="alert-title">🎯 核心判断</div>
+      <div class="alert-desc">今日A股弱修复但缩量明显，午后回落暴露信心不足。下周一是7月6日交易新规实施前最后一个交易日，预计震荡为主。用户持仓与A股反弹完全错配（QDII重仓），纳指短期未见企稳信号，建议利用下周可能的美股反弹窗口继续减仓QDII。</div>
+    </div>
+
+    <div class="advice-step">
+      <h4>第一步：下周择机减仓QDII（优先）</h4>
+      <ul>
+        <li>富国全球科技互联网：若下周美股反弹推动估值回正，减仓 <strong style="color:#fbbf24;">¥3,000-4,000</strong>，将占比降至75%以下</li>
+        <li>天弘全球高端制造：估值暴跌-5.12%，若反弹则减仓 <strong style="color:#fbbf24;">¥500</strong>（减半），降低海外暴露</li>
+        <li>注意QDII净值滞后2-3个交易日，操作时参考美股期货实时走势</li>
+      </ul>
+    </div>
+
+    <div class="advice-step">
+      <h4>第二步：增配A股防御性资产</h4>
+      <ul>
+        <li><strong>A股宽基</strong>：新增沪深300ETF联接或A500指数基金 <strong style="color:#fbbf24;">¥2,000-3,000</strong>，当前A股估值处于合理区间</li>
+        <li><strong>红利低波</strong>：新增红利低波ETF联接 <strong style="color:#fbbf24;">¥1,500-2,000</strong>，周五避险效应凸显防御价值</li>
+        <li><strong>黄金ETF联接</strong>：小仓位 <strong style="color:#fbbf24;">¥1,000</strong>，跟踪今日黄金板块强势趋势</li>
+      </ul>
+    </div>
+
+    <div class="advice-step">
+      <h4>第三步：保留观察</h4>
+      <ul>
+        <li>华夏电网设备ETF联接A：今日+0.60%小幅正收益，继续持有观察</li>
+        <li>国泰通信设备ETF联接C：仅剩¥117，考虑清仓释放资金</li>
+        <li>关注7月6日交易新规实施后市场流动性变化</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 八、风险提示 -->
+  <div class="section">
+    <div class="section-title">八、风险提示</div>
+    <ul class="risk-list">
+      <li><strong>美股波动风险</strong>：纳指连续下跌，Meta卖算力事件影响未消，下周若继续下跌，QDII基金将进一步承压</li>
+      <li><strong>汇率风险</strong>：QDII持有期间受美元兑人民币汇率波动影响，人民币升值将侵蚀收益</li>
+      <li><strong>中报业绩风险</strong>：7月进入半年报披露窗口，高位科技股估值与业绩匹配度面临考验</li>
+      <li><strong>缩量反弹风险</strong>：今日缩量修复力度有限，若无增量资金入场，下周可能再次回落</li>
+      <li><strong>交易新规影响</strong>：7月6日起盘后固定价格交易扩展至全部A股、主板ST涨跌幅提至10%，可能影响短期流动性</li>
+      <li><strong>操作节奏</strong>：建议分2-3批完成调仓，不要一次性操作，避免择时错误</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  本报告基于公开市场数据和养基宝API实时持仓生成 · 仅供个人参考，不构成投资建议 · 投资有风险，决策需谨慎<br>
+  数据来源：腾讯自选股 / 养基宝 / 东方财富 / 雪球 · 生成时间：2026-07-03 15:20
+</div>
+
+</body>
+</html>
