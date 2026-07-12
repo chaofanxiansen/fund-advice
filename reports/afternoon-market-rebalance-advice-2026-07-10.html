@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股尾盘分析与基金调仓建议 — 2026年7月10日</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --sub: #636e72;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --blue: #3498db;
+    --orange: #e67e22;
+    --purple: #8e44ad;
+    --border: #e1e5ea;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --accent-bg: #f0f4ff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 40px 30px; border-radius: 16px; margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .header h1 { font-size: 2em; margin-bottom: 6px; }
+  .header .date { color: #a0b4d0; font-size: 0.95em; }
+  .header .tagline { margin-top: 12px; padding: 8px 16px; background: rgba(255,255,255,0.1); border-radius: 8px; display: inline-block; font-size: 0.9em; }
+
+  .card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .card h2 { font-size: 1.3em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--blue); display: flex; align-items: center; gap: 8px; }
+  .card h3 { font-size: 1.05em; margin: 16px 0 10px; color: #34495e; }
+
+  .conclusion-box {
+    background: linear-gradient(135deg, #fff5f5, #fff0f0);
+    border: 2px solid var(--red);
+    border-radius: 12px; padding: 20px 24px; margin-bottom: 20px;
+  }
+  .conclusion-box h2 { color: var(--red); border-bottom-color: var(--red); margin-top: 0; }
+
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  .index-card {
+    background: var(--card); border-radius: 12px; padding: 20px; text-align: center;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+  .index-card .name { font-size: 0.85em; color: var(--sub); margin-bottom: 4px; }
+  .index-card .change { font-size: 1.6em; font-weight: 700; }
+  .index-card .point { font-size: 0.85em; color: var(--sub); margin-top: 2px; }
+  .red { color: var(--red); }
+  .green { color: var(--green); }
+
+  .bar-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9em; }
+  .bar-row .label { width: 80px; text-align: right; margin-right: 10px; font-weight: 600; }
+  .bar-row .bar-wrap { flex: 1; height: 22px; background: #f0f0f0; border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-row .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.8em; font-weight: 700; color: #fff; min-width: 40px; text-align: right; }
+  .bar-fill.red-bar { background: var(--red); }
+  .bar-fill.green-bar { background: var(--green); }
+  .bar-fill.blue-bar { background: var(--blue); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); color: var(--sub); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover { background: #f8f9ff; }
+
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: 600; }
+  .badge-green { background: #d4edda; color: #155724; }
+  .badge-red { background: #f8d7da; color: #721c24; }
+  .badge-blue { background: #d6e4f0; color: #1a5276; }
+  .badge-orange { background: #fff3cd; color: #856404; }
+  .badge-purple { background: #e8daef; color: #6c3483; }
+
+  .news-item { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .news-item:last-child { border-bottom: none; }
+  .news-item .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; margin-right: 8px; font-weight: 700; }
+  .tag-bullish { background: #ffebee; color: var(--red); }
+  .tag-bearish { background: #e8f5e9; color: var(--green); }
+  .tag-neutral { background: #e3f2fd; color: #1565c0; }
+
+  .advice-card {
+    background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 14px;
+    box-shadow: var(--shadow); border-left: 5px solid var(--border);
+  }
+  .advice-card.buy { border-left-color: var(--red); background: #fffbfb; }
+  .advice-card.hold { border-left-color: var(--blue); background: #fafbff; }
+  .advice-card.sell { border-left-color: var(--green); background: #fbfffb; }
+  .advice-card .fund-name { font-weight: 700; font-size: 1.05em; }
+  .advice-card .action { font-size: 1.3em; font-weight: 700; margin: 6px 0; }
+
+  .risk-box {
+    background: #fffdf5; border: 1px solid var(--orange); border-radius: 10px;
+    padding: 16px 20px; margin-top: 16px;
+  }
+  .risk-box h4 { color: var(--orange); margin-bottom: 8px; }
+
+  .donut-wrap { text-align: center; }
+  .donut-wrap svg { max-width: 300px; }
+
+  .metric-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .metric { flex: 1; min-width: 140px; background: var(--accent-bg); border-radius: 10px; padding: 16px; text-align: center; }
+  .metric .val { font-size: 1.5em; font-weight: 700; }
+  .metric .lbl { font-size: 0.8em; color: var(--sub); margin-top: 4px; }
+
+  @media (max-width: 768px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>A股尾盘分析与基金调仓建议</h1>
+  <div class="date">2026年7月10日（周五）· 收盘后发布</div>
+  <div class="tagline">⚡ 科创50昨日暴涨8%后今日冲高回落大跌5.5% · 尾盘35分钟集中抛售 · 权重股集体杀跌</div>
+</div>
+
+<!-- 核心结论 -->
+<div class="conclusion-box">
+  <h2>📋 核心结论</h2>
+  <p style="font-size:1.05em; line-height:1.8;">
+    <strong>今日市场剧烈分化：</strong>早盘科技股延续昨日强势冲高，但午后风云突变，科创50从涨2%一路杀跌至-5.53%，创业板指大跌4.37%，上证失守4000点。尾盘35分钟出现集中抛售，电子板块全天净流出234亿。<br><br>
+    <strong>但并非全面崩盘</strong>——全市场仍有3700+只个股上涨（占比68%），黄白线严重分化说明杀跌集中在权重科技股，中小盘相对抗跌。本质上这是<strong>"昨日暴涨后的获利了结+利好兑现出货"</strong>行情，不是系统性风险。<br><br>
+    <strong>对你的影响：</strong>持仓91.7%集中在QDII全球科技，今日实际表现尚可（总盈亏-115元/-0.4%），但极端集中的结构是最大隐患——富国全球科技一只基金就占了74.8%的仓位。建议<strong style="color:#e74c3c;">逢高分批降低该基金仓位，腾出资金增配A股科技或宽基指数</strong>，将QDII占比降至60-70%左右。
+  </p>
+</div>
+
+<!-- 指数概览 -->
+<div class="card">
+  <h2>📊 A股四大指数收盘</h2>
+  
+  <div class="grid-4">
+    <div class="index-card">
+      <div class="name">上证指数</div>
+      <div class="change green" style="font-size:1.3em;">-1.00%</div>
+      <div class="point">失守4000点</div>
+    </div>
+    <div class="index-card">
+      <div class="name">深证成指</div>
+      <div class="change green">-2.29%</div>
+      <div class="point">权重拖累</div>
+    </div>
+    <div class="index-card">
+      <div class="name">创业板指</div>
+      <div class="change green" style="font-size:1.8em;">-4.37%</div>
+      <div class="point">宁德时代暴跌拖累</div>
+    </div>
+    <div class="index-card">
+      <div class="name">科创50</div>
+      <div class="change green" style="font-size:1.8em;">-5.53%</div>
+      <div class="point">昨日+8%→今日-5.5%</div>
+    </div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric">
+      <div class="val" style="color:#e67e22;">3.39万亿</div>
+      <div class="lbl">两市成交额（放量+4748亿）</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#c0392b;">3772:1678</div>
+      <div class="lbl">上涨:下跌（68%上涨）</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#c0392b;">95</div>
+      <div class="lbl">涨停家数</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#27ae60;">7</div>
+      <div class="lbl">跌停家数</div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;">
+    <h3>指数涨跌幅对比</h3>
+    <div class="bar-row">
+      <span class="label">上证指数</span>
+      <div class="bar-wrap"><div class="bar-fill green-bar" style="width:18%;">-1.00%</div></div>
+    </div>
+    <div class="bar-row">
+      <span class="label">深证成指</span>
+      <div class="bar-wrap"><div class="bar-fill green-bar" style="width:41%;">-2.29%</div></div>
+    </div>
+    <div class="bar-row">
+      <span class="label">创业板指</span>
+      <div class="bar-wrap"><div class="bar-fill green-bar" style="width:79%;">-4.37%</div></div>
+    </div>
+    <div class="bar-row">
+      <span class="label">科创50</span>
+      <div class="bar-wrap"><div class="bar-fill green-bar" style="width:100%;">-5.53%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 涨跌分布 -->
+<div class="card">
+  <h2>📈 涨跌分布</h2>
+  <div style="font-size:0.85em; color:var(--sub); margin-bottom:12px;">全市场上涨68%，但黄白线严重分化——指数大跌但多数个股上涨</div>
+  
+  <div class="grid-2">
+    <div>
+      <h3>涨跌家数</h3>
+      <div class="bar-row">
+        <span class="label">📈 上涨</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:68%;">3772</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">📉 下跌</span>
+        <div class="bar-wrap"><div class="bar-fill green-bar" style="width:30%;">1678</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">平盘</span>
+        <div class="bar-wrap"><div class="bar-fill blue-bar" style="width:2%;">80</div></div>
+      </div>
+    </div>
+    <div>
+      <h3>涨跌幅区间分布</h3>
+      <div class="bar-row">
+        <span class="label">涨停</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:30%;">95</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">>7%</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:25%;">126</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">5-7%</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:35%;">208</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">2-5%</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:70%;">1585</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">0-2%</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:80%;">1758</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">0~-2%</span>
+        <div class="bar-wrap"><div class="bar-fill green-bar" style="width:35%;">754</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">-2~-5%</span>
+        <div class="bar-wrap"><div class="bar-fill green-bar" style="width:25%;">540</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">-5~-7%</span>
+        <div class="bar-wrap"><div class="bar-fill green-bar" style="width:12%;">190</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label"><-7%</span>
+        <div class="bar-wrap"><div class="bar-fill green-bar" style="width:10%;">187</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">跌停</span>
+        <div class="bar-wrap"><div class="bar-fill green-bar" style="width:4%;">7</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块轮动 -->
+<div class="card">
+  <h2>🔄 板块轮动与资金流向</h2>
+  
+  <div class="grid-2">
+    <div>
+      <h3>🏆 行业板块涨幅 TOP6</h3>
+      <table>
+        <tr><th>板块</th><th>涨幅</th><th>领涨股</th></tr>
+        <tr><td>航天装备Ⅱ</td><td class="red">+10.22%</td><td>航天环宇(+20%)</td></tr>
+        <tr><td>风电设备</td><td class="red">+4.40%</td><td>泰胜风能(+12.8%)</td></tr>
+        <tr><td>广告营销</td><td class="red">+4.19%</td><td>福石控股(+19.2%)</td></tr>
+        <tr><td>航海装备Ⅱ</td><td class="red">+4.02%</td><td>海兰信(+20%)</td></tr>
+        <tr><td>医疗服务</td><td class="red">+4.02%</td><td>益诺思(+20%)</td></tr>
+        <tr><td>影视院线</td><td class="red">+3.82%</td><td>幸福蓝海(+10.8%)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>💡 概念板块涨幅 TOP6</h3>
+      <table>
+        <tr><th>概念</th><th>涨幅</th><th>领涨股</th></tr>
+        <tr><td>航天系</td><td class="red">+6.60%</td><td>XD航天电(+10%)</td></tr>
+        <tr><td>CRO</td><td class="red">+5.52%</td><td>和元生物(+16.7%)</td></tr>
+        <tr><td>太空算力</td><td class="red">+5.45%</td><td>乾照光电(+12.2%)</td></tr>
+        <tr><td>SpaceX概念</td><td class="red">+4.62%</td><td>超捷股份(+11.6%)</td></tr>
+        <tr><td>爱奇艺概念</td><td class="red">+4.56%</td><td>幸福蓝海(+10.8%)</td></tr>
+        <tr><td>Manus概念</td><td class="red">+4.53%</td><td>每日互动(+5.9%)</td></tr>
+      </table>
+    </div>
+  </div>
+  
+  <h3>💰 主力资金净流入 TOP3</h3>
+  <table>
+    <tr><th>板块</th><th>涨幅</th><th>主力净流入(万)</th><th>5日净流入(万)</th></tr>
+    <tr><td>航天装备Ⅱ</td><td class="red">+10.22%</td><td class="red">300,825</td><td class="red">228,711</td></tr>
+    <tr><td>军工电子Ⅱ</td><td class="red">+0.88%</td><td class="red">268,592</td><td class="green">-23,471</td></tr>
+    <tr><td>IT服务Ⅱ</td><td class="red">+2.34%</td><td class="red">190,171</td><td class="red">377,937</td></tr>
+  </table>
+  
+  <div style="margin-top: 16px; padding: 12px; background: #fef5f5; border-radius: 8px; border-left: 4px solid var(--green);">
+    <strong style="color:var(--green);">⚠️ 资金大幅流出：</strong>
+    电子板块全天净流出<span style="color:var(--green); font-weight:700;">234亿</span>，兆易创新单票净流出65.9亿（利好兑现出货典型）。半导体设备（华亚智能跌停）、储能（海博思创-12%）、锂矿（融捷股份连续3日跌停）领跌。
+  </div>
+</div>
+
+<!-- 利好利空消息 -->
+<div class="card">
+  <h2>📰 今日重大消息汇总</h2>
+  
+  <h3>🟢 利好</h3>
+  <div class="news-item">
+    <span class="tag tag-bullish">宏观</span>
+    <strong>央行季度会议释放适度宽松信号</strong>，信贷资源重点向半导体、AI、算力、高端制造等硬核科技领域倾斜。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bullish">宏观</span>
+    <strong>IMF上调中国全年GDP增长预期</strong>，修复市场整体基本面信心。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bullish">产业</span>
+    <strong>长鑫科技启动科创板IPO</strong>，预计募资295亿元，2026上半年净利润预增2244%-2544%，产业链覆盖超30家A股上市公司。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bullish">产业</span>
+    <strong>先进封装供需缺口延续至2027年</strong>，华天科技4天3板续创新高。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bullish">产业</span>
+    <strong>世界人工智能大会</strong>7月17-20日上海举行，智算、具身智能受关注。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bullish">海外</span>
+    <strong>美联储年内大幅加息概率极低</strong>，后续政策锚定通胀，市场无需过度担忧紧缩。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bullish">海外</span>
+    <strong>隔夜美股科技股反弹</strong>，存储板块强势领涨，海力士美股上市认购踊跃。
+  </div>
+
+  <h3>🔴 利空</h3>
+  <div class="news-item">
+    <span class="tag tag-bearish">市场</span>
+    <strong>科创50昨日暴涨8%后今日暴跌5.5%</strong>，典型"利好兑现+获利了结"，尾盘35分钟集中抛售。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bearish">个股</span>
+    <strong>宁德时代暴跌7.29%</strong>，作为创业板第一权重股严重拖累指数。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bearish">个股</span>
+    <strong>兆易创新净流出65.9亿</strong>——前日发预增1099%公告，典型"利好出尽"出货。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bearish">板块</span>
+    <strong>半导体设备重挫</strong>（华亚智能跌停）、储能（海博思创-12%）、锂矿连续跌停、电子特气（中船特气-19%）。
+  </div>
+  <div class="news-item">
+    <span class="tag tag-bearish">地缘</span>
+    <strong>美伊摩擦</strong>扰动有限但需持续关注，VIX 15.8仍在低位。
+  </div>
+</div>
+
+<!-- 用户持仓分析 -->
+<div class="card">
+  <h2>💼 持仓分析</h2>
+  
+  <div class="metric-row">
+    <div class="metric">
+      <div class="val" style="color:#2c3e50;">¥27,075</div>
+      <div class="lbl">总市值</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#27ae60;">-¥115</div>
+      <div class="lbl">今日盈亏 (-0.40%)</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#e67e22;">91.7%</div>
+      <div class="lbl">QDII占比 ⚠️过高</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#c0392b;">74.8%</div>
+      <div class="lbl">单只基金集中度 🔴</div>
+    </div>
+  </div>
+
+  <h3>📋 持仓明细</h3>
+  <table>
+    <tr>
+      <th>基金代码</th><th>基金名称</th><th>市值(元)</th><th>今日盈亏</th><th>涨跌</th><th>占比</th><th>类型</th>
+    </tr>
+    <tr>
+      <td>100055</td>
+      <td>富国全球科技互联网(QDII)</td>
+      <td>20,268.80</td>
+      <td class="red">+268.60</td>
+      <td class="red">+1.3%</td>
+      <td>74.8%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+    </tr>
+    <tr>
+      <td>024239</td>
+      <td>华夏全球科技先锋(QDII)C</td>
+      <td>2,898.90</td>
+      <td class="green">-101.08</td>
+      <td class="green">-3.4%</td>
+      <td>10.7%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+    </tr>
+    <tr>
+      <td>025856</td>
+      <td>华夏中证电网设备ETF联接A</td>
+      <td>1,218.14</td>
+      <td class="green">-181.94</td>
+      <td class="green">-13.0%</td>
+      <td>4.5%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+    </tr>
+    <tr>
+      <td>016665</td>
+      <td>天弘全球高端制造(QDII)C</td>
+      <td>909.94</td>
+      <td class="green">-90.08</td>
+      <td class="green">-9.0%</td>
+      <td>3.4%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+    </tr>
+    <tr>
+      <td>018147</td>
+      <td>建信新兴市场优选(QDII)C</td>
+      <td>753.66</td>
+      <td class="green">-36.36</td>
+      <td class="green">-4.6%</td>
+      <td>2.8%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+    </tr>
+    <tr>
+      <td>008087</td>
+      <td>华夏中证5G通信ETF联接C</td>
+      <td>281.09</td>
+      <td class="red">+11.10</td>
+      <td class="red">+4.1%</td>
+      <td>1.0%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+    </tr>
+    <tr>
+      <td>021894</td>
+      <td>易方达半导体材料设备ETF联接C</td>
+      <td>211.46</td>
+      <td class="red">+11.47</td>
+      <td class="red">+5.7%</td>
+      <td>0.8%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+    </tr>
+    <tr>
+      <td>020109</td>
+      <td>富国信创ETF联接C</td>
+      <td>207.03</td>
+      <td class="red">+7.03</td>
+      <td class="red">+3.5%</td>
+      <td>0.8%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+    </tr>
+    <tr>
+      <td>011452</td>
+      <td>华泰柏瑞质量成长C</td>
+      <td>206.57</td>
+      <td class="red">+6.57</td>
+      <td class="red">+3.3%</td>
+      <td>0.8%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+    </tr>
+    <tr>
+      <td>007818</td>
+      <td>国泰中证通信设备ETF联接C</td>
+      <td>119.63</td>
+      <td class="green">-10.37</td>
+      <td class="green">-8.0%</td>
+      <td>0.4%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+    </tr>
+  </table>
+
+  <h3>📊 持仓结构</h3>
+  <div class="grid-2">
+    <div>
+      <div class="bar-row">
+        <span class="label">QDII科技</span>
+        <div class="bar-wrap"><div class="bar-fill red-bar" style="width:92%;">91.7%</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">A股科技</span>
+        <div class="bar-wrap"><div class="bar-fill blue-bar" style="width:4%;">3.8%</div></div>
+      </div>
+      <div class="bar-row">
+        <span class="label">电网设备</span>
+        <div class="bar-wrap"><div class="bar-fill blue-bar" style="width:5%;">4.5%</div></div>
+      </div>
+    </div>
+    <div>
+      <svg viewBox="0 0 200 200" width="200" height="200">
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#e1e5ea" stroke-width="30"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#e74c3c" stroke-width="30"
+          stroke-dasharray="460.5 502.5" stroke-dashoffset="125.6" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#3498db" stroke-width="30"
+          stroke-dasharray="22.6 502.5" stroke-dashoffset="-334.9" transform="rotate(-90 100 100)"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="#27ae60" stroke-width="30"
+          stroke-dasharray="19.4 502.5" stroke-dashoffset="-357.5" transform="rotate(-90 100 100)"/>
+        <text x="100" y="95" text-anchor="middle" font-size="11" fill="#636e72">QDII 91.7%</text>
+        <text x="100" y="112" text-anchor="middle" font-size="9" fill="#636e72">A股科技 3.8% | 电网 4.5%</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="risk-box">
+    <h4>⚠️ 持仓风险警示</h4>
+    <ul style="margin-left: 20px; line-height: 2;">
+      <li><strong>QDII占比91.7%</strong>——严重过度集中，汇率波动、海外政策、地缘风险均可能集中冲击</li>
+      <li><strong>富国全球科技(100055)单只占74.8%</strong>——极端集中，一只基金的波动几乎决定整体盈亏</li>
+      <li><strong>QDII限购加剧</strong>——近期多只QDII基金降额至10元/日，流动性风险上升</li>
+      <li><strong>科技板块日内振幅极大</strong>——今日从+2%到-5.5%，波动率远超正常水平</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 调仓建议 -->
+<div class="card">
+  <h2>🎯 调仓建议</h2>
+
+  <div class="advice-card sell">
+    <div class="fund-name">富国全球科技互联网股票(QDII)A (100055)</div>
+    <div class="action" style="color:var(--green);">🔻 减仓 20-30%（约4,000-6,000元）</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>74.8%极端集中是最大风险。该基金今日+1.3%表现不错，正是减仓窗口。分批操作，每次减1,000-2,000元，3-5次分两周完成。QDII净值有滞后性（T+2确认），注意净值和汇率波动。<br>
+      <strong>目标：</strong>降至50-55%仓位（约13,500-15,000元）
+    </p>
+  </div>
+
+  <div class="advice-card hold">
+    <div class="fund-name">华夏全球科技先锋混合(QDII)C (024239)</div>
+    <div class="action" style="color:var(--blue);">➖ 持有观察</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>占比10.7%尚可。今日-3.4%跑输同类，需观察后续表现。若连续跑输，可考虑置换为同类更优QDII。
+    </p>
+  </div>
+
+  <div class="advice-card sell">
+    <div class="fund-name">华夏中证电网设备主题ETF联接A (025856)</div>
+    <div class="action" style="color:var(--green);">🔻 止损减持 50%</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>今日-13%重创，累计亏损已达-13%。电网设备非当前市场主线（今日领涨是航天/军工/CRO），且A股科技方向切换明显。减仓止损释放约600元，转投更有弹性的方向。<br>
+      <strong>注意：</strong>如看好长线电力基建逻辑，也可保留但设硬止损线-15%。
+    </p>
+  </div>
+
+  <div class="advice-card hold">
+    <div class="fund-name">建信新兴市场优选混合(QDII)C (018147)</div>
+    <div class="action" style="color:var(--blue);">➖ 持有</div>
+    <p style="color:var(--sub);">新兴市场多元化配置，与美股科技形成互补，占比2.8%适中，继续持有。</p>
+  </div>
+
+  <div class="advice-card buy">
+    <div class="fund-name">易方达半导体材料设备ETF联接C (021894) / 华夏中证5G通信ETF联接C (008087)</div>
+    <div class="action" style="color:var(--red);">🔼 小幅加仓（合计+500-800元）</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>今日A股半导体+5.7%、5G+4.1%逆势走强，产业逻辑扎实（长鑫IPO、先进封装缺口、大基金三期）。但注意科创50/半导体波动极大（昨天+8%、今天-5.5%），建议<strong>等回调2-3%再介入</strong>，不要追高。
+    </p>
+  </div>
+
+  <div class="advice-card buy">
+    <div class="fund-name">新增配置建议：沪深300指数或科创50指数基金</div>
+    <div class="action" style="color:var(--red);">🔼 建议新增 2,000-3,000元</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>持仓完全没有宽基指数作为压舱石。科创50经过今日-5.5%回调后性价比提升，且科技仍是全年主线（央行定向宽松、AI产业趋势、中报业绩驱动）。分批定投，在科技回调日加仓，切忌一把梭。
+    </p>
+  </div>
+
+  <h3>📊 调整后目标仓位结构</h3>
+  <table>
+    <tr><th>类型</th><th>当前占比</th><th>目标占比</th><th>变化</th></tr>
+    <tr><td>QDII全球科技</td><td><span class="badge badge-red">91.7%</span></td><td><span class="badge badge-orange">60-65%</span></td><td>↓ 约30%</td></tr>
+    <tr><td>A股科技主题</td><td><span class="badge badge-blue">3.8%</span></td><td><span class="badge badge-blue">15-20%</span></td><td>↑ 约15%</td></tr>
+    <tr><td>宽基指数</td><td><span class="badge badge-blue">0%</span></td><td><span class="badge badge-blue">10-15%</span></td><td>🆕 新增</td></tr>
+    <tr><td>现金/灵活</td><td><span class="badge badge-blue">0%</span></td><td><span class="badge badge-blue">5-10%</span></td><td>🆕 预留</td></tr>
+    <tr><td>其他（电网等）</td><td><span class="badge badge-blue">4.5%</span></td><td><span class="badge badge-orange">2-3%</span></td><td>↓ 止损</td></tr>
+  </table>
+</div>
+
+<!-- 执行策略 -->
+<div class="card">
+  <h2>⏱️ 执行策略与节奏</h2>
+  
+  <div style="padding: 12px 16px; background: #f0f4ff; border-radius: 8px; margin-bottom: 16px;">
+    <strong>核心原则：不急不躁，分批操作，在反弹日减仓、在回调日加仓。</strong>
+  </div>
+
+  <h3>第一阶段（本周内）</h3>
+  <table>
+    <tr><td style="width:30px;">1️⃣</td><td>减仓富国全球科技 2,000元（趁+1.3%反弹窗口）</td></tr>
+    <tr><td>2️⃣</td><td>减仓/止损电网设备 50%（约600元）</td></tr>
+    <tr><td>3️⃣</td><td>暂时观望，不急于加仓A股科技（等科创50回调企稳）</td></tr>
+  </table>
+
+  <h3>第二阶段（下周）</h3>
+  <table>
+    <tr><td style="width:30px;">4️⃣</td><td>再减富国全球科技 2,000元</td></tr>
+    <tr><td>5️⃣</td><td>在科创50回调超3%时，定投科创50指数基金 1,000元</td></tr>
+    <tr><td>6️⃣</td><td>在半导体/5G回调日，加仓A股科技基金 500元</td></tr>
+  </table>
+
+  <h3>第三阶段（两周后）</h3>
+  <table>
+    <tr><td style="width:30px;">7️⃣</td><td>完成QDII仓位调整至60-65%</td></tr>
+    <tr><td>8️⃣</td><td>宽基指数仓位达到10%以上</td></tr>
+    <tr><td>9️⃣</td><td>预留5-10%现金应对突发行情</td></tr>
+  </table>
+</div>
+
+<!-- 风险提示 -->
+<div class="risk-box" style="margin-top: 20px;">
+  <h4>⚠️ 风险提示</h4>
+  <ol style="margin-left: 20px; line-height: 2;">
+    <li><strong>QDII净值滞后风险：</strong>QDII基金净值T+1或T+2确认，且含汇率波动，实际赎回价格可能与估算有偏差。</li>
+    <li><strong>科技板块高波动：</strong>科创50日振幅可达8%+，追高极易被套，务必在回调日操作。</li>
+    <li><strong>地缘政治风险：</strong>美伊摩擦若升级可能引发全球risk-off，科技股首当其冲。</li>
+    <li><strong>汇率风险：</strong>QDII持仓受人民币/美元汇率影响，若人民币升值将侵蚀QDII收益。</li>
+    <li><strong>流动性风险：</strong>近期多只QDII限购加剧，大额赎回可能受限。</li>
+    <li><strong>以上内容仅供参考，不构成投资建议。投资有风险，决策需谨慎。</strong></li>
+  </ol>
+</div>
+
+<!-- 一句话总结 -->
+<div class="card" style="text-align:center; background: linear-gradient(135deg, #1a1a2e, #16213e); color:#fff;">
+  <h2 style="border:none; color:#fff; justify-content:center;">💬 一句话总结</h2>
+  <p style="font-size:1.3em; line-height:1.8;">
+    今天是"涨到你信→跌到你怕"的经典剧本——科创50两天从+8%到-5.5%，好在你的QDII仓位抗跌，但<strong>74.8%押注一只基金的风险比市场波动本身更危险</strong>，趁反弹分散才是正道。
+  </p>
+</div>
+
+<div style="text-align:center; color:var(--sub); padding: 20px; font-size: 0.85em;">
+  报告生成时间：2026年7月10日 15:30 | 数据来源：腾讯自选股、养基宝、东方财富、新浪财经<br>
+  ⚠️ 本报告由AI自动生成，仅供参考，不构成投资建议。投资有风险，决策需谨慎。
+</div>
+
+</div>
+</body>
+</html>
