@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>周末国内外消息汇总与下周A股走势研判 — 2026年7月12日</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --sub: #636e72;
+    --red: #e74c3c;
+    --green: #27ae60;
+    --blue: #3498db;
+    --orange: #e67e22;
+    --purple: #8e44ad;
+    --border: #e1e5ea;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --accent-bg: #f0f4ff;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff; padding: 40px 30px; border-radius: 16px; margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .header h1 { font-size: 2em; margin-bottom: 6px; }
+  .header .date { color: #a0b4d0; font-size: 0.95em; }
+  .header .tagline { margin-top: 12px; padding: 8px 16px; background: rgba(255,255,255,0.1); border-radius: 8px; display: inline-block; font-size: 0.9em; }
+  .card { background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .card h2 { font-size: 1.3em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--blue); display: flex; align-items: center; gap: 8px; }
+  .card h3 { font-size: 1.05em; margin: 16px 0 10px; color: #34495e; }
+  .conclusion-box {
+    background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+    border: 2px solid var(--blue);
+    border-radius: 12px; padding: 20px 24px; margin-bottom: 20px;
+  }
+  .conclusion-box h2 { color: var(--blue); border-bottom-color: var(--blue); margin-top: 0; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .index-card {
+    background: var(--card); border-radius: 12px; padding: 20px; text-align: center;
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+  .index-card .name { font-size: 0.85em; color: var(--sub); margin-bottom: 4px; }
+  .index-card .change { font-size: 1.6em; font-weight: 700; }
+  .index-card .point { font-size: 0.85em; color: var(--sub); margin-top: 2px; }
+  .red { color: var(--red); }
+  .green { color: var(--green); }
+  .bar-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 0.9em; }
+  .bar-row .label { width: 100px; text-align: right; margin-right: 10px; font-weight: 600; }
+  .bar-row .bar-wrap { flex: 1; height: 22px; background: #f0f0f0; border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-row .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.8em; font-weight: 700; color: #fff; min-width: 40px; text-align: right; }
+  .bar-fill.red-bar { background: var(--red); }
+  .bar-fill.green-bar { background: var(--green); }
+  .bar-fill.blue-bar { background: var(--blue); }
+  .bar-fill.orange-bar { background: var(--orange); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border); color: var(--sub); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover { background: #f8f9ff; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; font-weight: 600; }
+  .badge-green { background: #d4edda; color: #155724; }
+  .badge-red { background: #f8d7da; color: #721c24; }
+  .badge-blue { background: #d6e4f0; color: #1a5276; }
+  .badge-orange { background: #fff3cd; color: #856404; }
+  .badge-purple { background: #e8daef; color: #6c3483; }
+  .news-item { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+  .news-item:last-child { border-bottom: none; }
+  .news-item .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; margin-right: 8px; font-weight: 700; }
+  .tag-bullish { background: #ffebee; color: var(--red); }
+  .tag-bearish { background: #e8f5e9; color: var(--green); }
+  .tag-neutral { background: #e3f2fd; color: #1565c0; }
+  .advice-card {
+    background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 14px;
+    box-shadow: var(--shadow); border-left: 5px solid var(--border);
+  }
+  .advice-card.buy { border-left-color: var(--red); background: #fffbfb; }
+  .advice-card.hold { border-left-color: var(--blue); background: #fafbff; }
+  .advice-card.sell { border-left-color: var(--green); background: #fbfffb; }
+  .advice-card .fund-name { font-weight: 700; font-size: 1.05em; }
+  .advice-card .action { font-size: 1.3em; font-weight: 700; margin: 6px 0; }
+  .risk-box {
+    background: #fffdf5; border: 1px solid var(--orange); border-radius: 10px;
+    padding: 16px 20px; margin-top: 16px;
+  }
+  .risk-box h4 { color: var(--orange); margin-bottom: 8px; }
+  .metric-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .metric { flex: 1; min-width: 140px; background: var(--accent-bg); border-radius: 10px; padding: 16px; text-align: center; }
+  .metric .val { font-size: 1.5em; font-weight: 700; }
+  .metric .lbl { font-size: 0.8em; color: var(--sub); margin-top: 4px; }
+  .score-bar { display: flex; align-items: center; margin-bottom: 10px; }
+  .score-bar .label { width: 80px; font-weight: 600; font-size: 0.85em; }
+  .score-bar .bar { flex: 1; height: 24px; background: #f0f0f0; border-radius: 12px; overflow: hidden; }
+  .score-bar .fill { height: 100%; border-radius: 12px; display: flex; align-items: center; padding-left: 10px; font-size: 0.8em; font-weight: 700; color: #fff; }
+  .timeline-step { display: flex; gap: 12px; margin-bottom: 12px; }
+  .timeline-step .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85em; flex-shrink: 0; }
+  .timeline-step .step-content { flex: 1; }
+  .timeline-step .step-content .step-title { font-weight: 600; margin-bottom: 2px; }
+  .timeline-step .step-content .step-desc { font-size: 0.85em; color: var(--sub); }
+  @media (max-width: 768px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>周末国内外消息汇总与下周A股走势研判</h1>
+  <div class="date">2026年7月12日（周日）· 下周一7月13日开盘前发布</div>
+  <div class="tagline">📰 央行释放宽松信号 · 国常会力推算力网+新兴支柱产业 · 创新药出海近千亿美元 · 霍尔木兹海峡关闭地缘风险骤升 · 券商半年报集体爆发</div>
+</div>
+
+<!-- 核心结论 -->
+<div class="conclusion-box">
+  <h2>📋 核心结论</h2>
+  <p style="font-size:1.05em; line-height:1.8;">
+    <strong>周末消息面"利好多于利空"，但地缘黑天鹅不容忽视。</strong>国内方面，央行二季度例会明确延续适度宽松、国常会部署算力网和新兴支柱产业、创新药出海爆发、券商半年报集体预增、838亿ETF逆势抄底——基本面和政策面均偏暖。<br><br>
+    <strong>但海外风险急剧升温：</strong>伊朗宣布关闭霍尔木兹海峡，全球20%石油运输受阻，布伦特原油突破78美元，输入型通胀压力骤增。美联储半年度报告显示通胀升至4.1%，沃什偏鹰基调下降息预期进一步推后。<br><br>
+    <strong>下周A股预判：</strong>预计<strong style="color:var(--blue);">周一低开震荡，随后企稳修复</strong>。4000点关口仍是多空拉锯核心区域。科技板块经历上周五-5.5%暴跌后有技术性修复需求，但机构半年考核止盈压力仍在。风格上大概率<strong>"高低切换"</strong>——资金从高位科技股向创新药、券商、消费医药等低位板块扩散。<br><br>
+    <strong>对你的持仓影响：</strong>QDII占比91.7%的结构在霍尔木兹海峡危机下汇率和海外波动风险加大。建议<strong style="color:var(--red);">趁反弹继续降低QDII集中度</strong>，同时利用创新药、券商板块的催化窗口逐步增配A股。
+  </p>
+</div>
+
+<!-- 上周市场回顾 -->
+<div class="card">
+  <h2>📉 上周A股收盘回顾（7月7日-11日）</h2>
+  
+  <div class="grid-4">
+    <div class="index-card">
+      <div class="name">上证指数</div>
+      <div class="change green">3996.16</div>
+      <div class="point">周跌1.17% · 跌破4000点</div>
+    </div>
+    <div class="index-card">
+      <div class="name">深证成指</div>
+      <div class="change green">15046.67</div>
+      <div class="point">周跌3.53%</div>
+    </div>
+    <div class="index-card">
+      <div class="name">创业板指</div>
+      <div class="change green">3842.73</div>
+      <div class="point">周跌4.41% · 周K三连阴</div>
+    </div>
+    <div class="index-card">
+      <div class="name">科创50</div>
+      <div class="change red">2064.98</div>
+      <div class="point">周涨4.52% · 周四+8%周五大跌-5.5%</div>
+    </div>
+  </div>
+
+  <div class="metric-row">
+    <div class="metric">
+      <div class="val" style="color:#e67e22;">3.41万亿</div>
+      <div class="lbl">周五成交额（放量+4784亿）</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#c0392b;">838亿</div>
+      <div class="lbl">本周ETF净流入（逆势抄底）</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#3498db;">2.96万亿</div>
+      <div class="lbl">两融余额（截至7月9日）</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#27ae60;">3772:1678</div>
+      <div class="lbl">周五上涨:下跌（68%上涨）</div>
+    </div>
+  </div>
+
+  <h3>📊 上周走势特征</h3>
+  <ul style="margin-left:20px; line-height:2;">
+    <li><strong>周四V型反转：</strong>科创50暴涨8.41%创年内最大单日涨幅，半导体、AI硬件全线走强</li>
+    <li><strong>周五冲高回落：</strong>科创50从+2%杀跌至-5.53%，创业板指-4.37%，科技股获利了结+利好兑现出货</li>
+    <li><strong>风格分化明显：</strong>指数大跌但68%个股上涨，杀跌集中在权重科技股，中小盘相对抗跌</li>
+    <li><strong>资金逆势抄底：</strong>838亿ETF净流入说明机构不恐慌，宽基ETF获300亿+流入</li>
+  </ul>
+</div>
+
+<!-- 海外市场 -->
+<div class="card">
+  <h2>🌍 海外市场与地缘形势</h2>
+  
+  <div class="grid-2">
+    <div>
+      <h3>美股周五收盘（7月11日）</h3>
+      <table>
+        <tr><th>指数</th><th>收盘</th><th>涨跌</th><th>周涨跌</th></tr>
+        <tr><td>道琼斯</td><td>52,637.01</td><td class="red">+0.29%</td><td class="green">-0.5%</td></tr>
+        <tr><td>纳斯达克</td><td>26,281.61</td><td class="red">+0.29%</td><td class="red">+1.7%</td></tr>
+        <tr><td>标普500</td><td>7,575.39</td><td class="red">+0.42%</td><td class="red">+1.2%</td></tr>
+      </table>
+      <div style="margin-top:10px; font-size:0.85em; color:var(--sub);">
+        🔥 热门股：英伟达+4.03%（市值重返5万亿）、Meta+5.97%（周涨14.8%）、SK海力士首日+12.76%
+      </div>
+    </div>
+    <div>
+      <h3>大宗商品</h3>
+      <table>
+        <tr><th>品种</th><th>价格</th><th>涨跌</th><th>驱动因素</th></tr>
+        <tr><td>布伦特原油</td><td>78.02美元</td><td class="red">+5.2%</td><td>霍尔木兹海峡封锁</td></tr>
+        <tr><td>WTI原油</td><td>73.52美元</td><td class="red">+4.37%</td><td>美伊冲突升级</td></tr>
+        <tr><td>2年期美债</td><td>4.21%</td><td class="red">↑</td><td>通胀预期升温</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="risk-box">
+    <h4>🔴 霍尔木兹海峡危机——本周末最大黑天鹅</h4>
+    <ul style="margin-left:20px; line-height:1.8; font-size:0.9em;">
+      <li><strong>7月12日凌晨</strong>，伊朗革命卫队正式宣布关闭霍尔木兹海峡，禁止任何船只通行，"直至美国停止干涉"</li>
+      <li>海峡承载全球<strong>20%石油</strong>和<strong>26%液化天然气</strong>运输，数百艘油轮滞留波斯湾</li>
+      <li>美军对伊朗境内80+处目标空袭，伊朗反击打击巴林、科威特美军基地（85处）</li>
+      <li>特朗普宣布停火协议"已终结"，美国撤销伊朗石油销售豁免</li>
+      <li><strong>对A股影响：</strong>短期避险情绪升温，但A股已有独立行情韧性；油价飙升利好新能源/煤炭，利空航空/化工</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 周末利好 -->
+<div class="card">
+  <h2>🟢 周末重大利好消息</h2>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">宏观·重磅</span>
+    <strong>央行二季度例会：继续实施适度宽松货币政策</strong>——加大逆周期和跨周期调节力度，保持流动性充裕。银河证券预计三季度可能降息降准。新增"结构分化"挑战表述，政策更注重精准滴灌。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">政策·重磅</span>
+    <strong>国常会部署数字中国+新兴支柱产业</strong>（7月10日）——系统推进数字中国建设，加快新一代通信网、算力网建设；全链条推动新兴支柱产业规模化发展，加强基础研究和关键软硬件攻关。<strong style="color:var(--red);">直接利好：算力/AI/半导体/通信</strong>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">产业·重磅</span>
+    <strong>创新药出海爆发：上半年BD金额达997亿美元</strong>——同比增长约80%，接近2025年全年73%。中国生物制药将PDE3/4抑制剂授予阿斯利康，首付款2亿美元。第十二批集采明确豁免创新药，全链条政策打通。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">政策</span>
+    <strong>国务院批复《中医药振兴发展"十五五"规划》</strong>——坚持中西医并重，加快推进中医药现代化，推动中医药走向世界。利好中药创新、中医医疗服务。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">产业·存储</span>
+    <strong>SK海力士美股IPO首日涨12.76%，市值1.22万亿美元</strong>——全部募资投向HBM先进封装。CEO预警2027年存储行业将迎史上最严重供应短缺，紧缺延续至2030年后。通富微电与SK海力士签署四年62.8亿元HBM封装大单。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">产业·半导体</span>
+    <strong>商务部对6N超高纯电子氦气实施临时出口管制</strong>——无过渡期，国内气源优先供给晶圆、先进封装。高纯氦是EUV、HBM堆叠核心材料，国产替代加速。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">业绩·券商</span>
+    <strong>10家券商半年报集体预增</strong>——中信证券233亿(+70%)、国泰海通200亿+、招商证券100-110亿(+93-112%)、天风证券最高预增694%。券商板块业绩兑现+估值修复逻辑明确。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">资金面</span>
+    <strong>本周838亿元资金借道ETF逆势入场</strong>——宽基ETF净流入300亿+，行业主题ETF净流入500亿+。机构资金不恐慌，低位抄底信号明确。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">政策</span>
+    <strong>商务部等部门印发《关于加快零售业创新发展的意见》</strong>——带动就业超8000万人，促进消费复苏。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bullish">产业</span>
+    <strong>长鑫科技7月13日开启询价、16日申购</strong>——募资295亿元，本年A股最大IPO。带动国产DRAM设备、材料、封测全链订单预期。长江存储IPO辅导正式收官。
+  </div>
+</div>
+
+<!-- 周末利空 -->
+<div class="card">
+  <h2>🔴 周末重大利空消息</h2>
+
+  <div class="news-item">
+    <span class="tag tag-bearish">地缘·黑天鹅</span>
+    <strong>伊朗关闭霍尔木兹海峡，美伊冲突全面升级</strong>——全球20%石油运输中断，布伦特原油突破78美元，若持续封锁可能冲击90-100美元。输入型通胀压力陡增，对A股短期形成情绪压制。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bearish">海外·鹰派</span>
+    <strong>美联储半年度货币政策报告：通胀升至4.1%</strong>——沃什上任后首份报告偏鹰，降息预期进一步推后。2年期美债收益率升至4.21%。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bearish">资金面</span>
+    <strong>公募半年考核止盈集中释放</strong>——科技板块上半年普遍翻倍，机构在7月中旬窗口集中减仓锁定利润。上周五半导体板块单日净流出268亿，佰维存储净流出13亿。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bearish">IPO分流</span>
+    <strong>长鑫295亿巨量IPO申购</strong>——市场担忧场内流动性分流，避险资金提前减仓科技股。利空仅在申购前（7月16日前），缴款结束后压力消退。
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-bearish">市场传闻</span>
+    <strong>兆易创新高管被留置传闻扩散</strong>——公司未发布公告，纯市场传闻，带来个股和板块情绪压制。属于短期扰动。
+  </div>
+</div>
+
+<!-- 下周走势研判 -->
+<div class="card">
+  <h2>📈 下周A股走势研判（7月13日-17日）</h2>
+
+  <h3>🎯 多空力量评分</h3>
+  <div class="score-bar">
+    <span class="label">利好政策</span>
+    <div class="bar"><div class="fill red-bar" style="width:85%;">85分 · 强</div></div>
+  </div>
+  <div class="score-bar">
+    <span class="label">资金面</span>
+    <div class="bar"><div class="fill red-bar" style="width:75%;">75分 · 偏多</div></div>
+  </div>
+  <div class="score-bar">
+    <span class="label">业绩面</span>
+    <div class="bar"><div class="fill red-bar" style="width:70%;">70分 · 偏多</div></div>
+  </div>
+  <div class="score-bar">
+    <span class="label">地缘风险</span>
+    <div class="bar"><div class="fill green-bar" style="width:80%;">80分 · 利空强</div></div>
+  </div>
+  <div class="score-bar">
+    <span class="label">技术面</span>
+    <div class="bar"><div class="fill green-bar" style="width:60%;">60分 · 偏空</div></div>
+  </div>
+  <div class="score-bar">
+    <span class="label">海外流动性</span>
+    <div class="bar"><div class="fill green-bar" style="width:65%;">65分 · 偏空</div></div>
+  </div>
+
+  <div style="margin-top:20px; padding:16px; background:#f0f4ff; border-radius:10px;">
+    <strong>综合研判：偏多震荡，先抑后扬</strong><br>
+    <span style="font-size:0.9em; color:var(--sub);">利好政策(85) + 资金面(75) + 业绩面(70) vs 地缘风险(80) + 技术面(60) + 海外(65) = 净偏多</span>
+  </div>
+
+  <h3>📅 逐日预判</h3>
+  <table>
+    <tr><th>日期</th><th>预判</th><th>核心逻辑</th></tr>
+    <tr>
+      <td><strong>周一 7/13</strong></td>
+      <td><span class="badge badge-orange">低开震荡</span></td>
+      <td>霍尔木兹海峡危机情绪压制+长鑫询价分流担忧，预计低开1%左右。但838亿ETF抄底+央行宽松信号提供支撑，下跌空间有限。关注3950点支撑。</td>
+    </tr>
+    <tr>
+      <td><strong>周二 7/14</strong></td>
+      <td><span class="badge badge-blue">企稳修复</span></td>
+      <td>地缘情绪消化后，政策利好开始发酵。国常会算力网部署利好科技板块修复。创新药出海催化医药板块走强。</td>
+    </tr>
+    <tr>
+      <td><strong>周三 7/15</strong></td>
+      <td><span class="badge badge-green">结构性反弹</span></td>
+      <td>6月社融信贷数据预计公布，若好于预期将提振信心。券商半年报预增催化金融板块。风格高低切换持续。</td>
+    </tr>
+    <tr>
+      <td><strong>周四 7/16</strong></td>
+      <td><span class="badge badge-blue">长鑫缴款日</span></td>
+      <td>长鑫295亿IPO缴款，短期流动性压力峰值。缴款后分流担忧消除，科技板块可能迎来修复窗口。</td>
+    </tr>
+    <tr>
+      <td><strong>周五 7/17</strong></td>
+      <td><span class="badge badge-green">震荡偏强</span></td>
+      <td>世界人工智能大会开幕(7/17-20)，智算/具身智能题材受关注。长鑫缴款压力释放后资金回流。</td>
+    </tr>
+  </table>
+
+  <h3>📊 关键点位</h3>
+  <div class="grid-3">
+    <div class="metric">
+      <div class="val" style="color:#27ae60;">3950</div>
+      <div class="lbl">强支撑位</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#e67e22;">4000</div>
+      <div class="lbl">多空争夺核心</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#e74c3c;">4060</div>
+      <div class="lbl">反弹目标位</div>
+    </div>
+  </div>
+</div>
+
+<!-- 板块机会 -->
+<div class="card">
+  <h2>🎯 下周重点板块机会</h2>
+  
+  <div class="grid-2">
+    <div>
+      <h3>🟢 看多板块</h3>
+      <table>
+        <tr><th>板块</th><th>催化逻辑</th><th>强度</th></tr>
+        <tr><td><strong>创新药/CRO</strong></td><td>出海997亿美元+集采豁免+政策松绑，估值底部</td><td><span class="badge badge-red">★★★★★</span></td></tr>
+        <tr><td><strong>券商</strong></td><td>10家半年报集体预增，牛市旗手业绩兑现</td><td><span class="badge badge-red">★★★★</span></td></tr>
+        <tr><td><strong>算力/AI硬件</strong></td><td>国常会部署算力网+AI大会临近，回调后修复</td><td><span class="badge badge-red">★★★★</span></td></tr>
+        <tr><td><strong>存储芯片</strong></td><td>SK海力士IPO火爆+HBM短缺延续+涨价周期</td><td><span class="badge badge-red">★★★★</span></td></tr>
+        <tr><td><strong>中医药</strong></td><td>"十五五"规划批复，政策催化</td><td><span class="badge badge-blue">★★★</span></td></tr>
+        <tr><td><strong>新能源/煤炭</strong></td><td>油价飙升+用电负荷创新高(15.18亿千瓦)</td><td><span class="badge badge-blue">★★★</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>🔴 看空/回避板块</h3>
+      <table>
+        <tr><th>板块</th><th>风险逻辑</th><th>强度</th></tr>
+        <tr><td><strong>高估值科技(无业绩)</strong></td><td>半年考核止盈+业绩验证期，估值消化</td><td><span class="badge badge-green">★★★★</span></td></tr>
+        <tr><td><strong>航空/物流</strong></td><td>油价飙升成本抬升</td><td><span class="badge badge-green">★★★</span></td></tr>
+        <tr><td><strong>石化化工(进口依赖)</strong></td><td>原材料成本上升</td><td><span class="badge badge-green">★★★</span></td></tr>
+        <tr><td><strong>消费电子</strong></td><td>需求疲软+存储涨价挤压利润</td><td><span class="badge badge-green">★★</span></td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 持仓分析 -->
+<div class="card">
+  <h2>💼 持仓分析与风险评估</h2>
+  
+  <div class="metric-row">
+    <div class="metric">
+      <div class="val" style="color:#2c3e50;">¥27,075</div>
+      <div class="lbl">总市值（截至7/10）</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#e67e22;">91.7%</div>
+      <div class="lbl">QDII占比 ⚠️过高</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#c0392b;">74.8%</div>
+      <div class="lbl">单只基金集中度 🔴</div>
+    </div>
+    <div class="metric">
+      <div class="val" style="color:#8e44ad;">0%</div>
+      <div class="lbl">宽基/红利/防御配置 ❌</div>
+    </div>
+  </div>
+
+  <h3>📋 持仓明细</h3>
+  <table>
+    <tr>
+      <th>代码</th><th>基金名称</th><th>市值(元)</th><th>占比</th><th>类型</th><th>下周风险评估</th>
+    </tr>
+    <tr>
+      <td>100055</td>
+      <td>富国全球科技互联网(QDII)</td>
+      <td>20,268.80</td>
+      <td>74.8%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+      <td><span class="badge badge-red">高</span> 美股波动+汇率+地缘</td>
+    </tr>
+    <tr>
+      <td>024239</td>
+      <td>华夏全球科技先锋(QDII)C</td>
+      <td>2,898.90</td>
+      <td>10.7%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+      <td><span class="badge badge-orange">中高</span> 同上</td>
+    </tr>
+    <tr>
+      <td>025856</td>
+      <td>华夏中证电网设备ETF联接A</td>
+      <td>1,218.14</td>
+      <td>4.5%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+      <td><span class="badge badge-orange">中</span> 用电高峰利好但趋势走弱</td>
+    </tr>
+    <tr>
+      <td>016665</td>
+      <td>天弘全球高端制造(QDII)C</td>
+      <td>909.94</td>
+      <td>3.4%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+      <td><span class="badge badge-orange">中高</span></td>
+    </tr>
+    <tr>
+      <td>018147</td>
+      <td>建信新兴市场优选(QDII)C</td>
+      <td>753.66</td>
+      <td>2.8%</td>
+      <td><span class="badge badge-purple">QDII</span></td>
+      <td><span class="badge badge-blue">中低</span> 分散度较好</td>
+    </tr>
+    <tr>
+      <td>008087</td>
+      <td>华夏中证5G通信ETF联接C</td>
+      <td>281.09</td>
+      <td>1.0%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+      <td><span class="badge badge-green">低</span> 国常会算力网利好</td>
+    </tr>
+    <tr>
+      <td>021894</td>
+      <td>易方达半导体材料设备ETF联接C</td>
+      <td>211.46</td>
+      <td>0.8%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+      <td><span class="badge badge-green">低</span> 存储/半导体景气延续</td>
+    </tr>
+    <tr>
+      <td>020109</td>
+      <td>富国信创ETF联接C</td>
+      <td>207.03</td>
+      <td>0.8%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+      <td><span class="badge badge-green">低</span> 国产替代主线</td>
+    </tr>
+    <tr>
+      <td>011452</td>
+      <td>华泰柏瑞质量成长C</td>
+      <td>206.57</td>
+      <td>0.8%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+      <td><span class="badge badge-green">低</span></td>
+    </tr>
+    <tr>
+      <td>007818</td>
+      <td>国泰中证通信设备ETF联接C</td>
+      <td>119.63</td>
+      <td>0.4%</td>
+      <td><span class="badge badge-blue">A股</span></td>
+      <td><span class="badge badge-green">低</span></td>
+    </tr>
+  </table>
+
+  <div class="risk-box">
+    <h4>⚠️ 本周新增风险因素</h4>
+    <ul style="margin-left:20px; line-height:2;">
+      <li><strong>霍尔木兹海峡危机对QDII的冲击：</strong>油价飙升→全球通胀预期→美联储推迟降息→美股科技股承压。你的QDII占比91.7%，直接暴露在这条传导链下</li>
+      <li><strong>人民币汇率波动：</strong>地缘冲突可能引发避险资金涌入美元，人民币贬值压力加大，QDII净值含汇率波动</li>
+      <li><strong>科技股半年考核止盈：</strong>7月中旬仍有止盈压力，但上周五-5.5%暴跌已释放部分风险</li>
+      <li><strong>QDII限购加剧：</strong>多只QDII降额至10元/日，大额赎回可能受限</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 调仓建议 -->
+<div class="card">
+  <h2>🎯 下周调仓建议</h2>
+
+  <div style="padding:12px 16px; background:#fff5f5; border-radius:8px; margin-bottom:16px; border-left:4px solid var(--red);">
+    <strong>核心策略：降QDII集中度 + 增配A股政策受益方向 + 预留防御仓位</strong><br>
+    <span style="font-size:0.85em; color:var(--sub);">霍尔木兹海峡危机使QDII风险骤升，加速减仓节奏；创新药/券商板块催化明确，逢低增配</span>
+  </div>
+
+  <div class="advice-card sell">
+    <div class="fund-name">富国全球科技互联网(QDII)A (100055) — 74.8%仓位</div>
+    <div class="action" style="color:var(--green);">🔻 减仓 3,000-4,000元（周一至周三分批）</div>
+    <p style="color:var(--sub);">
+      <strong>加速减仓理由：</strong>霍尔木兹海峡危机→油价飙升→美联储推迟降息→美股科技股承压，这条传导链直接冲击你的QDII重仓。上周五美股虽涨，但下周若地缘风险持续发酵，纳指可能回调。<br>
+      <strong>操作：</strong>周一若低开先不动，等盘中反弹至+1%以上分批减。每次1,000-1,500元，三天完成。<br>
+      <strong>目标：</strong>仓位降至60%左右（约16,000元），两周内进一步降至50-55%
+    </p>
+  </div>
+
+  <div class="advice-card sell">
+    <div class="fund-name">华夏全球科技先锋(QDII)C (024239) — 10.7%仓位</div>
+    <div class="action" style="color:var(--green);">🔻 小幅减仓 500-800元</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>QDII整体占比过高，此基金也需适度降低。若连续跑输同类，可考虑全部置换为A股方向。
+    </p>
+  </div>
+
+  <div class="advice-card sell">
+    <div class="fund-name">华夏中证电网设备ETF联接A (025856) — 4.5%仓位</div>
+    <div class="action" style="color:var(--green);">🔻 止损减持 50%（约600元）</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>上周累计亏损已达-13%，趋势走弱。虽然用电负荷创新高有短期催化，但电网设备非当前市场主线。止损释放资金转投更有弹性的方向。<br>
+      <strong>注意：</strong>如看好长线电力基建逻辑，保留50%但设硬止损-15%。
+    </p>
+  </div>
+
+  <div class="advice-card buy">
+    <div class="fund-name">🆕 新增：创新药/医药ETF联接基金</div>
+    <div class="action" style="color:var(--red);">🔼 建议新增 1,500-2,000元</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>创新药是本周末最强催化——出海997亿美元(+80%)、集采豁免、政策全链条松绑、估值历史底部。这是"政策+业绩+出海"三重共振的方向。<br>
+      <strong>标的建议：</strong>恒生医药ETF联接、创新药ETF联接、或药明康德/恒瑞医药等龙头主题基金<br>
+      <strong>操作：</strong>周一若医药板块因避险情绪回调，是更好的买入窗口
+    </p>
+  </div>
+
+  <div class="advice-card buy">
+    <div class="fund-name">🆕 新增：券商ETF联接或券商主题基金</div>
+    <div class="action" style="color:var(--red);">🔼 建议新增 1,000-1,500元</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>10家券商半年报集体预增（中信+70%、招商+93-112%），业绩兑现+估值修复。838亿ETF逆势入场也说明交投活跃度有保障。券商是"牛市旗手"，当前估值仍在低位。<br>
+      <strong>操作：</strong>下周三前后券商板块可能受业绩催化走强，可在走强前提前布局
+    </p>
+  </div>
+
+  <div class="advice-card buy">
+    <div class="fund-name">易方达半导体(021894) / 5G通信(008087) / 信创(020109)</div>
+    <div class="action" style="color:var(--red);">🔼 小幅加仓（合计+500-800元）</div>
+    <p style="color:var(--sub);">
+      <strong>理由：</strong>国常会部署算力网建设直接利好这三只基金持有的方向。上周五暴跌后有修复需求。但注意科技板块波动极大，<strong>等回调2-3%再介入</strong>，不追高。<br>
+      <strong>重点：</strong>7/17 AI大会临近，智算/具身智能题材可能在下周后半周发酵。
+    </p>
+  </div>
+
+  <div class="advice-card hold">
+    <div class="fund-name">建信新兴市场优选(QDII)C (018147)</div>
+    <div class="action" style="color:var(--blue);">➖ 持有</div>
+    <p style="color:var(--sub);">新兴市场多元化配置，占比2.8%适中，与美股科技形成互补，继续持有。</p>
+  </div>
+
+  <h3>📊 调整后目标仓位结构</h3>
+  <table>
+    <tr><th>类型</th><th>当前占比</th><th>目标占比</th><th>变化</th><th>对应方向</th></tr>
+    <tr><td>QDII全球科技</td><td><span class="badge badge-red">91.7%</span></td><td><span class="badge badge-orange">55-60%</span></td><td>↓ 约35%</td><td>减富国+华夏先锋</td></tr>
+    <tr><td>A股科技主题</td><td><span class="badge badge-blue">3.8%</span></td><td><span class="badge badge-blue">12-15%</span></td><td>↑ 约10%</td><td>加半导体/5G/信创</td></tr>
+    <tr><td>创新药/医药</td><td><span class="badge badge-blue">0%</span></td><td><span class="badge badge-red">8-10%</span></td><td>🆕 新增</td><td>创新药ETF/医药基金</td></tr>
+    <tr><td>券商金融</td><td><span class="badge badge-blue">0%</span></td><td><span class="badge badge-blue">5-8%</span></td><td>🆕 新增</td><td>券商ETF联接</td></tr>
+    <tr><td>其他（电网等）</td><td><span class="badge badge-blue">4.5%</span></td><td><span class="badge badge-orange">2-3%</span></td><td>↓ 止损</td><td>止损减持</td></tr>
+  </table>
+</div>
+
+<!-- 执行策略 -->
+<div class="card">
+  <h2>⏱️ 下周执行计划</h2>
+
+  <h3>第一阶段：周一-周三（减仓窗口）</h3>
+  <div class="timeline-step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <div class="step-title">周一开盘观察</div>
+      <div class="step-desc">预计低开1%左右。若富国全球科技随纳指低开，暂不减仓；等盘中反弹至+0.5%以上开始第一批减仓1,500元</div>
+    </div>
+  </div>
+  <div class="timeline-step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <div class="step-title">周二减仓+止损</div>
+      <div class="step-desc">继续减富国全球科技1,500元。止损电网设备50%（约600元）。若创新药板块回调，开始建仓创新药ETF 1,000元</div>
+    </div>
+  </div>
+  <div class="timeline-step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <div class="step-title">周三减仓+布局券商</div>
+      <div class="step-desc">减华夏全球科技先锋500-800元。布局券商ETF联接1,000元。小幅加仓半导体/5G（合计500元，等回调介入）</div>
+    </div>
+  </div>
+
+  <h3>第二阶段：周四-周五（观察+微调）</h3>
+  <div class="timeline-step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <div class="step-title">周四长鑫缴款日</div>
+      <div class="step-desc">市场流动性压力峰值，暂不操作。观察科技板块是否在缴款后出现修复信号</div>
+    </div>
+  </div>
+  <div class="timeline-step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <div class="step-title">周五AI大会开幕</div>
+      <div class="step-desc">若AI/算力板块因大会催化走强，可小幅加仓5G/半导体。补完创新药剩余500-1,000元仓位</div>
+    </div>
+  </div>
+
+  <h3>第三阶段：下周后（持续优化）</h3>
+  <div class="timeline-step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <div class="step-title">持续降低QDII至55%以下</div>
+      <div class="step-desc">两周内将QDII总仓位从91.7%降至55-60%，四周内降至50%以下。每次反弹日都是减仓窗口</div>
+    </div>
+  </div>
+</div>
+
+<!-- 机构观点 -->
+<div class="card">
+  <h2>🏦 十大机构下周观点汇总</h2>
+  
+  <table>
+    <tr><th>机构</th><th>核心观点</th><th>推荐方向</th></tr>
+    <tr><td><strong>开源策略</strong></td><td>"三高"风险逐步释放，科技将再出发，景气相对稀缺</td><td>半导体、AI硬件</td></tr>
+    <tr><td><strong>华金策略</strong></td><td>结构性慢牛趋势不变，风格扩散结束需强产业催化</td><td>科技+均衡配置</td></tr>
+    <tr><td><strong>广发策略</strong></td><td>科技股调整是分歧带来的，产业趋势证实后可再次出发</td><td>AI产业链</td></tr>
+    <tr><td><strong>中信建投</strong></td><td>从"集中抱团"到"百花齐放"，高低切换、多点开花</td><td>AI、机器人、券商、有色、红利</td></tr>
+    <tr><td><strong>国盛证券</strong></td><td>AI技术、安全可控、产业出海、红利投资有中长期确定性</td><td>AI+安全可控</td></tr>
+    <tr><td><strong>财信证券</strong></td><td>短期风险已较大释放，可提升风险偏好参与反弹</td><td>均衡配置</td></tr>
+  </table>
+
+  <div style="margin-top:16px; padding:12px 16px; background:#f0f4ff; border-radius:8px; font-size:0.9em;">
+    <strong>机构共识：</strong>科技仍是核心主线但短期需消化估值，风格从"集中抱团"向"高低切换"扩散。创新药、券商成为新关注方向。结构性慢牛趋势不变。
+  </div>
+</div>
+
+<!-- 风险提示 -->
+<div class="risk-box" style="margin-top:20px;">
+  <h4>⚠️ 风险提示</h4>
+  <ol style="margin-left:20px; line-height:2;">
+    <li><strong>地缘风险（最高）：</strong>霍尔木兹海峡若长期封锁，油价可能冲击90-100美元，全球通胀回升，美股回调将直接冲击QDII持仓</li>
+    <li><strong>QDII净值滞后：</strong>T+1/T+2确认+汇率波动，实际赎回价格可能与估算有偏差</li>
+    <li><strong>科技板块高波动：</strong>科创50日振幅可达8%+，追高极易被套</li>
+    <li><strong>长鑫IPO分流：</strong>7/16缴款日前短期流动性压力，缴款后缓解</li>
+    <li><strong>美联储政策不确定性：</strong>通胀4.1%偏高，沃什偏鹰，降息可能进一步推后</li>
+    <li><strong>汇率风险：</strong>地缘冲突推升美元，人民币贬值压力加大QDII汇率波动</li>
+    <li><strong>以上内容仅供参考，不构成投资建议。投资有风险，决策需谨慎。</strong></li>
+  </ol>
+</div>
+
+<!-- 一句话总结 -->
+<div class="card" style="text-align:center; background: linear-gradient(135deg, #1a1a2e, #16213e); color:#fff;">
+  <h2 style="border:none; color:#fff; justify-content:center;">💬 一句话总结</h2>
+  <p style="font-size:1.3em; line-height:1.8;">
+    周末消息面"内暖外冷"——国内政策利好密集但霍尔木兹海峡危机是实打实的黑天鹅。<br>
+    你的QDII 91.7%重仓正暴露在这条风险链下，<strong style="color:#e74c3c;">下周趁反弹继续减仓QDII、增配创新药和券商</strong>，把鸡蛋从同一个篮子里挪出来。<br>
+    4000点以下不恐慌，838亿ETF都在抄底——但前提是先把自己的仓位结构调安全。
+  </p>
+</div>
+
+<div style="text-align:center; color:var(--sub); padding:20px; font-size:0.85em;">
+  报告生成时间：2026年7月12日 17:30 | 数据来源：腾讯新闻、东方财富、财联社、新浪财经、央行官网、新华网<br>
+  ⚠️ 本报告由AI自动生成，仅供参考，不构成投资建议。投资有风险，决策需谨慎。
+</div>
+
+</div>
+</body>
+</html>
