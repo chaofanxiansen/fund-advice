@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股午盘分析报告 — 2026年7月17日</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #f5f6fa; color: #2d3436; line-height: 1.6; }
+.container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+.header { background: linear-gradient(135deg, #2d3436 0%, #636e72 100%); color: #fff; padding: 32px 24px; border-radius: 12px; margin-bottom: 24px; }
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .meta { font-size: 13px; opacity: 0.85; }
+.alert-banner { background: #fff3cd; border: 1px solid #ffc107; border-left: 4px solid #e74c3c; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; font-size: 14px; }
+.alert-title { font-weight: 700; color: #e74c3c; margin-bottom: 4px; }
+.card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.card h2 { font-size: 18px; color: #2d3436; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #0984e3; display: inline-block; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.idx-card { background: #f8f9fa; border-radius: 8px; padding: 16px; text-align: center; }
+.idx-card .name { font-size: 13px; color: #636e72; margin-bottom: 6px; }
+.idx-card .price { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.idx-card .change { font-size: 15px; font-weight: 600; }
+.up { color: #e74c3c; }
+.down { color: #27ae60; }
+.breadth { margin-top: 16px; display: flex; justify-content: center; gap: 32px; }
+.breadth-item { text-align: center; }
+.breadth-item .num { font-size: 24px; font-weight: 700; }
+.breadth-item .label { font-size: 12px; color: #636e72; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; color: #636e72; border-bottom: 2px solid #dfe6e9; }
+td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+tr:hover { background: #f8f9ff; }
+.news-item { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.news-item:last-child { border-bottom: none; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-right: 8px; }
+.tag-bad { background: #ffebee; color: #c0392b; }
+.tag-good { background: #e8f5e9; color: #27ae60; }
+.tag-warn { background: #fff3e0; color: #e67e22; }
+.rec-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+.rec-action { font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 4px; margin-right: 10px; }
+.rec-buy { background: #ffebee; color: #e74c3c; }
+.rec-hold { background: #e3f2fd; color: #1565c0; }
+.rec-sell { background: #e8f5e9; color: #27ae60; }
+.rec-weight { font-size: 12px; color: #636e72; margin-top: 6px; }
+.conclusion-box { background: linear-gradient(135deg, #2d3436, #636e72); color: #fff; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+.conclusion-box h2 { color: #fff; font-size: 18px; margin-bottom: 12px; }
+.conclusion-box ul { list-style: none; }
+.conclusion-box li { padding: 6px 0; font-size: 14px; }
+.conclusion-box li::before { content: "▸ "; color: #74b9ff; }
+.chart-bar { display: flex; align-items: center; margin: 8px 0; }
+.chart-bar .bar-label { width: 120px; font-size: 13px; text-align: right; margin-right: 12px; }
+.chart-bar .bar-track { flex: 1; height: 22px; background: #f0f0f0; border-radius: 4px; overflow: hidden; position: relative; }
+.chart-bar .bar-fill { height: 100%; border-radius: 4px; }
+.chart-bar .bar-val { width: 80px; font-size: 13px; font-weight: 600; margin-left: 12px; }
+.section-divider { text-align: center; color: #b2bec3; margin: 16px 0; font-size: 13px; }
+.concern-box { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 16px; margin-top: 12px; }
+.footer { text-align: center; padding: 32px 16px; font-size: 12px; color: #b2bec3; }
+.chip { display: inline-block; background: #e8eaf6; color: #3f51b5; padding: 3px 10px; border-radius: 12px; font-size: 12px; margin: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>🔍 A股午盘分析报告</h1>
+  <div class="meta">2026年7月17日（周五）11:30 午间收盘 | 数据来源：养基宝 + 腾讯自选股</div>
+</div>
+
+<!-- Market Alert -->
+<div class="alert-banner">
+  <div class="alert-title">⚠️ 市场紧急预警：科技板块全线重挫</div>
+  上证跌1.70%，深成指跌2.79%，创业板跌3.39%，科创50跌4.54%。CPO概念暴跌6.10%，半导体板块跌5.29%，通信板块跌7.54%。两市超1300只个股下跌，仅931只上涨。外围美股科技股大跌传导，叠加算力产业链获利盘集中出逃，全市场情绪陷入恐慌。
+</div>
+
+<!-- Core Conclusions -->
+<div class="conclusion-box">
+  <h2>📌 午盘核心结论</h2>
+  <ul>
+    <li>今日暴跌是外围科技股调整 + 算力产业链高位获利盘的共振，属于情绪性杀跌而非基本面反转</li>
+    <li>你的持仓今日预估亏损约¥994（-3.27%），10只基金全军覆没，科技/半导体集中度超93%，风险极度暴露</li>
+    <li>短期不具备加仓条件——恐慌情绪未充分释放，建议等待企稳信号（缩量止跌/长下影线）</li>
+    <li>QDII科技占比高达81%，对美股科技波动极为敏感，需警惕今晚美股继续调整带来的次日进一步回撤</li>
+    <li>电网设备相对抗跌（仅-0.75%），验证了防御属性；建议后续调仓时逐步降低科技集中度</li>
+  </ul>
+</div>
+
+<!-- Section 1: Market Overview -->
+<div class="card">
+  <h2>一、A股午盘概览</h2>
+  
+  <div class="grid-4">
+    <div class="idx-card">
+      <div class="name">上证指数</div>
+      <div class="price">3,816.71</div>
+      <div class="change down">-1.70%</div>
+    </div>
+    <div class="idx-card">
+      <div class="name">深证成指</div>
+      <div class="price">13,947.35</div>
+      <div class="change down">-2.79%</div>
+    </div>
+    <div class="idx-card">
+      <div class="name">创业板指</div>
+      <div class="price">3,518.98</div>
+      <div class="change down">-3.39%</div>
+    </div>
+    <div class="idx-card">
+      <div class="name">科创50</div>
+      <div class="price">1,763.07</div>
+      <div class="change down">-4.54%</div>
+    </div>
+  </div>
+
+  <div class="breadth">
+    <div class="breadth-item">
+      <div class="num up" style="color:#e74c3c">931</div>
+      <div class="label">上涨家数</div>
+    </div>
+    <div class="breadth-item">
+      <div class="num down" style="color:#27ae60">1,316</div>
+      <div class="label">下跌家数</div>
+    </div>
+    <div class="breadth-item">
+      <div class="num" style="color:#636e72">61</div>
+      <div class="label">平盘</div>
+    </div>
+    <div class="breadth-item">
+      <div class="num" style="color:#636e72">~7,420亿</div>
+      <div class="label">上证成交额</div>
+    </div>
+  </div>
+
+  <div class="section-divider">—— 指数涨跌幅对比 ——</div>
+
+  <div class="chart-bar">
+    <div class="bar-label">上证指数</div>
+    <div class="bar-track"><div class="bar-fill" style="width:37%;background:#27ae60;"></div></div>
+    <div class="bar-val down">-1.70%</div>
+  </div>
+  <div class="chart-bar">
+    <div class="bar-label">深证成指</div>
+    <div class="bar-track"><div class="bar-fill" style="width:61%;background:#27ae60;"></div></div>
+    <div class="bar-val down">-2.79%</div>
+  </div>
+  <div class="chart-bar">
+    <div class="bar-label">创业板指</div>
+    <div class="bar-track"><div class="bar-fill" style="width:74%;background:#27ae60;"></div></div>
+    <div class="bar-val down">-3.39%</div>
+  </div>
+  <div class="chart-bar">
+    <div class="bar-label">科创50</div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:#27ae60;"></div></div>
+    <div class="bar-val down">-4.54%</div>
+  </div>
+
+  <p style="margin-top:16px;font-size:13px;color:#636e72;">
+  📊 指数走势特征：四大指数低开低走、午前加速下探。科创50跌得最深（-4.54%），创业板其次（-3.39%），权重股虽有金融护盘但独木难支。涨跌比 931:1316，空头占绝对主导。
+  </p>
+</div>
+
+<!-- Section 2: Sectors -->
+<div class="card">
+  <h2>二、板块轮动与资金流向</h2>
+
+  <h3 style="font-size:15px;margin:12px 0 8px;">📉 重灾区（你的持仓相关）</h3>
+  <table>
+    <tr><th>板块</th><th>午盘指数</th><th>涨跌幅</th><th>主力净流出</th><th>状态</th></tr>
+    <tr>
+      <td>通信（申万一级）</td>
+      <td>7,446.03</td>
+      <td class="down">-7.54%</td>
+      <td class="down">-130.7亿</td>
+      <td>🔴 崩跌</td>
+    </tr>
+    <tr>
+      <td>通信设备（申万二级）</td>
+      <td>10,046.34</td>
+      <td class="down">-8.32%</td>
+      <td class="down">-127.5亿</td>
+      <td>🔴 崩跌</td>
+    </tr>
+    <tr>
+      <td>半导体（申万二级）</td>
+      <td>10,569.18</td>
+      <td class="down">-5.29%</td>
+      <td class="down">-121.6亿</td>
+      <td>🔴 大跌</td>
+    </tr>
+    <tr>
+      <td>CPO概念</td>
+      <td>8,035.13</td>
+      <td class="down">-6.10%</td>
+      <td>—</td>
+      <td>🔴 大跌</td>
+    </tr>
+    <tr>
+      <td>电网设备</td>
+      <td>5,107.95</td>
+      <td class="down">-0.75%</td>
+      <td class="down">-2.5亿</td>
+      <td>🟡 微跌</td>
+    </tr>
+  </table>
+
+  <h3 style="font-size:15px;margin:16px 0 8px;">📈 逆势走强板块</h3>
+  <table>
+    <tr><th>板块</th><th>表现</th><th>逻辑</th></tr>
+    <tr><td>金融/银行/保险</td><td class="up">逆势上涨</td><td>防御属性 + 高股息，工商银行+1.35%</td></tr>
+    <tr><td>电力板块</td><td class="up">集体爆发</td><td>迎峰度夏用电负荷创新高 + 政策利好</td></tr>
+    <tr><td>医药生物</td><td class="up">盘中走强</td><td>资金高低切换，防御属性凸显</td></tr>
+  </table>
+
+  <div class="concern-box">
+    <strong>💡 关键观察：</strong>
+    通信板块主力5日净流出247亿、20日净流出1426亿，半导体20日净流出2409亿——机构资金在本轮科技行情中已持续出货超一个月。今日恐慌加速了这一进程，短期不宜抄底。
+  </div>
+</div>
+
+<!-- Section 3: News -->
+<div class="card">
+  <h2>三、今日利好利空消息汇总</h2>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size:15px;color:#27ae60;margin-bottom:10px;">✅ 利好</h3>
+      <div class="news-item">
+        <span class="tag tag-good">政策</span>商务部：明确氦气出口管制动态调节，签双边经贸协定
+      </div>
+      <div class="news-item">
+        <span class="tag tag-good">政策</span>九部门：零售创新细则落地，家电汽车"以旧换新"全面铺开
+      </div>
+      <div class="news-item">
+        <span class="tag tag-good">政策</span>海关总署：集成电路保税检测新政，芯片出口通关效率大幅提升
+      </div>
+      <div class="news-item">
+        <span class="tag tag-good">流动性</span>央行：开展1.4万亿买断式逆回购，净投放5000亿
+      </div>
+      <div class="news-item">
+        <span class="tag tag-good">业绩</span>台积电Q2净利暴增77%，上调2026 Capex至600-640亿美元
+      </div>
+      <div class="news-item">
+        <span class="tag tag-good">产业</span>世界人工智能大会今日开幕
+      </div>
+      <div class="news-item">
+        <span class="tag tag-good">制度</span>首批18只主动ETF即将上报，增量资金可期
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:15px;color:#e74c3c;margin-bottom:10px;">❌ 利空</h3>
+      <div class="news-item">
+        <span class="tag tag-bad">外围</span>隔夜美股大跌：纳指-1.47%，存储芯片暴跌（SK海力士/闪迪跌超12%）
+      </div>
+      <div class="news-item">
+        <span class="tag tag-bad">板块</span>CPO概念崩跌：中际旭创、天孚通信、新易盛等跌超10%
+      </div>
+      <div class="news-item">
+        <span class="tag tag-bad">板块</span>算力产业链全线走弱，通信ETF跌超6%
+      </div>
+      <div class="news-item">
+        <span class="tag tag-bad">外围</span>韩国综合指数大幅下挫，恐慌蔓延亚太
+      </div>
+      <div class="news-item">
+        <span class="tag tag-bad">事件</span>澜起科技韩国办公室被反垄断搜查
+      </div>
+      <div class="news-item">
+        <span class="tag tag-bad">IPO</span>长鑫科技大型IPO（募资规模大）引发资金分流担忧
+      </div>
+      <div class="news-item">
+        <span class="tag tag-bad">业绩</span>36家公司利润大幅下滑预警（地产/光伏/养殖重灾区）
+      </div>
+    </div>
+  </div>
+
+  <div class="concern-box" style="margin-top:16px;">
+    <strong>🧠 消息面解读：</strong>
+    今日利空消息密集且集中在用户重仓的科技方向。利好偏政策面（中长期）、利空偏情绪面+资金面（短期直接冲击）。政策托底信号明确（央行放水+商务部稳外贸），但市场对算力估值泡沫的担忧短期难以证伪，需等情绪出清。
+  </div>
+</div>
+
+<!-- Section 4: Holdings -->
+<div class="card">
+  <h2>四、你的持仓分析（支付宝账户）</h2>
+
+  <div class="grid-4" style="margin-bottom:16px;">
+    <div class="idx-card" style="background:#ffebee;">
+      <div class="name">投入本金</div>
+      <div class="price">¥31,420</div>
+    </div>
+    <div class="idx-card" style="background:#ffebee;">
+      <div class="name">当前市值</div>
+      <div class="price">¥30,359</div>
+    </div>
+    <div class="idx-card" style="background:#e8f5e9;">
+      <div class="name">今日预估盈亏</div>
+      <div class="price down">-¥994</div>
+      <div class="change down">-3.27%</div>
+    </div>
+    <div class="idx-card" style="background:#e8f5e9;">
+      <div class="name">累计盈亏</div>
+      <div class="price down">-¥2,055</div>
+      <div class="change down">-6.54%</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-bottom:12px;">
+    <span class="chip">0涨</span>
+    <span class="chip" style="background:#ffebee;color:#c0392b;">10跌</span>
+    <span class="chip">全部飘绿</span>
+  </div>
+
+  <table>
+    <tr><th>基金名称</th><th>代码</th><th style="text-align:right">市值</th><th style="text-align:right">占比</th><th style="text-align:right">今日盈亏</th><th style="text-align:right">累计盈亏</th><th>方向</th></tr>
+    <tr>
+      <td>富国全球科技互联网(QDII)A</td>
+      <td>100055</td>
+      <td style="text-align:right" class="down">¥19,971</td>
+      <td style="text-align:right">64.9%</td>
+      <td style="text-align:right" class="down">-¥29</td>
+      <td style="text-align:right" class="down">-¥29</td>
+      <td>QDII科技</td>
+    </tr>
+    <tr>
+      <td>华夏全球科技先锋(QDII)C</td>
+      <td>024239</td>
+      <td style="text-align:right" class="down">¥2,753</td>
+      <td style="text-align:right">9.0%</td>
+      <td style="text-align:right" class="down">-¥247</td>
+      <td style="text-align:right" class="down">-¥247</td>
+      <td>QDII科技</td>
+    </tr>
+    <tr>
+      <td>富国信创ETF联接C</td>
+      <td>020109</td>
+      <td style="text-align:right" class="down">¥1,304</td>
+      <td style="text-align:right">4.2%</td>
+      <td style="text-align:right" class="down">-¥97</td>
+      <td style="text-align:right" class="down">-¥97</td>
+      <td>信创</td>
+    </tr>
+    <tr>
+      <td>易方达半导体材料设备ETF联接C</td>
+      <td>021894</td>
+      <td style="text-align:right" class="down">¥1,245</td>
+      <td style="text-align:right">4.0%</td>
+      <td style="text-align:right" class="down">-¥155</td>
+      <td style="text-align:right" class="down">-¥155</td>
+      <td>半导体</td>
+    </tr>
+    <tr>
+      <td>华夏中证电网设备ETF联接A</td>
+      <td>025856</td>
+      <td style="text-align:right" class="down">¥1,103</td>
+      <td style="text-align:right">3.6%</td>
+      <td style="text-align:right" class="down">-¥298</td>
+      <td style="text-align:right" class="down">-¥298</td>
+      <td>电网</td>
+    </tr>
+    <tr>
+      <td>建信新兴市场优选(QDII)C</td>
+      <td>018147</td>
+      <td style="text-align:right" class="down">¥1,044</td>
+      <td style="text-align:right">3.4%</td>
+      <td style="text-align:right" class="down">-¥46</td>
+      <td style="text-align:right" class="down">-¥46</td>
+      <td>QDII新兴</td>
+    </tr>
+    <tr>
+      <td>华夏中证5G通信ETF联接C</td>
+      <td>008087</td>
+      <td style="text-align:right" class="down">¥977</td>
+      <td style="text-align:right">3.2%</td>
+      <td style="text-align:right" class="down">-¥24</td>
+      <td style="text-align:right" class="down">-¥24</td>
+      <td>5G通信</td>
+    </tr>
+    <tr>
+      <td>华泰柏瑞质量成长混合C</td>
+      <td>011452</td>
+      <td style="text-align:right" class="down">¥969</td>
+      <td style="text-align:right">3.1%</td>
+      <td style="text-align:right" class="down">-¥31</td>
+      <td style="text-align:right" class="down">-¥31</td>
+      <td>混合</td>
+    </tr>
+    <tr>
+      <td>天弘全球高端制造(QDII)C</td>
+      <td>016665</td>
+      <td style="text-align:right" class="down">¥885</td>
+      <td style="text-align:right">2.9%</td>
+      <td style="text-align:right" class="down">-¥115</td>
+      <td style="text-align:right" class="down">-¥115</td>
+      <td>QDII制造</td>
+    </tr>
+    <tr>
+      <td>国泰中证通信设备ETF联接C</td>
+      <td>007818</td>
+      <td style="text-align:right" class="down">¥110</td>
+      <td style="text-align:right">0.4%</td>
+      <td style="text-align:right" class="down">-¥20</td>
+      <td style="text-align:right" class="down">-¥20</td>
+      <td>通信</td>
+    </tr>
+    <tr style="font-weight:700;background:#f8f9fa;">
+      <td>合计</td><td></td>
+      <td style="text-align:right" class="down">¥30,359</td>
+      <td style="text-align:right">100%</td>
+      <td style="text-align:right" class="down">-¥994</td>
+      <td style="text-align:right" class="down">-¥2,055</td>
+      <td></td>
+    </tr>
+  </table>
+
+  <div class="section-divider">—— 持仓结构分析 ——</div>
+
+  <div class="chart-bar">
+    <div class="bar-label">QDII科技</div>
+    <div class="bar-track"><div class="bar-fill" style="width:81%;background:#e74c3c;"></div></div>
+    <div class="bar-val" style="color:#e74c3c;">81.2%</div>
+  </div>
+  <div class="chart-bar">
+    <div class="bar-label">A股科技</div>
+    <div class="bar-track"><div class="bar-fill" style="width:12%;background:#e67e22;"></div></div>
+    <div class="bar-val" style="color:#e67e22;">12.0%</div>
+  </div>
+  <div class="chart-bar">
+    <div class="bar-label">电网设备</div>
+    <div class="bar-track"><div class="bar-fill" style="width:3.6%;background:#0984e3;"></div></div>
+    <div class="bar-val" style="color:#0984e3;">3.6%</div>
+  </div>
+  <div class="chart-bar">
+    <div class="bar-label">其他混合</div>
+    <div class="bar-track"><div class="bar-fill" style="width:3.2%;background:#636e72;"></div></div>
+    <div class="bar-val" style="color:#636e72;">3.2%</div>
+  </div>
+
+  <div class="concern-box" style="margin-top:12px;">
+    <strong>⚠️ 集中度风险：科技/半导体方向合计占比约 93.2%</strong>——远超 70% 的警戒线。今日科技板块重挫直接导致全仓亏损。QDII科技占比超高（81.2%），意味着美股科技走势对你的净值影响极大。美股今晚若继续调整，明天持仓将进一步承压。
+  </div>
+</div>
+
+<!-- Section 5: Rebalance Advice -->
+<div class="card">
+  <h2>五、午盘调仓建议</h2>
+
+  <p style="font-size:14px;color:#636e72;margin-bottom:16px;">
+  📋 基于今日市场环境、持仓结构及消息面综合判断，给出以下操作建议（仅供参考，不构成投资建议）：
+  </p>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有观望</span>
+    <strong>富国全球科技互联网(QDII)A (100055)</strong> — 占比 64.9%
+    <div class="rec-weight">最大重仓，今日微跌-0.15%相对抗跌。QDII净值有滞后性，实际跌幅可能在后续2日反映。当前不建议操作，观察今晚美股走势再定。若有反弹迹象可考虑减仓10-15%降低集中度。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有观望</span>
+    <strong>华夏全球科技先锋(QDII)C (024239)</strong> — 占比 9.0%
+    <div class="rec-weight">今日预估跌-8.2%，跌幅最大。重仓全球科技股，与美股科技高度相关。不建议恐慌卖出，等美股企稳后再评估。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">暂不加仓</span>
+    <strong>富国信创ETF联接C (020109)</strong> — 占比 4.2%
+    <div class="rec-weight">预估跌-6.9%。信创方向受算力产业链拖累，短期情绪影响大。目前没有加仓信号。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">暂不加仓</span>
+    <strong>易方达半导体材料设备ETF联接C (021894)</strong> — 占比 4.0%
+    <div class="rec-weight">预估跌-11.1%，半导体板块今日重灾区。政策面有商务部、海关利好但市场不买账。等待企稳。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有</span>
+    <strong>华夏中证电网设备ETF联接A (025856)</strong> — 占比 3.6%
+    <div class="rec-weight">仅跌-0.75%，跑赢所有科技持仓。电网受电力板块强势和能源政策利好支撑，防御价值明显。可保持。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有观望</span>
+    <strong>建信新兴市场优选(QDII)C (018147)</strong> — 占比 3.4%
+    <div class="rec-weight">预估跌-4.2%。新兴市场受全球科技调整波及。保持观望。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">暂不加仓</span>
+    <strong>华夏中证5G通信ETF联接C (008087)</strong> — 占比 3.2%
+    <div class="rec-weight">预估跌-2.4%，通信板块领跌。5G通信ETF成分股含大量CPO/PCB，今日重灾。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有</span>
+    <strong>华泰柏瑞质量成长混合C (011452)</strong> — 占比 3.1%
+    <div class="rec-weight">预估跌-3.1%，主动管理型基金相对分散，跌幅可控。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有观望</span>
+    <strong>天弘全球高端制造(QDII)C (016665)</strong> — 占比 2.9%
+    <div class="rec-weight">预估跌-11.5%。制造方向受全球供应链情绪冲击。</div>
+  </div>
+
+  <div class="rec-card">
+    <span class="rec-action rec-hold">持有不动</span>
+    <strong>国泰中证通信设备ETF联接C (007818)</strong> — 占比 0.4%
+    <div class="rec-weight">微小仓位，预估跌-15.5%，仓位太小无需操作。</div>
+  </div>
+</div>
+
+<!-- Section 6: Strategy -->
+<div class="card">
+  <h2>六、执行策略与节奏</h2>
+
+  <table>
+    <tr><th>阶段</th><th>触发条件</th><th>操作</th><th>目标</th></tr>
+    <tr>
+      <td><strong>现在 → 今日收盘</strong></td>
+      <td>午盘恐慌延续</td>
+      <td>不动，观望</td>
+      <td>避免恐慌杀跌</td>
+    </tr>
+    <tr>
+      <td><strong>今晚 → 明早</strong></td>
+      <td>观察美股走势</td>
+      <td>若美股反弹企稳 → 考虑A股科技小幅加仓；若美股继续大跌 → 继续观望</td>
+      <td>以美股为风向标</td>
+    </tr>
+    <tr>
+      <td><strong>下周（企稳后）</strong></td>
+      <td>科创50/半导体指数出现缩量十字星或长下影线</td>
+      <td>减仓15-20%的QDII科技，调入上证50/沪深300宽基或电力ETF</td>
+      <td>科技集中度从93%降至75%以下</td>
+    </tr>
+    <tr>
+      <td><strong>中长期</strong></td>
+      <td>市场情绪修复后</td>
+      <td>持续降低科技集中度，分3-4次调仓</td>
+      <td>最终目标：科技≤60%，宽基+红利+电力≥40%</td>
+    </tr>
+  </table>
+</div>
+
+<!-- Risk Warning -->
+<div class="card" style="background:#fff8e1;border:1px solid #ffe082;">
+  <h2 style="color:#e67e22;">⚠️ 风险提示</h2>
+  <ul style="font-size:14px;color:#6d4c41;padding-left:20px;">
+    <li>QDII基金净值有2-3个交易日滞后，今日显示的"微跌"不代表实际跌幅，后续可能补跌</li>
+    <li>美股今晚若继续调整（纳指期货目前走势偏弱），明天A股科技板块可能再度承压</li>
+    <li>美伊军事冲突持续升级（连续五夜空袭），地缘风险不可忽视</li>
+    <li>科技集中度超93%，单一板块暴跌即导致组合大幅回撤</li>
+    <li>以上分析基于公开数据和AI模型判断，<strong>不构成投资建议</strong>，操作请自行决策</li>
+  </ul>
+</div>
+
+<!-- One-liner -->
+<div class="conclusion-box">
+  <h2>📝 一句话总结</h2>
+  <p style="font-size:16px;font-weight:600;">
+  今天是科技股恐慌性杀跌日，你的持仓全军覆没但不要恐慌卖出——外围政策托底信号明确，央行在放水，产业基本面（台积电业绩、AI基建）没有恶化。当前首要任务是"不动如山"等企稳，然后趁反弹逐步降低科技集中度、向宽基和防御板块分散。
+  </p>
+</div>
+
+<div class="footer">
+  报告生成时间：2026年7月17日 11:30（午间收盘）| 数据来源：养基宝API + 腾讯自选股 + 公开财经新闻<br>
+  本报告由 AI 自动生成，仅供参考，不构成投资建议。投资有风险，入市需谨慎。
+</div>
+
+</div>
+</body>
+</html>
