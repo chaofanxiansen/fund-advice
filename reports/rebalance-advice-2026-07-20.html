@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年7月20日 持仓调仓建议报告</title>
+<style>
+:root {
+  --bg-primary: #0f1117;
+  --bg-secondary: #1a1d29;
+  --bg-card: #1e2233;
+  --bg-card-hover: #252a3d;
+  --text-primary: #e4e7ef;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --red: #ef4444;
+  --red-light: #f87171;
+  --red-bg: rgba(239, 68, 68, 0.1);
+  --green: #22c55e;
+  --green-light: #4ade80;
+  --green-bg: rgba(34, 197, 94, 0.1);
+  --orange: #f59e0b;
+  --orange-bg: rgba(245, 158, 11, 0.1);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59, 130, 246, 0.1);
+  --purple: #8b5cf6;
+  --purple-bg: rgba(139, 92, 246, 0.1);
+  --border: rgba(255, 255, 255, 0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg-primary); color: var(--text-primary); line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 40px 20px 60px; }
+.header { text-align: center; padding: 40px 0 30px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+.header h1 {
+  font-size: 28px; font-weight: 700; margin-bottom: 10px;
+  background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.header .subtitle { font-size: 14px; color: var(--text-muted); }
+.header .date-badge {
+  display: inline-block; background: var(--orange-bg); color: var(--orange);
+  padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-top: 12px;
+}
+.section { margin-bottom: 36px; }
+.section-title {
+  font-size: 20px; font-weight: 700; margin-bottom: 18px; padding-left: 14px;
+  border-left: 4px solid var(--orange); display: flex; align-items: center; gap: 8px;
+}
+.up { color: var(--red); }
+.down { color: var(--green); }
+
+/* 持仓表 */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table th {
+  text-align: left; padding: 10px 14px; background: var(--bg-secondary);
+  color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+table th:first-child { border-radius: 8px 0 0 0; }
+table th:last-child { border-radius: 0 8px 0 0; }
+table td { padding: 10px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+table tr:hover td { background: rgba(255,255,255,0.02); }
+.bar-cell { display: flex; align-items: center; gap: 8px; }
+.bar-bg { height: 6px; border-radius: 3px; background: var(--bg-secondary); min-width: 40px; flex: 1; }
+.bar-fill { height: 100%; border-radius: 3px; }
+
+/* 汇总卡 */
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 8px; }
+.summary-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+.summary-card .label { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+.summary-card .value { font-size: 22px; font-weight: 700; }
+.summary-card .sub { font-size: 12px; margin-top: 4px; }
+
+/* 风险提示 */
+.risk-box {
+  background: var(--red-bg); border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 14px; padding: 24px 28px;
+}
+.risk-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--red-light); }
+.risk-box ul { list-style: none; padding: 0; }
+.risk-box li { font-size: 14px; color: var(--text-secondary); padding: 8px 0; padding-left: 22px; position: relative; line-height: 1.8; }
+.risk-box li::before { content: "!"; position: absolute; left: 0; top: 8px; color: var(--red); font-weight: 700; }
+.risk-box .highlight { color: var(--text-primary); font-weight: 600; }
+
+/* 建议卡 */
+.advice-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 24px 28px; margin-bottom: 16px; position: relative; overflow: hidden;
+}
+.advice-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+}
+.advice-card.sell::before { background: var(--green); }
+.advice-card.buy::before { background: var(--red); }
+.advice-card.hold::before { background: var(--blue); }
+.advice-card.clean::before { background: var(--orange); }
+.advice-card .tag {
+  display: inline-block; padding: 3px 12px; border-radius: 6px; font-size: 12px;
+  font-weight: 700; margin-bottom: 10px;
+}
+.advice-card.sell .tag { background: var(--green-bg); color: var(--green-light); }
+.advice-card.buy .tag { background: var(--red-bg); color: var(--red-light); }
+.advice-card.hold .tag { background: var(--blue-bg); color: var(--blue); }
+.advice-card.clean .tag { background: var(--orange-bg); color: var(--orange); }
+.advice-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+.advice-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 8px; }
+.advice-card .highlight { color: var(--text-primary); font-weight: 600; }
+.advice-card .action-box {
+  background: var(--bg-secondary); border-radius: 8px; padding: 14px 18px; margin-top: 10px;
+}
+.advice-card .action-box .action-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.advice-card .action-box .action-text { font-size: 14px; color: var(--text-primary); font-weight: 600; }
+
+/* 配置建议饼 */
+.alloc-chart { display: flex; height: 32px; border-radius: 8px; overflow: hidden; margin: 16px 0; }
+.alloc-chart .seg { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+
+.footer { text-align: center; padding: 30px 0 0; border-top: 1px solid var(--border); margin-top: 40px; }
+.footer p { font-size: 12px; color: var(--text-muted); }
+.footer .disclaimer { font-size: 11px; color: var(--text-muted); margin-top: 10px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+@media (max-width: 600px) {
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+  .header h1 { font-size: 22px; }
+  .section-title { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>持仓调仓建议报告</h1>
+    <p class="subtitle">基于2026年7月20日实际持仓 + 大盘走势分析</p>
+    <span class="date-badge">2026年7月20日 周一</span>
+  </div>
+
+  <!-- 持仓概览 -->
+  <div class="section">
+    <div class="section-title">当前持仓概览（支付宝账户）</div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="label">总市值</div>
+        <div class="value" style="color:var(--blue);">27,950.90</div>
+        <div class="sub">11只基金（含1只已清仓）</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">今日收益</div>
+        <div class="value down">-1,136.62</div>
+        <div class="sub down">-3.91%</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">累计盈亏</div>
+        <div class="value down">-3,569.41</div>
+        <div class="sub down">整体浮亏中</div>
+      </div>
+      <div class="summary-card">
+        <div class="label">持仓成本</div>
+        <div class="value" style="color:var(--text-secondary);">31,520.32</div>
+        <div class="sub">投入本金</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 持仓明细 -->
+  <div class="section">
+    <div class="section-title">持仓明细与占比</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>基金名称</th>
+            <th>代码</th>
+            <th>市值(元)</th>
+            <th>占比</th>
+            <th>盈亏(元)</th>
+            <th>方向</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>富国全球科技互联网股票(QDII)A</td>
+            <td>100055</td>
+            <td style="font-weight:700;">18,528.86</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:100%;background:var(--red);"></div></div>
+                <span style="font-weight:600;">66.3%</span>
+              </div>
+            </td>
+            <td class="down">-1,471.34</td>
+            <td><span style="color:var(--purple);font-weight:600;">QDII科技</span></td>
+          </tr>
+          <tr>
+            <td>华夏全球科技先锋混合(QDII)C</td>
+            <td>024239</td>
+            <td>2,454.44</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:13.2%;background:var(--red);"></div></div>
+                <span>8.8%</span>
+              </div>
+            </td>
+            <td class="down">-545.54</td>
+            <td><span style="color:var(--purple);font-weight:600;">QDII科技</span></td>
+          </tr>
+          <tr>
+            <td>富国信创ETF发起式联接C</td>
+            <td>020109</td>
+            <td>1,199.90</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:6.5%;background:var(--orange);"></div></div>
+                <span>4.3%</span>
+              </div>
+            </td>
+            <td class="down">-200.13</td>
+            <td><span style="color:var(--orange);font-weight:600;">信创</span></td>
+          </tr>
+          <tr>
+            <td>易方达半导体设备ETF联接C</td>
+            <td>021894</td>
+            <td>1,106.25</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:6.0%;background:var(--orange);"></div></div>
+                <span>4.0%</span>
+              </div>
+            </td>
+            <td class="down">-293.76</td>
+            <td><span style="color:var(--orange);font-weight:600;">半导体</span></td>
+          </tr>
+          <tr>
+            <td>建信新兴市场混合(QDII)C</td>
+            <td>018147</td>
+            <td>1,064.13</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:5.7%;background:var(--purple);"></div></div>
+                <span>3.8%</span>
+              </div>
+            </td>
+            <td class="down">-125.88</td>
+            <td><span style="color:var(--purple);font-weight:600;">QDII新兴</span></td>
+          </tr>
+          <tr>
+            <td>华夏中证电网设备主题ETF联接A</td>
+            <td>025856</td>
+            <td>1,055.62</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:5.7%;background:var(--blue);"></div></div>
+                <span>3.8%</span>
+              </div>
+            </td>
+            <td class="down">-344.46</td>
+            <td><span style="color:var(--blue);font-weight:600;">电网/顺周期</span></td>
+          </tr>
+          <tr>
+            <td>华夏中证5G通信主题ETF联接C</td>
+            <td>008087</td>
+            <td>860.29</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:4.6%;background:var(--orange);"></div></div>
+                <span>3.1%</span>
+              </div>
+            </td>
+            <td class="down">-139.70</td>
+            <td><span style="color:var(--orange);font-weight:600;">通信/CPO</span></td>
+          </tr>
+          <tr>
+            <td>华泰柏瑞质量成长C</td>
+            <td>011452</td>
+            <td>821.36</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:4.4%;background:var(--text-muted);"></div></div>
+                <span>2.9%</span>
+              </div>
+            </td>
+            <td class="down">-178.63</td>
+            <td><span style="color:var(--text-muted);font-weight:600;">主动管理</span></td>
+          </tr>
+          <tr>
+            <td>天弘全球高端制造混合(QDII)C</td>
+            <td>016665</td>
+            <td>762.45</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:4.1%;background:var(--purple);"></div></div>
+                <span>2.7%</span>
+              </div>
+            </td>
+            <td class="down">-237.57</td>
+            <td><span style="color:var(--purple);font-weight:600;">QDII制造</span></td>
+          </tr>
+          <tr>
+            <td>国泰中证全指通信设备ETF联接C</td>
+            <td>007818</td>
+            <td>97.60</td>
+            <td>
+              <div class="bar-cell">
+                <div class="bar-bg"><div class="bar-fill" style="width:0.5%;background:var(--orange);"></div></div>
+                <span>0.3%</span>
+              </div>
+            </td>
+            <td class="down">-32.40</td>
+            <td><span style="color:var(--orange);font-weight:600;">通信</span></td>
+          </tr>
+          <tr>
+            <td>财通集成电路产业股票C</td>
+            <td>006503</td>
+            <td style="color:var(--text-muted);">0.00</td>
+            <td style="color:var(--text-muted);">0.0%</td>
+            <td style="color:var(--text-muted);">0.00</td>
+            <td><span style="color:var(--text-muted);">已清仓</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 风险诊断 -->
+  <div class="section">
+    <div class="section-title">持仓风险诊断</div>
+    <div class="risk-box">
+      <h3>当前持仓存在的结构性风险</h3>
+      <ul>
+        <li><span class="highlight">单一基金占比过高：</span>富国全球科技互联网(QDII)A 占总市值66.3%，单只基金风险集中度过高，该基金今日受海外科技资产流动性冲击直接拖累，单只浮亏-1,471元占总亏损的41%。</li>
+        <li><span class="highlight">方向高度同质化：</span>11只基金中，科技/半导体/通信/QDII科技方向占比约95%，几乎"一荣俱荣一损俱损"。今日科技赛道杀跌，整体持仓就亏3.91%。</li>
+        <li><span class="highlight">缺乏防御仓位：</span>今日石油+5%、煤炭+5.61%、电力+4.80%、白酒+3%+，红利/顺周期方向全面走强，但持仓中仅电网设备ETF一只沾边（且电网≠电力，今日反而下跌）。</li>
+        <li><span class="highlight">QDII比重过大：</span>4只QDII基金合计占比81.6%，受海外市场波动影响极大，且QDII净值滞后2-3天，风险敞口无法及时调整。</li>
+        <li><span class="highlight">碎片持仓无意义：</span>通信设备ETF仅97.60元，占比0.3%，金额过小无法起到分散作用，反而增加管理成本。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 调仓建议 -->
+  <div class="section">
+    <div class="section-title">具体调仓建议</div>
+
+    <!-- 建议1 -->
+    <div class="advice-card sell">
+      <span class="tag">减仓</span>
+      <h3>建议一：减仓富国全球科技互联网(QDII)A，释放资金分散配置</h3>
+      <p>
+        该基金占比<span class="highlight">66.3%</span>（18,529元），是目前最大的风险源。今日海外科技资产流动性冲击直接传导至该基金，浮亏-1,471元。短期海外科技波动仍将持续，单一基金占比过高放大了组合波动。
+      </p>
+      <p>
+        建议减持约<span class="highlight">5,000-8,000元</span>（约占该基金的27%-43%），将占比从66.3%降至<span class="highlight">35%-40%</span>的合理区间。释放的资金用于引入防御性配置（见建议二）。
+      </p>
+      <div class="action-box">
+        <div class="action-label">操作</div>
+        <div class="action-text">赎回富国全球科技互联网A 约5,000-8,000元 ｜ 目标占比降至35%-40%</div>
+      </div>
+    </div>
+
+    <!-- 建议2 -->
+    <div class="advice-card buy">
+      <span class="tag">新建仓</span>
+      <h3>建议二：引入红利/顺周期方向基金，构建防御底仓</h3>
+      <p>
+        今日市场风格明确转向红利+顺周期，石油石化+5%、煤炭+5.61%、电力+4.80%、白酒+3%+。当前持仓<span class="highlight">零防御配置</span>，需要引入与科技方向低相关性的资产来降低组合波动。
+      </p>
+      <p>
+        建议用建议一释放的资金，配置一只红利/煤炭/电力方向基金，目标占比<span class="highlight">15%-20%</span>（约4,000-5,000元）。可关注的方向：
+      </p>
+      <p>
+        <span class="highlight">中证红利ETF</span>（股息率优势明显，方正证券推荐）或 <span class="highlight">煤炭/电力主题ETF</span>（今日板块涨幅领先，顺周期属性强）。
+      </p>
+      <div class="action-box">
+        <div class="action-label">操作</div>
+        <div class="action-text">新建仓红利/煤炭/电力方向基金 约4,000-5,000元 ｜ 目标占比15%-20%</div>
+      </div>
+    </div>
+
+    <!-- 建议3 -->
+    <div class="advice-card hold">
+      <span class="tag">持有</span>
+      <h3>建议三：信创ETF持有不动，半导体/通信不加不减</h3>
+      <p>
+        <span class="highlight">信创方向</span>今日虽然下跌，但IT服务板块逆势获得33亿主力资金净流入，紫光股份涨停，AI应用端逢低布局信号明确。信创ETF（020109）政策催化持续，可<span class="highlight">持有等待反弹</span>。
+      </p>
+      <p>
+        <span class="highlight">半导体设备ETF（021894）</span>和<span class="highlight">5G通信ETF（008087）</span>今日受CPO/PCB跌停潮拖累下跌，但机构认为"最激烈的抛压阶段大概率已过"。短期不加仓（不追高），也不杀跌（超跌反弹弹性可期），<span class="highlight">持有观望</span>。
+      </p>
+      <div class="action-box">
+        <div class="action-label">操作</div>
+        <div class="action-text">信创ETF 持有 ｜ 半导体ETF 持有 ｜ 5G通信ETF 持有 ｜ 均不加不减</div>
+      </div>
+    </div>
+
+    <!-- 建议4 -->
+    <div class="advice-card hold">
+      <span class="tag">持有</span>
+      <h3>建议四：电网设备ETF和QDII新兴市场持有不动</h3>
+      <p>
+        <span class="highlight">电网设备ETF（025856）</span>今日虽然下跌，但电力板块整体大涨4.80%，电网设备有顺周期+新能源双重属性，中期逻辑不变。浮亏-344元但仓位合理（3.8%），<span class="highlight">持有等待板块轮动</span>。
+      </p>
+      <p>
+        <span class="highlight">建信新兴市场QDII（018147）</span>配置的是新兴市场而非纯科技，有一定分散作用，浮亏-126元相对可控，<span class="highlight">持有</span>。
+      </p>
+      <div class="action-box">
+        <div class="action-label">操作</div>
+        <div class="action-text">电网设备ETF 持有 ｜ 建信新兴市场 持有</div>
+      </div>
+    </div>
+
+    <!-- 建议5 -->
+    <div class="advice-card clean">
+      <span class="tag">清理</span>
+      <h3>建议五：清理碎片持仓，精简基金数量</h3>
+      <p>
+        <span class="highlight">通信设备ETF（007818）</span>仅剩97.60元，占比0.3%，金额过小无实际配置意义。建议<span class="highlight">全部赎回</span>，释放资金并入其他持仓或留作子弹。
+      </p>
+      <p>
+        <span class="highlight">华泰柏瑞质量成长C（011452）</span>821元，是唯一的主动管理型基金，与ETF持仓方向重叠且无差异化优势，浮亏-179元。可考虑<span class="highlight">赎回并入被动ETF</span>，降低管理复杂度。
+      </p>
+      <div class="action-box">
+        <div class="action-label">操作</div>
+        <div class="action-text">通信设备ETF 全部赎回 ｜ 华泰柏瑞质量成长 考虑赎回 ｜ 基金数量从10只精简至7-8只</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 目标配置 -->
+  <div class="section">
+    <div class="section-title">调仓后目标配置</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:10px;">调仓后科技方向从95%降至约70%，防御方向从0%提升至15%-20%，降低组合波动：</p>
+    <div class="alloc-chart">
+      <div class="seg" style="background:#ef4444;flex:38;">QDII科技 38%</div>
+      <div class="seg" style="background:#f59e0b;flex:16;">A股科技/信创 16%</div>
+      <div class="seg" style="background:#8b5cf6;flex:12;">QDII其他 12%</div>
+      <div class="seg" style="background:#3b82f6;flex:6;">电网/顺周期 6%</div>
+      <div class="seg" style="background:#22c55e;flex:18;">红利/防御(新) 18%</div>
+      <div class="seg" style="background:#6b7280;flex:10;">现金/子弹 10%</div>
+    </div>
+    <div class="table-wrap" style="margin-top:16px;">
+      <table>
+        <thead>
+          <tr><th>方向</th><th>当前占比</th><th>目标占比</th><th>变动</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>QDII科技（100055+024239+016665）</td><td>77.8%</td><td>~50%</td><td class="down">降低</td></tr>
+          <tr><td>A股科技/信创/半导体/通信</td><td>11.7%</td><td>~16%</td><td class="up">小幅提升</td></tr>
+          <tr><td>QDII新兴市场</td><td>3.8%</td><td>~12%</td><td class="up">提升</td></tr>
+          <tr><td>电网/顺周期</td><td>3.8%</td><td>~6%</td><td class="up">微调</td></tr>
+          <tr><td>红利/防御（新增）</td><td>0%</td><td>~18%</td><td class="up" style="font-weight:700;">新建</td></tr>
+          <tr><td>现金/子弹</td><td>2.9%</td><td>~10%</td><td class="up">提升</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 总结 -->
+  <div class="section">
+    <div style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(239,68,68,0.08));border:1px solid rgba(245,158,11,0.2);border-radius:14px;padding:28px;">
+      <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;color:var(--orange);">核心操作总结</h3>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:10px;">
+        <span style="color:var(--text-primary);font-weight:600;">1. 减：</span>赎回富国全球科技互联网A约5,000-8,000元，降低单一基金集中度。
+      </p>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:10px;">
+        <span style="color:var(--text-primary);font-weight:600;">2. 建：</span>新建红利/煤炭/电力方向基金约4,000-5,000元，构建防御底仓。
+      </p>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:10px;">
+        <span style="color:var(--text-primary);font-weight:600;">3. 持：</span>信创/半导体/5G/电网设备/新兴市场 均持有不动，等待科技超跌反弹。
+      </p>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:10px;">
+        <span style="color:var(--text-primary);font-weight:600;">4. 清：</span>通信设备ETF（97元）全部赎回，华泰柏瑞质量成长考虑赎回，精简至7-8只基金。
+      </p>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.9;">
+        <span style="color:var(--text-primary);font-weight:600;">核心逻辑：</span>不是看空科技，而是降低集中度风险。科技中长期行情未结束，但短期"分化与轮动是主基调"，用防御仓位对冲波动，等科技抛压充分释放后再择机回补。
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>数据来源：养基宝API实时持仓 + 2026年7月20日A股大盘行情</p>
+    <p class="disclaimer">本报告基于个人持仓数据和市场公开信息整理，仅供参考分析，不构成任何投资建议。基金有风险，投资需谨慎。据此操作风险自担。</p>
+  </div>
+
+</div>
+</body>
+</html>
