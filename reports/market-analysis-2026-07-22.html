@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股市场分析报告 | 2026年7月22日</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #0a0e17;
+  color: #c8d0e0;
+  line-height: 1.7;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.header {
+  text-align: center;
+  padding: 40px 20px 30px;
+  background: linear-gradient(135deg, #0f1521 0%, #1a1f2e 100%);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  border: 1px solid #1e2433;
+}
+.header h1 {
+  font-size: 28px;
+  color: #e8edf5;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.header .subtitle {
+  font-size: 14px;
+  color: #6b7589;
+}
+.header .date-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 20px;
+  background: rgba(220, 20, 60, 0.15);
+  border: 1px solid rgba(220, 20, 60, 0.3);
+  border-radius: 20px;
+  font-size: 13px;
+  color: #ff6b6b;
+}
+.summary-box {
+  background: linear-gradient(135deg, #14192a 0%, #1a1f30 100%);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 24px;
+  border: 1px solid #1e2433;
+}
+.summary-box h2 {
+  font-size: 18px;
+  color: #e8edf5;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #1e2433;
+}
+.summary-box p {
+  font-size: 15px;
+  color: #a8b2c8;
+  line-height: 1.9;
+}
+.summary-box .highlight-red { color: #ff4d4f; font-weight: 600; }
+.summary-box .highlight-green { color: #00d68f; font-weight: 600; }
+.summary-box .highlight-yellow { color: #ffd700; font-weight: 600; }
+.section {
+  background: #11151f;
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+  border: 1px solid #1a1f2e;
+}
+.section h2 {
+  font-size: 18px;
+  color: #e8edf5;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #1a1f2e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section h2::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: #dc143c;
+  border-radius: 2px;
+}
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.index-card {
+  background: #161b28;
+  border-radius: 10px;
+  padding: 18px 16px;
+  text-align: center;
+  border: 1px solid #1e2433;
+  transition: transform 0.2s;
+}
+.index-card:hover { transform: translateY(-2px); }
+.index-card .name {
+  font-size: 13px;
+  color: #6b7589;
+  margin-bottom: 8px;
+}
+.index-card .value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #e8edf5;
+  margin-bottom: 4px;
+}
+.index-card .change {
+  font-size: 14px;
+  font-weight: 600;
+}
+.red { color: #ff4d4f; }
+.green { color: #00d68f; }
+.yellow { color: #ffd700; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+th, td {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #1a1f2e;
+}
+th {
+  color: #6b7589;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+td { color: #a8b2c8; }
+tr:hover { background: rgba(255,255,255,0.02); }
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tag-up { background: rgba(220, 20, 60, 0.15); color: #ff4d4f; }
+.tag-down { background: rgba(0, 214, 143, 0.15); color: #00d68f; }
+.tag-neutral { background: rgba(255, 215, 0, 0.15); color: #ffd700; }
+.insight-card {
+  background: #161b28;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 12px;
+  border-left: 3px solid #dc143c;
+}
+.insight-card.green-border { border-left-color: #00d68f; }
+.insight-card.yellow-border { border-left-color: #ffd700; }
+.insight-card h3 {
+  font-size: 15px;
+  color: #e8edf5;
+  margin-bottom: 8px;
+}
+.insight-card p {
+  font-size: 14px;
+  color: #8b95ac;
+  line-height: 1.8;
+}
+.portfolio-box {
+  background: linear-gradient(135deg, #1a1520 0%, #201828 100%);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+  border: 1px solid #2a1f3a;
+}
+.portfolio-box h2 {
+  font-size: 18px;
+  color: #e8edf5;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2a1f3a;
+}
+.portfolio-impact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.impact-item {
+  background: #161120;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #1e1828;
+}
+.impact-item .label {
+  font-size: 13px;
+  color: #6b7589;
+  margin-bottom: 6px;
+}
+.impact-item .desc {
+  font-size: 14px;
+  color: #a8b2c8;
+}
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: #4a5366;
+  font-size: 12px;
+}
+.news-list { list-style: none; }
+.news-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #1a1f2e;
+  font-size: 14px;
+  color: #8b95ac;
+}
+.news-list li:last-child { border-bottom: none; }
+.news-list li strong { color: #c8d0e0; }
+.warning-box {
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #b8a040;
+}
+@media (max-width: 640px) {
+  .portfolio-impact { grid-template-columns: 1fr; }
+  .index-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>A股市场分析报告</h1>
+  <div class="subtitle">每日大盘走势 · 板块轮动 · 资金动向 · 持仓影响</div>
+  <div class="date-badge">2026年7月22日 周三 | 数据截至14:26</div>
+</div>
+
+<div class="summary-box">
+  <h2>核心结论</h2>
+  <p>
+    昨日深V暴涨后，今日市场迎来<span class="highlight-red">分化回调</span>。沪指微跌0.07%报3,862点勉强撑住，但<span class="highlight-red">创业板指跌2.86%、科创50跌2.23%</span>，科技成长方向获利回吐压力集中释放。全市场超4,000只个股下跌，仅贵金属、有色、油气等周期板块逆势走强。黄金站上4,120美元/盎司、白银突破59美元，<span class="highlight-yellow">贵金属板块暴涨6.75%</span>成为全天最强主线。算力租赁概念延续强势（美利云3连板），但CPO龙头中际旭创遭净卖出16.9亿，新易盛净流出23.9亿，科技赛道内部<span class="highlight-yellow">高低切分化明显</span>。两市预计全天成交约3万亿，较昨日略缩量。
+  </p>
+</div>
+
+<div class="section">
+  <h2>主要指数表现</h2>
+  <div class="index-grid">
+    <div class="index-card">
+      <div class="name">上证指数</div>
+      <div class="value">3,861.77</div>
+      <div class="change red">-0.07%</div>
+    </div>
+    <div class="index-card">
+      <div class="name">深证成指</div>
+      <div class="value">14,084.60</div>
+      <div class="change green">-1.26%</div>
+    </div>
+    <div class="index-card">
+      <div class="name">创业板指</div>
+      <div class="value">3,580.44</div>
+      <div class="change green">-2.86%</div>
+    </div>
+    <div class="index-card">
+      <div class="name">科创50</div>
+      <div class="value">1,867.75</div>
+      <div class="change green">-2.23%</div>
+    </div>
+    <div class="index-card">
+      <div class="name">北证50</div>
+      <div class="value">1,074.58</div>
+      <div class="change green">-0.41%</div>
+    </div>
+  </div>
+  <table>
+    <tr>
+      <th>指数</th>
+      <th>最新点位</th>
+      <th>涨跌幅</th>
+      <th>振幅</th>
+      <th>备注</th>
+    </tr>
+    <tr>
+      <td>上证指数</td>
+      <td>3,861.77</td>
+      <td class="red">-0.07%</td>
+      <td>1.16%</td>
+      <td>早盘冲高+0.5%后午后回落，权重撑盘</td>
+    </tr>
+    <tr>
+      <td>深证成指</td>
+      <td>14,084.60</td>
+      <td class="green">-1.26%</td>
+      <td>2.61%</td>
+      <td>科技成分拖累，振幅较大</td>
+    </tr>
+    <tr>
+      <td>创业板指</td>
+      <td>3,580.44</td>
+      <td class="green">-2.86%</td>
+      <td>3.84%</td>
+      <td>昨日暴涨7%后回调，振幅3.84%</td>
+    </tr>
+    <tr>
+      <td>科创50</td>
+      <td>1,867.75</td>
+      <td class="green">-2.23%</td>
+      <td>-</td>
+      <td>昨日涨10.73%后获利回吐</td>
+    </tr>
+    <tr>
+      <td>北证50</td>
+      <td>1,074.58</td>
+      <td class="green">-0.41%</td>
+      <td>3.20%</td>
+      <td>小微盘相对抗跌</td>
+    </tr>
+  </table>
+  <div style="margin-top:14px; font-size:13px; color:#6b7589;">
+    注：早盘沪指一度冲高至3,884.44(+0.5%)，午后持续回落。创业板从3,694.90高点跌至3,553.37低点，振幅达3.84%。
+  </div>
+</div>
+
+<div class="section">
+  <h2>板块涨跌排行</h2>
+  <table>
+    <tr>
+      <th>排名</th>
+      <th>板块</th>
+      <th>涨跌幅</th>
+      <th>主力净流入</th>
+      <th>驱动因素</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>贵金属</td>
+      <td class="red">+6.75%</td>
+      <td class="red">+15.37亿</td>
+      <td>黄金4120美元/盎司、白银59美元创新高</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>有色(锡)</td>
+      <td class="red">+4.68%</td>
+      <td class="red">+27.69亿</td>
+      <td>全球大宗商品涨价潮</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>白银概念</td>
+      <td class="red">+4.63%</td>
+      <td class="red">+32.35亿</td>
+      <td>白银突破59美元/盎司</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>工业金属</td>
+      <td class="red">+4.57%</td>
+      <td class="red">+50.71亿</td>
+      <td>铜/锌/镍等全线走强</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>油服工程</td>
+      <td class="red">+4.18%</td>
+      <td class="red">+1.32亿</td>
+      <td>中东局势紧张，油价高位运行</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>铅锌概念</td>
+      <td class="red">+3.22%</td>
+      <td class="red">+32.91亿</td>
+      <td>有色板块全面爆发</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>交换机</td>
+      <td class="red">+2.43%</td>
+      <td class="red">+41.82亿</td>
+      <td>算力网络建设提速</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>保险II</td>
+      <td class="red">+1.70%</td>
+      <td class="red">+4.85亿</td>
+      <td>五大险企集体发声力挺A股</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>黄金概念</td>
+      <td class="red">+1.81%</td>
+      <td class="red">+60.45亿</td>
+      <td>避险情绪+金价创新高</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>电力</td>
+      <td class="red">+1.02%</td>
+      <td class="red">+12.70亿</td>
+      <td>用电负荷创历史新高，立新能源5连板</td>
+    </tr>
+  </table>
+  <div style="margin-top:16px; font-size:14px; color:#8b95ac;">
+    <strong style="color:#c8d0e0;">跌幅居前方向：</strong>
+    游戏概念、影视院线、电池、PET铜箔、文化传媒、存储芯片（德明利跌停）、PCB概念（中国巨石触及跌停）
+  </div>
+</div>
+
+<div class="section">
+  <h2>资金流向分析</h2>
+  <table>
+    <tr>
+      <th>方向</th>
+      <th>板块/个股</th>
+      <th>金额</th>
+      <th>说明</th>
+    </tr>
+    <tr>
+      <td><span class="tag tag-up">主力净流入</span></td>
+      <td>电子板块</td>
+      <td class="red">+92亿+</td>
+      <td>半导体设备延续强势，通富微电涨停获21.62亿</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-up">主力净流入</span></td>
+      <td>紫光股份</td>
+      <td class="red">+63.14亿</td>
+      <td>算力服务器龙头，资金大幅加仓</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-up">主力净流入</span></td>
+      <td>中兴通讯</td>
+      <td class="red">+39.74亿</td>
+      <td>通信设备龙头涨停</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-up">主力净流入</span></td>
+      <td>黄金概念</td>
+      <td class="red">+67.93亿</td>
+      <td>8股涨停，避险资金涌入</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-up">主力净流入</span></td>
+      <td>物联网/消费电子/芯片</td>
+      <td class="red">+97~108亿</td>
+      <td>芯片概念17股涨停，473只上涨</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-down">主力净流出</span></td>
+      <td>新易盛</td>
+      <td class="green">-23.91亿</td>
+      <td>CPO方向获利了结明显</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-down">主力净流出</span></td>
+      <td>中际旭创</td>
+      <td class="green">-16.90亿</td>
+      <td>公募第一重仓股遭抛售，跌3.61%</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-down">主力净流出</span></td>
+      <td>德明利</td>
+      <td class="green">-8.97亿</td>
+      <td>存储芯片概念回落，跌停</td>
+    </tr>
+  </table>
+  <div class="warning-box">
+    <strong>资金信号解读：</strong>ETF上周净流入2,036亿（规模指数ETF占1,561亿），大资金持续借道ETF托底。但今日CPO双龙头（中际旭创+新易盛）合计净流出40.8亿，说明昨天暴涨后机构在CPO方向集中兑现。资金正从高位科技股向低位贵金属、有色、电力等周期板块转移。
+  </div>
+</div>
+
+<div class="section">
+  <h2>核心热点解读</h2>
+
+  <div class="insight-card">
+    <h3>1. 贵金属暴涨：黄金4,120美元创新高，避险情绪升温</h3>
+    <p>
+      现货黄金站上4,120美元/盎司（+1.05%），白银突破59美元/盎司。山金国际、赤峰黄金、招金黄金、兴业银锡、盛达资源全线涨停。中东地缘风险升温叠加全球降息预期，贵金属成为今日最强避险主线。黄金概念板块获主力净流入67.93亿，为全天资金最受青睐方向之一。
+    </p>
+  </div>
+
+  <div class="insight-card green-border">
+    <h3>2. 算力租赁持续发酵：美利云3连板，腾讯云NPO催化</h3>
+    <p>
+      腾讯云高管在世界人工智能大会透露，将于2026Q4部署NPO近封装光学超级节点，并呼吁统一行业标准。算力租赁概念继续爆发：美利云3连板、利通电子2连板（涨停）、创业黑马20cm涨停、华勤技术涨停。北京市经信局同步表态下半年新增智能算力5万P，算力基础设施政策催化密集。
+    </p>
+  </div>
+
+  <div class="insight-card yellow-border">
+    <h3>3. 科技赛道高低切：设备强、CPO弱</h3>
+    <p>
+      昨日全面暴涨的科技板块今日出现明显分化。半导体设备延续强势（托伦斯20cm二连板，瑞芯微涨停），但CPO龙头中际旭创跌3.61%、新易盛遭净流出23.9亿，存储芯片德明利跌停。资金从昨天涨幅最大的CPO/存储方向撤出，转向半导体设备、通信设备（中兴通讯涨停）等相对滞涨方向。
+    </p>
+  </div>
+
+  <div class="insight-card">
+    <h3>4. 电力板块反复活跃：立新能源5连板</h3>
+    <p>
+      全国用电负荷7月10日创历史新高（15.18亿千瓦），多个省级电网负荷20+次创新高。立新能源5连板成为市场高度标杆，华电辽能3天2板。"AI+绿电"逻辑持续发酵，国家数据局推进算力电力协同机制。
+    </p>
+  </div>
+
+  <div class="insight-card green-border">
+    <h3>5. 政策面持续暖风：证监会座谈会 + 五大险企力挺</h3>
+    <p>
+      证监会党委班子成员7月20-21日召开系列座谈会，29位代表参会。中国国新、中国诚通两大国资平台先后投入数百亿增持A股。中国人寿、人保、太保、平安、新华五大险企集体发声力挺资本市场。央行虽净回笼3,505亿，但流动性整体充裕。
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>重要消息面</h2>
+  <ul class="news-list">
+    <li><strong>证监会系列座谈会：</strong>7月20-21日召开，29位上市公司/机构/专家代表参会，强调增强市场内在稳定性</li>
+    <li><strong>五大险企集体发声：</strong>中国人寿、人保、太保、平安、新华同步公告力挺A股，释放长期资本信号</li>
+    <li><strong>腾讯云NPO超级节点：</strong>2026Q4部署NPO近封装光学超级节点，呼吁统一行业标准</li>
+    <li><strong>北京算力规划：</strong>下半年新增智能算力5万P，年内算力总规模突破13万P</li>
+    <li><strong>英伟达Vera Rubin：</strong>新一代架构计算系统已交付多家AI企业，NVL72 Token处理能力达上一代10倍</li>
+    <li><strong>SEMI报告：</strong>2026年全球半导体设备销售额预计增长23.2%，达1,659亿美元</li>
+    <li><strong>央行操作：</strong>760亿元7天逆回购，利率1.4%，当日净回笼3,505亿元</li>
+    <li><strong>海外市场：</strong>美股费城半导体+5.32%，SK海力士+13.75%，美光+12.17%，英伟达+1.97%</li>
+    <li><strong>公募二季报：</strong>中际旭创以1,662亿市值成公募第一重仓股，科技赛道首次彻底主导前十</li>
+  </ul>
+</div>
+
+<div class="portfolio-box">
+  <h2>对你的持仓影响分析</h2>
+  <div class="portfolio-impact">
+    <div class="impact-item">
+      <div class="label">富国全球科技互联网QDII A（占比57.4%）</div>
+      <div class="desc">
+        昨晚美股费城半导体+5.32%、SK海力士+13.75%大涨，QDII净值有望受益。但A股科技今日回调，整体影响偏中性偏正面。<span class="yellow">关注QDII净值滞后效应。</span>
+      </div>
+    </div>
+    <div class="impact-item">
+      <div class="label">CPO/通信方向（5G通信ETF + 通信设备ETF）</div>
+      <div class="desc">
+        CPO龙头中际旭创-3.61%、新易盛遭大幅净流出，<span class="green">CPO方向今日承压</span>。但中兴通讯涨停、锐捷网络20cm涨停，通信设备方向分化。通信设备ETF仅181元影响极小。
+      </div>
+    </div>
+    <div class="impact-item">
+      <div class="label">半导体材料设备ETF + 集成电路</div>
+      <div class="desc">
+        半导体设备延续强势，托伦斯20cm二连板、瑞芯微涨停。SEMI上调2026年设备销售额预期+23.2%。<span class="red">半导体设备方向仍为最强科技子赛道。</span>
+      </div>
+    </div>
+    <div class="impact-item">
+      <div class="label">信创ETF联接C</div>
+      <div class="desc">
+        IT服务板块+0.86%，算力租赁概念持续活跃。紫光股份获63亿主力净流入，东数西算概念多股涨停。<span class="red">信创/算力方向仍偏强。</span>
+      </div>
+    </div>
+    <div class="impact-item">
+      <div class="label">华夏电网设备ETF联接A</div>
+      <div class="desc">
+        电力板块+1.02%，立新能源5连板，用电负荷创历史新高。电网设备方向受益于AI+电力逻辑。<span class="red">正面影响。</span>
+      </div>
+    </div>
+    <div class="impact-item">
+      <div class="label">建信新兴市场QDII C + 天弘全球高端制造QDII</div>
+      <div class="desc">
+        美股科技/半导体隔夜大涨，QDII基金有望受益。但需关注今日亚太科技分化。<span class="yellow">中性偏正。</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>后市展望</h2>
+  <div class="insight-card yellow-border">
+    <h3>短期判断：震荡分化阶段，不追涨不杀跌</h3>
+    <p>
+      昨日深V反转确认短线底部后，今日回调属正常获利消化。沪指在3,840-3,890区间窄幅震荡，10日均线压制仍明显。创业板/科创50回吐昨日部分涨幅但未破位，短线支撑看3,550/1,850。市场预计进入<span style="color:#ffd700;">2-3天震荡分化期</span>，板块轮动加速。
+    </p>
+  </div>
+  <div class="insight-card">
+    <h3>关注方向</h3>
+    <p>
+      <strong style="color:#e8edf5;">1. 贵金属/有色：</strong>黄金4,120美元趋势性走强，若站稳则板块行情延续。但涨停股增多后短期追高风险上升。<br>
+      <strong style="color:#e8edf5;">2. 算力租赁：</strong>腾讯NPO催化+北京算力规划，美利云3连板打开高度，关注换手能否持续。<br>
+      <strong style="color:#e8edf5;">3. 半导体设备：</strong>SEMI上调全球设备销售预期+23.2%，产业链涨价潮确认，中期逻辑最硬。<br>
+      <strong style="color:#e8edf5;">4. 电力：</strong>用电负荷新高+立新能源5连板标杆效应，AI+绿电逻辑持续。
+    </p>
+  </div>
+  <div class="insight-card green-border">
+    <h3>风险提示</h3>
+    <p>
+      1. 科技赛道获利盘消化未完成，CPO方向机构仍在兑现（中际旭创+新易盛合计净流出40.8亿）<br>
+      2. 央行净回笼3,505亿，关注流动性边际变化<br>
+      3. 中东地缘风险可能推升油价，但也可能压制全球风险偏好<br>
+      4. 中报业绩验证期临近，高估值科技股面临考验
+    </p>
+  </div>
+</div>
+
+<div class="footer">
+  本报告基于公开市场数据生成，仅供参考，不构成投资建议<br>
+  数据来源：同花顺、东方财富、证券时报、新浪财经等 | 生成时间：2026-07-22 14:26
+</div>
+
+</body>
+</html>
