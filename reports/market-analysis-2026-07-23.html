@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股收盘分析 | 2026-07-23</title>
+<style>
+  :root {
+    --red: #e53935;
+    --green: #4caf50;
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --muted: #666;
+    --border: #e0e0e0;
+    --accent: #1a73e8;--yellow: #f9a825;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 20px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  .header {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #fff;
+    border-radius: 16px;
+    padding: 30px 36px;
+    margin-bottom: 24px;
+  }
+  .header h1 { font-size: 26px; margin-bottom: 6px; }
+  .header .subtitle { color: #aab; font-size: 14px; }
+  .header .date-badge {
+    display: inline-block;
+    margin-top: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .card h2 {
+    font-size: 18px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .card h3 {
+    font-size: 15px;
+    margin: 16px 0 10px;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: #f0f2f5; font-weight: 600; font-size: 13px; color: #555; }
+  tr:hover { background: #f8f9fb; }
+  .text-right { text-align: right; }
+  .text-center { text-align: center; }
+
+  .index-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .index-item {
+    text-align: center;
+    padding: 14px 8px;
+    border-radius: 10px;
+    background: #f8f9fb;
+  }
+  .index-item .name { font-size: 12px; color: var(--muted); }
+  .index-item .price { font-size: 20px; font-weight: 700; margin: 4px 0; }
+  .index-item .pct { font-size: 13px; font-weight: 600; }
+
+  .up { color: var(--red); }
+  .down { color: var(--green); }
+  .flat { color: var(--muted); }
+
+  .sector-tag { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+
+  .news-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 8px; }
+  .tag-good { background: #ffebee; color: var(--red); }
+  .tag-bad { background: #e8f5e9; color: var(--green); }
+  .tag-neutral { background: #fff3e0; color: #e65100; }
+
+  .chart-bar { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+  .chart-bar .bar { height: 20px; border-radius: 4px; min-width: 4px; }
+  .chart-bar .label { font-size: 13px; min-width: 100px; }
+  .chart-bar .val { font-size: 13px; font-weight: 600; min-width: 50px; text-align: right; }
+
+  .highlight-box {
+    background: #e3f2fd;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    border-left: 4px solid var(--accent);
+  }
+
+  .fund-impact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .fund-impact-item {
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .fund-impact-item .fname { font-size: 13px; font-weight: 600; }
+  .fund-impact-item .feffect { font-size: 24px; font-weight: 700; margin: 4px 0; }
+  .fund-impact-item .freason { font-size: 12px; color: var(--muted); }
+  .fund-positive { background: #ffebee; }
+  .fund-negative { background: #e8f5e9; }
+
+  .risk-box {
+    background: #fff8e1;
+    border-left: 4px solid var(--yellow);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #5d4037;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .index-grid { grid-template-columns: repeat(3, 1fr); }
+    .fund-impact { grid-template-columns: 1fr; }
+    .header { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>A股收盘分析报告</h1>
+  <div class="subtitle">冰火两重天 —— 电网设备涨停潮 vs 半导体产业链重挫</div>
+  <div class="date-badge">📅 2026年7月23日 星期四 ｜ 数据截止 15:00</div>
+</div>
+
+<!-- 核心结论 -->
+<div class="card">
+  <h2>📌 今日核心结论</h2>
+  <p style="font-size:15px; line-height:1.8;">
+    <strong>指数微涨，结构极端分化。</strong> 沪指、深成指、创业板指集体小幅收涨约0.25%，但<strong>科创50大跌3.78%</strong>。全市场超4200只个股上涨（77%），129只涨停——赚钱效应其实很好，但全集中在电网设备、锂矿、有色等方向。<br><br>
+    <strong>冰火两重天：</strong> 🔥 <strong>电网设备板块暴涨6.20%</strong>，出现涨停潮（20+股涨停），主力净流入52亿；💧 半导体板块重挫4.20%，主力净流出187亿，华虹宏力跌超12%，中芯国际跌6.75%。<br><br>
+    <strong>对您的持仓：</strong> 您的 <strong>华夏中证电网设备ETF联接A 今日应大幅回血</strong>（电网设备ETF涨超5%）；但 <strong>易方达半导体材料设备ETF联接C 继续承压</strong>。好消息是沪深两市虽然整体缩量，但中小盘股走势较强，结构性机会仍在。
+  </p>
+</div>
+
+<!-- 一、大盘概览 -->
+<div class="card">
+  <h2>一、大盘概览</h2>
+
+  <div class="index-grid">
+    <div class="index-item">
+      <div class="name">上证指数</div>
+      <div class="price up">3,876.78</div>
+      <div class="pct up">+0.25%</div>
+    </div>
+    <div class="index-item">
+      <div class="name">深证成指</div>
+      <div class="price up">14,123.31</div>
+      <div class="pct up">+0.44%</div>
+    </div>
+    <div class="index-item">
+      <div class="name">创业板指</div>
+      <div class="price up">3,575.52</div>
+      <div class="pct up">+0.25%</div>
+    </div>
+    <div class="index-item">
+      <div class="name">科创50</div>
+      <div class="price down">1,789.69</div>
+      <div class="pct down">-3.78%</div>
+    </div>
+    <div class="index-item">
+      <div class="name">成交额</div>
+      <div class="price" style="color:var(--text);">2.20万亿</div>
+      <div class="pct down">缩量4,580亿</div>
+    </div>
+  </div>
+
+  <table style="margin-top:16px;">
+    <tr><th>指标</th><th class="text-right">数值</th><th class="text-right">变化</th><th>状态</th></tr>
+    <tr><td>成交额</td><td class="text-right">2.20万亿</td><td class="text-right down">-4,580亿 (-17.3%)</td><td>缩量震荡</td></tr>
+    <tr><td>上涨家数</td><td class="text-right up">4,260</td><td class="text-right up" colspan="2">占比 77% 🔥</td></tr>
+    <tr><td>下跌家数</td><td class="text-right down">1,208</td><td class="text-right" colspan="2">占 23%</td></tr>
+    <tr><td>涨停/跌停</td><td class="text-right up">129</td><td class="text-right down">/ 2</td><td>情绪偏热</td></tr>
+  </table>
+
+  <div style="margin-top:16px;">
+    <div style="font-size:14px; font-weight:600; margin-bottom:8px;">涨跌幅区间分布（牛长熊短）</div>
+    <div class="chart-bar"><span class="label">涨停</span><div class="bar" style="width:86px; background:var(--red);"></div><span class="val up">129</span></div>
+    <div class="chart-bar"><span class="label">涨5%以上</span><div class="bar" style="width:200px; background:#ef5350;"></div><span class="val up">456</span></div>
+    <div class="chart-bar"><span class="label">涨2~5%</span><div class="bar" style="width:400px; background:#ffcdd2;"></div><span class="val up">1984</span></div>
+    <div class="chart-bar"><span class="label">涨0~2%</span><div class="bar" style="width:350px; background:#fce4ec;"></div><span class="val up">1691</span></div>
+    <div class="chart-bar"><span class="label">跌0~2%</span><div class="bar" style="width:150px; background:#c8e6c9;"></div><span class="val down">700</span></div>
+    <div class="chart-bar"><span class="label">跌2~5%</span><div class="bar" style="width:80px; background:#a5d6a7;"></div><span class="val down">392</span></div>
+    <div class="chart-bar"><span class="label">跌5%+</span><div class="bar" style="width:50px; background:#66bb6a;"></div><span class="val down">116</span></div>
+  </div>
+</div>
+
+<!-- 二、板块轮动 -->
+<div class="card">
+  <h2>二、板块轮动与资金流向</h2>
+
+  <h3 style="color:var(--red);">🔥 领涨板块</h3>
+  <table>
+    <tr><th>板块</th><th class="text-right">涨幅</th><th class="text-right">主力净流入</th><th>热点</th></tr>
+    <tr><td><span class="sector-tag" style="background:#ffebee;color:#c62828;">电网设备</span></td><td class="text-right up">+6.20%</td><td class="text-right up">+52.3亿</td><td>涨停潮，20+股涨停</td></tr>
+    <tr><td><span class="sector-tag" style="background:#ffebee;color:#c62828;">地面兵装</span></td><td class="text-right up">+6.04%</td><td class="text-right">—</td><td>军工</td></tr>
+    <tr><td><span class="sector-tag" style="background:#ffebee;color:#c62828;">能源金属(锂矿)</span></td><td class="text-right up">+5.65%</td><td class="text-right">—</td><td>碳酸锂期货涨4%</td></tr>
+    <tr><td><span class="sector-tag" style="background:#ffebee;color:#c62828;">电池</span></td><td class="text-right up">+3.90%</td><td class="text-right up">+37.5亿</td><td>锂电批量涨停</td></tr>
+    <tr><td><span class="sector-tag" style="background:#ffebee;color:#c62828;">工业金属</span></td><td class="text-right up">+3.58%</td><td class="text-right up">+32.5亿</td><td>盛达资源3连板</td></tr>
+    <tr><td><span class="sector-tag" style="background:#ffebee;color:#c62828;">电力</span></td><td class="text-right up">+1.50%</td><td class="text-right">—</td><td>立新能源6连板</td></tr>
+  </table>
+
+  <h3 style="color:var(--green); margin-top:20px;">💧 领跌板块</h3>
+  <table>
+    <tr><th>板块</th><th class="text-right">跌幅</th><th class="text-right">主力净流出</th><th>说明</th></tr>
+    <tr><td><span class="sector-tag" style="background:#e8f5e9;color:#2e7d32;">半导体</span></td><td class="text-right down">-4.20%</td><td class="text-right down">-187亿</td><td>华虹宏力-12%，中芯-6.75%</td></tr>
+    <tr><td><span class="sector-tag" style="background:#e8f5e9;color:#2e7d32;">AI手机/消费电子</span></td><td class="text-right">—</td><td class="text-right">—</td><td>格林精密-7%，中兴通讯走弱</td></tr>
+    <tr><td><span class="sector-tag" style="background:#e8f5e9;color:#2e7d32;">酒类</span></td><td class="text-right">—</td><td class="text-right">—</td><td>小幅走弱</td></tr>
+  </table>
+</div>
+
+<!-- 三、今日消息面 -->
+<div class="card">
+  <h2>三、今日重要消息</h2>
+
+  <h3 style="font-size:14px; margin-bottom:8px; color:var(--red);">📈 利好</h3>
+
+  <div class="news-item">
+    <span class="news-tag tag-good">重磅利好</span>
+    <strong>国家电网特高压招标放量</strong> — 国家电网公示2026年第三批特高压/输变电设备招标候选名单，本年度前三批特高压采购总金额已超越2025全年总量。国内主网架加速建设持续拉动高压设备需求，电网设备板块涨停潮。
+  </div>
+  <div class="news-item">
+    <span class="news-tag tag-good">行业利好</span>
+    <strong>碳酸锂期货大涨</strong> — 广期所碳酸锂主力合约涨超4%站上14.7万元/吨。花旗研报称三季度锂价有望从15万涨到25万，锂矿概念全面爆发。
+  </div>
+  <div class="news-item">
+    <span class="news-tag tag-good">业绩利好</span>
+    <strong>9家上市券商中报业绩均预增</strong> — 行业景气持续上行，券商板块估值尚未兑现盈利成长性。
+  </div>
+  <div class="news-item">
+    <span class="news-tag tag-good">海外利好</span>
+    <strong>港股科网股大涨</strong> — 美团涨5%，百度/腾讯涨超2%，对QDII海外科技持仓形成支撑。
+  </div>
+
+  <h3 style="font-size:14px; margin:16px 0 8px; color:var(--green);">📉 利空</h3>
+
+  <div class="news-item">
+    <span class="news-tag tag-bad">行业利空</span>
+    <strong>半导体产业链集体重挫</strong> — 科创50跌3.78%，半导体板块-4.20%，主力净流出187亿。华虹宏力跌超12%，中芯国际-6.75%，存储芯片/先进封装继续回调。
+  </div>
+  <div class="news-item">
+    <span class="news-tag tag-bad">政策利空</span>
+    <strong>锂离子电池将征收消费税</strong> — 财政部等三部门发文，2026年9月1日起对锂离子电池征收2%消费税，2027年提升至4%。短期情绪影响有限（执行日期较远），但中期增加成本压力。
+  </div>
+  <div class="news-item">
+    <span class="news-tag tag-neutral">注意</span>
+    <strong>成交额大幅萎缩</strong> — 两市成交2.20万亿，较昨日缩量4580亿（-17.3%），属于缩量反弹，持续性存疑。
+  </div>
+</div>
+
+<!-- 四、持仓影响分析 -->
+<div class="card">
+  <h2>四、对您持仓的影响</h2>
+
+  <p style="font-size:14px; margin-bottom:14px;">
+    基于最新板块行情评估支付宝账户各基金的今日表现：
+  </p>
+
+  <div class="fund-impact">
+    <div class="fund-impact-item fund-positive">
+      <div class="fname">华夏中证电网设备ETF联接A</div>
+      <div class="feffect up">🟢 大幅回血</div>
+      <div class="freason">电网设备暴涨+6.20%，板块出现涨停潮。您的华夏电网设备今日预计涨幅约+5%~+6%，是今天最亮眼的持仓</div>
+    </div>
+    <div class="fund-impact-item fund-negative">
+      <div class="fname">易方达半导体材料设备ETF联接C</div>
+      <div class="feffect down">🔴 继续承压</div>
+      <div class="freason">半导体板块-4.20%，主力净流出187亿。但中信证券研报认为科技板块超跌修复空间强，短期调整不改长期逻辑</div>
+    </div>
+    <div class="fund-impact-item fund-positive">
+      <div class="fname">富国全球科技互联网(QDII)A</div>
+      <div class="feffect up">🟢 偏正面</div>
+      <div class="freason">港股科网股上涨（美团+5%、腾讯+2%），美股科技股预期偏稳，QDII海外科技方向受益</div>
+    </div>
+    <div class="fund-impact-item fund-negative">
+      <div class="fname">富国信创ETF联接C</div>
+      <div class="feffect down">🔴 偏负面</div>
+      <div class="freason">计算机/软件板块受半导体拖累走弱，但工信部AI+软件方案政策仍在催化，回调空间有限</div>
+    </div>
+    <div class="fund-impact-item fund-positive">
+      <div class="fname">财通集成电路产业C</div>
+      <div class="feffect flat">🟡 偏中性</div>
+      <div class="freason">集成电路方向受半导体拖累但跌幅相对较小（-2%~-3%），且是唯一累计浮盈品种</div>
+    </div>
+    <div class="fund-impact-item fund-positive">
+      <div class="fname">华夏中证5G通信ETF联接C</div>
+      <div class="feffect flat">🟡 中性</div>
+      <div class="freason">算力租赁/超节点概念盘中活跃，5G通信方向有所支撑</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>💰 今日综合评估：</strong> 电网设备的大涨应能完全抵消半导体持仓的损失，今日支付宝账户整体预计 <strong>小幅收涨</strong>。大盘连续两天出现"科技跌、资源涨"的切换信号，值得持续关注。
+  </div>
+</div>
+
+<!-- 五、技术面总结 -->
+<div class="card">
+  <h2>五、技术面与后市判断</h2>
+
+  <table>
+    <tr><th>维度</th><th>状态</th><th>说明</th></tr>
+    <tr><td>趋势方向</td><td><span class="up">中长期温和上涨</span> / <span class="down">短期弱势</span></td><td>均线多头排列但短期动能偏弱</td></tr>
+    <tr><td>量能</td><td class="down">缩量</td><td>2.20万亿较前日缩量17%，缩量反弹持续性需观察</td></tr>
+    <tr><td>情绪</td><td class="up">偏热（结构性）</td><td>129涨停+77%个股上涨，但集中在少数板块</td></tr>
+    <tr><td>风格</td><td>价值主导</td><td>价值指数跑赢成长指数+8%，防御/周期风格占优</td></tr>
+    <tr><td>关键风险</td><td class="down">科技持续回调</td><td>科创50两日累计跌超6%，半导体资金持续出逃</td></tr>
+    <tr><td>潜在机会</td><td class="up">电网设备/锂矿</td><td>特高压招标+碳酸锂涨价，板块有持续催化</td></tr>
+  </table>
+
+  <div style="margin-top:16px; background:#f5f5f5; border-radius:8px; padding:14px 16px; font-size:14px;">
+    <strong>后市展望：</strong> 大格局没变——中长期趋势仍在温和上涨通道，但短期市场处于 <strong>"科技退潮→资源防御"的切换窗口</strong>。电网设备的暴涨不代表全面反转，但特高压招标数据的超预期至少说明电新赛道有阶段性机会。半导体方面，中信证券认为"科技板块超跌修复空间强"，连续大跌后反弹需求在累积，但目前主力资金仍在流出，不宜右侧抄底，建议等企稳信号再动。
+  </div>
+</div>
+
+<!-- 风险提示 -->
+<div class="risk-box">
+  <strong>⚠ 风险提示</strong><br>
+  以上分析仅供参考，不构成投资建议。数据来源为腾讯自选股、财联社、证券时报等。市场有风险，投资需谨慎。
+</div>
+
+<div style="text-align:center; padding:20px; color:var(--muted); font-size:13px;">
+  报告生成时间：2026-07-23 15:34 ｜ 数据日期：2026-07-23
+</div>
+
+</div>
+</body>
+</html>
