@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A股日报 · 2026年7月24日（周五）</title>
+<style>
+  :root{
+    --bg:#0d1117; --card:#161b22; --card2:#1c2330; --border:#2a3340;
+    --text:#e6edf3; --muted:#8b97a7; --up:#ff6b6b; --down:#2ecc71;
+    --gold:#e3b341; --blue:#58a6ff; --accent:#7c5cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;line-height:1.6;padding:28px 16px 60px}
+  .wrap{max-width:960px;margin:0 auto}
+  header{text-align:center;padding:18px 0 8px;border-bottom:1px solid var(--border);margin-bottom:24px}
+  header h1{font-size:26px;letter-spacing:1px}
+  header .sub{color:var(--muted);font-size:13px;margin-top:6px}
+  .summary{background:linear-gradient(135deg,#1a2030,#161b22);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:26px;font-size:15px}
+  .summary b{color:var(--gold)}
+  h2{font-size:18px;margin:30px 0 14px;padding-left:11px;border-left:4px solid var(--accent)}
+  h2 .tag{font-size:12px;color:var(--muted);font-weight:normal;margin-left:8px}
+  .grid{display:grid;gap:12px}
+  .g5{grid-template-columns:repeat(5,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:720px){.g5,.g3,.g2{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .card .name{font-size:12.5px;color:var(--muted)}
+  .card .val{font-size:21px;font-weight:700;margin-top:4px}
+  .card .chg{font-size:13px;margin-top:3px;font-weight:600}
+  .up{color:var(--up)} .down{color:var(--down)}
+  .breadth{display:flex;height:30px;border-radius:8px;overflow:hidden;margin:6px 0 4px;border:1px solid var(--border)}
+  .breadth .u{background:var(--up)} .breadth .d{background:var(--down)}
+  .blabel{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border)}
+  th{color:var(--muted);font-weight:600;font-size:12.5px}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .bar{height:8px;border-radius:5px;background:var(--card2);position:relative;overflow:hidden;min-width:80px}
+  .bar > i{position:absolute;top:0;left:50%;height:100%;border-radius:5px}
+  .bar > i.u{background:var(--up)} .bar > i.d{background:var(--down)}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600}
+  .pill.u{background:rgba(255,107,107,.15);color:var(--up)}
+  .pill.d{background:rgba(46,204,113,.15);color:var(--down)}
+  .reason{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px 20px}
+  .reason li{margin:11px 0;font-size:14px}
+  .reason li b{color:var(--gold)}
+  .inst{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:720px){.inst{grid-template-columns:1fr}}
+  .inst .card .who{color:var(--blue);font-size:13px;font-weight:700;margin-bottom:5px}
+  .inst .card p{font-size:13px;color:var(--text)}
+  .note{font-size:12px;color:var(--muted);margin-top:6px;font-style:italic}
+  .disclaimer{margin-top:34px;padding:14px 18px;border:1px dashed var(--border);border-radius:12px;font-size:12px;color:var(--muted)}
+  .hl{color:var(--gold);font-weight:700}
+  .pos{color:var(--up)} .neg{color:var(--down)}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>A股日报 · 2026年7月24日</h1>
+  <div class="sub">星期五 ｜ 数据截至收盘 15:00 ｜ 涨红跌绿（A股惯例）</div>
+</header>
+
+<div class="summary">
+  今日 A 股 <b>全面回调、个股普跌</b>：三大指数低开低走，沪指失守 3850 点收 <b>3814.20（-1.61%）</b>，创业板指领跌 <b>-2.65%</b>，全市场超 <b>4900 只个股下跌</b>（涨跌比约 1:8.8），成交缩至 2 万亿下方。压力来自 <b>全球科技股抛售 + 油价破百通胀担忧 + 韩国股市暴跌跨境传导 + 中东避险</b> 四重共振；盘面仅 <b>半导体设备、军工（军贸）、电网设备</b> 逆势走强。你的支付宝持仓今日账面 <b>-27.6 元（-0.08%）</b>，靠逆势上涨的 <span class="hl">半导体材料设备基金 +2.85%</span> 与滞后披露的 QDII 收益平滑；但 A 股部分实际约 -190 元，且最大持仓（富国全球科技互联网 QDII，占 56%）净值滞后，今晚美股科技动向是关键变量。
+</div>
+
+<!-- 1. 核心指数 -->
+<h2>一、核心指数 <span class="tag">收盘表现</span></h2>
+<div class="grid g5">
+  <div class="card"><div class="name">上证指数</div><div class="val">3814.20</div><div class="chg down">−1.61%</div></div>
+  <div class="card"><div class="name">深证成指</div><div class="val">13774.68</div><div class="chg down">−2.47%</div></div>
+  <div class="card"><div class="name">创业板指</div><div class="val">3480.87</div><div class="chg down">−2.65%</div></div>
+  <div class="card"><div class="name">科创50</div><div class="val">1787.20</div><div class="chg down">−0.14%</div></div>
+  <div class="card"><div class="name">北证50</div><div class="val">1031.72</div><div class="chg down">−4.03%</div></div>
+</div>
+
+<!-- 2. 市场全景 -->
+<h2>二、市场全景 <span class="tag">量能与广度</span></h2>
+<div class="grid g3">
+  <div class="card"><div class="name">沪深成交额</div><div class="val">1.93 万亿</div><div class="chg">较昨日缩量 2642 亿</div></div>
+  <div class="card"><div class="name">沪深北合计</div><div class="val">≈1.94 万亿</div><div class="chg">时隔三月再破 2 万亿</div></div>
+  <div class="card"><div class="name">涨停 / 跌停</div><div class="val">42 / 25</div><div class="chg">赚钱效应稀碎</div></div>
+</div>
+<div class="card" style="margin-top:12px">
+  <div class="name">涨跌家数（沪+深，全市场）</div>
+  <div class="breadth"><div class="u" style="width:10.1%"></div><div class="d" style="width:89.9%"></div></div>
+  <div class="blabel"><span class="up">▲ 上涨 555 家</span><span class="down">▼ 下跌 4940 家</span></div>
+</div>
+
+<!-- 3. 板块表现 -->
+<h2>三、板块表现 <span class="tag">逆势 vs 重挫</span></h2>
+<div class="grid g2">
+  <div class="card">
+    <div class="name" style="color:var(--up);font-weight:700">▲ 逆势走强（少数主线）</div>
+    <table>
+      <tr><th>板块</th><th style="text-align:right">说明</th></tr>
+      <tr><td>半导体设备 / 先进封装</td><td style="text-align:right" class="up">科创半导体设备ETF +3.63%</td></tr>
+      <tr><td>军工 / 军贸（兵装重组、中船系）</td><td style="text-align:right" class="up">建设工业、长城军工涨停</td></tr>
+      <tr><td>电网设备</td><td style="text-align:right" class="up">顺钠/太阳/汉缆 2连板</td></tr>
+      <tr><td>银行（唯一红盘一级行业）</td><td style="text-align:right" class="up">国有大行 +0.84%</td></tr>
+      <tr><td>工业气体 / 电信</td><td style="text-align:right" class="up">涨幅居前</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <div class="name" style="color:var(--down);font-weight:700">▼ 深度回调（重灾区）</div>
+    <table>
+      <tr><th>板块</th><th style="text-align:right">说明</th></tr>
+      <tr><td>贵金属 / 黄金股</td><td style="text-align:right" class="down">黄金股ETF −5.36%</td></tr>
+      <tr><td>电力</td><td style="text-align:right" class="down">−4.92%（获利兑现）</td></tr>
+      <tr><td>软件 / 算力租赁 / AI应用</td><td style="text-align:right" class="down">软件ETF −4.52%</td></tr>
+      <tr><td>通信设备</td><td style="text-align:right" class="down">−2.37%（净流出居首）</td></tr>
+      <tr><td>光伏 / 煤炭 / 化学制药</td><td style="text-align:right" class="down">跌幅居前</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 4. 资金流向 -->
+<h2>四、主力资金流向 <span class="tag">行业净额（亿元）</span></h2>
+<div class="card">
+  <table>
+    <tr><th>方向</th><th>板块</th><th style="text-align:right">主力净流入</th><th style="text-align:right">板块表现</th></tr>
+    <tr><td><span class="pill u">流入</span></td><td>半导体（唯一超40亿）</td><td class="num up">+40.99</td><td class="num">微跌 0.10%</td></tr>
+    <tr><td><span class="pill u">流入</span></td><td>其他电子 / 军工电子 / 纺织 / 环境治理</td><td class="num up">+1~3</td><td class="num">分化</td></tr>
+    <tr><td><span class="pill d">流出</span></td><td>通信设备</td><td class="num down">−56.68</td><td class="num down">−2.37%</td></tr>
+    <tr><td><span class="pill d">流出</span></td><td>电力</td><td class="num down">−50.85</td><td class="num down">−4.92%</td></tr>
+    <tr><td><span class="pill d">流出</span></td><td>证券</td><td class="num down">−46.16</td><td class="num down">−2.82%</td></tr>
+    <tr><td><span class="pill d">流出</span></td><td>元件</td><td class="num down">−45.71</td><td class="num down">−2.96%</td></tr>
+  </table>
+  <div class="note">个股净流入 TOP：通富微电 +24.72 亿、华天科技、中微公司、深科技、蓝思科技、澜起科技、雅克科技、星宸科技、冰轮环境、长川科技——资金明显在科技硬件内部做"高低切换"。</div>
+</div>
+
+<!-- 5. 外围市场 -->
+<h2>五、外围与大宗商品 <span class="tag">风险偏好降温</span></h2>
+<div class="grid g3">
+  <div class="card"><div class="name">日经225</div><div class="val down">−2.73%</div><div class="chg">64611.15</div></div>
+  <div class="card"><div class="name">韩国综合</div><div class="val down">−5.72%</div><div class="chg">6690.62（暴跌传导）</div></div>
+  <div class="card"><div class="name">恒生科技</div><div class="val down">−1.47%</div><div class="chg">恒指 −0.98%</div></div>
+</div>
+<div class="grid g2" style="margin-top:12px">
+  <div class="card"><div class="name">布伦特原油</div><div class="val" style="color:var(--gold)">≈100 美元/桶</div><div class="chg">+4%（通胀担忧再起）</div></div>
+  <div class="card"><div class="name">国债期货</div><div class="val up">集体上涨</div><div class="chg">30年国债 +0.13%（避险）</div></div>
+</div>
+
+<!-- 6. 下跌原因 -->
+<h2>六、为什么跌？<span class="tag">四重共振</span></h2>
+<div class="reason">
+  <ul>
+    <li><b>① 全球科技股抛售：</b>对 AI 数千亿美元投资回报的质疑升温 + 油价破百重新点燃通胀担忧，美联储 9 月前加息预期被市场计入，纳斯达克前日大跌超 2%，A 股科技链（英伟达/谷歌/苹果映射）跟跌且跌幅更大。</li>
+    <li><b>② 韩国股市暴跌跨境传导：</b>韩国综合指数重挫 −5.72%，全球风险偏好集体降温，情绪快速传导至 A 股。</li>
+    <li><b>③ 中东局势 / 美伊冲突担忧：</b>周末临近，避险心理"先卖后看"，进一步压制风险资产。</li>
+    <li><b>④ 内部拥挤交易出清 + 存储兑现 + IPO 抽血：</b>上半年科技（芯片/算力/光模块）一家独大，前 5% 股票占 50% 成交，抱团集中杀跌；摩根士丹利看空存储盈利动能，长鑫科技 7/27 登陆科创板形成资金分流。</li>
+  </ul>
+</div>
+
+<!-- 7. 机构观点 -->
+<h2>七、机构怎么看 <span class="tag">不是牛终，是出清</span></h2>
+<div class="inst">
+  <div class="card"><div class="who">招商证券</div><p>底部区域呈"杠杆去化 + 交易降温 + ETF 托底"三位一体。融资出清进入后半段、ETF 大幅流入、强势科技股补跌，恐慌盘集中释放，<b>进一步下行空间有限</b>，将以分化震荡方式逐步筑底。</p></div>
+  <div class="card"><div class="who">中国银河证券</div><p>7 月全球半导体回调但<b>基本面无重大利空</b>，主因去杠杆、存储兑现与估值回调，位置已大幅释放风险。关注扩产相关的<b>先进封装、晶圆代工、设备材料、国产算力</b>。</p></div>
+  <div class="card"><div class="who">源达（吴起涤）</div><p>调整以<b>情绪和交易层面出清为主</b>，国内经济修复根基稳固、政策储备充足，中报业绩预告显示强劲增长动力。</p></div>
+  <div class="card"><div class="who">施罗德 / 杨德龙（前海开源）</div><p>全球股市极端分化、AI 过度集中构成风险，建议<b>风格多元化、远离泡沫</b>；杨德龙称并非"科技牛"终结，建议去杠杆、降半仓、分散配置，不单一押注科技。</p></div>
+</div>
+
+<!-- 8. 你的持仓 -->
+<h2>八、你的支付宝持仓今日 <span class="tag">养基宝实时数据</span></h2>
+<div class="grid g3">
+  <div class="card"><div class="name">账户总资产</div><div class="val">¥34,103</div><div class="chg">本金成本 ¥36,590</div></div>
+  <div class="card"><div class="name">今日收益（账面）</div><div class="val down">−27.6</div><div class="chg down">−0.08%</div></div>
+  <div class="card"><div class="name">持仓累计盈亏</div><div class="val down">−2,474</div><div class="chg down">−6.76%</div></div>
+</div>
+<div class="card" style="margin-top:12px">
+  <table>
+    <tr><th>基金</th><th>代码</th><th style="text-align:right">市值(元)</th><th style="text-align:right">今日涨跌</th><th style="text-align:right">今日影响(元)</th><th style="text-align:right">持仓盈亏</th></tr>
+    <tr><td>易方达半导体材料设备ETF联接C</td><td>021894</td><td class="num">1,864</td><td class="num up">+2.85%</td><td class="num up">+51.7</td><td class="num down">−135.6</td></tr>
+    <tr><td>富国信创ETF联接C</td><td>020109</td><td class="num">1,840</td><td class="num down">−1.07%</td><td class="num down">−19.9</td><td class="num down">−160.6</td></tr>
+    <tr><td>华夏中证5G通信主题ETF联接C</td><td>008087</td><td class="num">1,832</td><td class="num down">−2.64%</td><td class="num down">−49.7</td><td class="num down">−168.1</td></tr>
+    <tr><td>华泰柏瑞质量成长混合C</td><td>011452</td><td class="num">1,758</td><td class="num down">−3.07%</td><td class="num down">−55.7</td><td class="num down">−242.0</td></tr>
+    <tr><td>华夏中证电网设备主题ETF联接A</td><td>025856</td><td class="num">1,488</td><td class="num down">−3.37%</td><td class="num down">−51.9</td><td class="num down">−312.5</td></tr>
+    <tr><td>财通集成电路产业股票C</td><td>006503</td><td class="num">977</td><td class="num down">−3.17%</td><td class="num down">−32.0</td><td class="num down">−22.6</td></tr>
+    <tr><td>建信新兴市场优选混合(QDII)C</td><td>018147</td><td class="num">1,555</td><td class="num up">+0.84%*</td><td class="num up">+13.0</td><td class="num down">−35.2</td></tr>
+    <tr><td>华夏全球科技先锋混合(QDII)C</td><td>024239</td><td class="num">2,481</td><td class="num down">−1.22%*</td><td class="num down">−30.6</td><td class="num down">−518.5</td></tr>
+    <tr><td>天弘全球高端制造混合(QDII)C</td><td>016665</td><td class="num">810</td><td class="num">0.02%*</td><td class="num">+0.2</td><td class="num down">−190.4</td></tr>
+    <tr><td>富国全球科技互联网股票(QDII)A</td><td>100055</td><td class="num">19,331</td><td class="num up">+0.80%*</td><td class="num up">+153.4</td><td class="num down">−669.4</td></tr>
+    <tr><td>国泰中证全指通信设备ETF联接C</td><td>007818</td><td class="num">168</td><td class="num down">−3.32%</td><td class="num down">−5.8</td><td class="num down">−32.3</td></tr>
+  </table>
+  <div class="note">* QDII 基金净值滞后 1–2 个交易日（显示为最近可得净值日 2026-07-23 的涨跌），非今日实时。今日账面 −27.6 元中，约 +166 元来自滞后 QDII 的昨日收益，<b>A 股部分实际约 −190 元</b>。最大持仓富国全球科技互联网（占组合的 56.7%）为 QDII，今晚美股科技表现将直接决定其下一净值。</div>
+</div>
+
+<!-- 9. 操作提示 -->
+<h2>九、对你的提示 <span class="tag">非投资建议</span></h2>
+<div class="card">
+  <ul style="list-style:none;padding:0">
+    <li style="margin:8px 0">🔴 <b>逆势亮点：</b>半导体材料设备基金今日 <span class="hl">+2.85%</span>，是全场最强持仓，与盘面"半导体设备逆势吸金 +40.99 亿"主线共振，说明你的这笔配置踩在了今日资金避风港上。</li>
+    <li style="margin:8px 0">🟢 <b>主要拖累：</b>电网设备 −3.37%、5G/通信 −2.6%~−3.3%、质量成长/集成电路 −3% 上下，与今日通信、电力、算力板块重挫一致。</li>
+    <li style="margin:8px 0">⚠️ <b>集中度风险：</b>你的组合高度集中于科技（半导体/5G/通信/电网/QDII 全球科技），与机构"不要单一押注科技、做风格多元化"的共识相悖。若后市延续分化震荡，单一风格波动会被放大。</li>
+    <li style="margin:8px 0">👀 <b>关键变量：</b>今晚美股科技（尤其纳斯达克）若继续承压，最大持仓 QDII（19,331 元）下一净值将受拖累；若企稳反弹则相反。</li>
+    <li style="margin:8px 0">📌 <b>机构共识：</b>本轮是拥挤交易出清而非"科技牛"终结，下行空间有限、以分化筑底为主。无需恐慌性杀跌，但可借反弹适度分散、降低杠杆。</li>
+  </ul>
+</div>
+
+<div class="disclaimer">
+  数据来源：证券时报、每日经济新闻、上海证券报、中新经纬、同花顺 iFinD、Choice、养基宝（个人持仓为支付宝账户实时数据，QDII 净值滞后）。本报告仅为市场复盘与信息整理，<b>不构成任何投资建议</b>。基金有风险，投资需谨慎，据此操作风险自担。
+</div>
+
+<footer>WorkBuddy · A股日报 · 生成于 2026-07-24 21:40 (GMT+8)</footer>
+
+</div>
+</body>
+</html>
